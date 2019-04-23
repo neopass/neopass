@@ -6,11 +6,11 @@ import { IPluginInfo } from '../plugin-info'
 // const tSign = String.raw`(?:\+|-)`
 // const tNumber = String.raw`${tSign}?${tDecimal}(?:[eE]${tSign}?\d+)?`
 // const tChar = String.raw`[a-z0-9_-]`
-const tChar = String.raw`[^ :=]`
+const tChar = String.raw`[^ ,:=]`
 const tPlugin = String.raw`${tChar}+(?= *:|$)`
 // const tValue = String.raw`(?:${tNumber}|${tChar}+)`
 const tKeyVal = String.raw`${tChar}+=${tChar}+`
-const tParser = String.raw`^(${tPlugin})| *: *(${tKeyVal})| *: *(${tChar}+)`
+const tParser = String.raw`^(${tPlugin})| *(?:,|:) *(${tKeyVal})| *(?:,|:) *(${tChar}+)`
 const parser = new RegExp(tParser, 'yi')
 
 export function parsePluginRef(str: string): IPluginInfo {
