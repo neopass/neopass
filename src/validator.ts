@@ -4,10 +4,10 @@ export type RequestType = keyof IPasswordInfo
 
 export interface IValidatorError {
   name: string,
-  message?: string,
-  description?: string,
+  msg?: string,
+  desc?: string,
   score?: number,
-  metadata?: any,
+  meta?: any,
 }
 
 export interface IValidator {

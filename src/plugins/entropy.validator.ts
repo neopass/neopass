@@ -30,7 +30,7 @@ export class EntropyValidator implements IPlugin<IValidator> {
         const bits = length * entropy
         if (bits < min) {
           const score = bits / min
-          return [{ name, message, score }]
+          return [{ name, msg: message, score }]
         }
         return []
       }
