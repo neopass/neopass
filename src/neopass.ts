@@ -25,7 +25,7 @@ export interface IGeneratorInfo {
 }
 
 // Create a default configuration.
-const defaultConfig: INeoConfig = {
+const _defaultConfig: INeoConfig = {
   useBuiltinGenerators: true,
   useBuiltinValidators: true,
 }
@@ -50,7 +50,7 @@ const _builtinValidators = [
 /**
  *
  */
-function registerPlugins(plugins: IPlugin[]) {
+function _registerPlugins(plugins: IPlugin[]) {
   plugins.forEach(p => _pluginStore.register(p))
 }
 
@@ -59,7 +59,7 @@ function registerPlugins(plugins: IPlugin[]) {
  */
 function _init(config: INeoConfig) {
   const plugins: IPlugin[] = config.plugins || []
-  registerPlugins(plugins)
+  _registerPlugins(plugins)
 }
 
 /**
@@ -73,14 +73,14 @@ let _initialized = false
 function neopass(config?: INeoConfig|null) {
 
   if (!_initialized) {
-    const _config = {...defaultConfig, ...config}
+    const _config = {..._defaultConfig, ...config}
 
     if (_config.useBuiltinGenerators) {
-      registerPlugins(_builtinGenerators)
+      _registerPlugins(_builtinGenerators)
     }
 
     if (_config.useBuiltinValidators) {
-      registerPlugins(_builtinValidators)
+      _registerPlugins(_builtinValidators)
     }
 
     _init(_config)
