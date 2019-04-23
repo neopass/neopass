@@ -18,7 +18,7 @@ export class ShannonValidator implements IPlugin<IValidator> {
   fn(options: any, min: number): IValidator {
 
     if (typeof min !== 'number') {
-      throw new Error('entropy validator requires a single argument')
+      throw new Error('shannon validator requires a single argument')
     }
 
     const name = this.name
