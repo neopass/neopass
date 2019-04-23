@@ -11,6 +11,10 @@ export class DepthValidator implements IPlugin<IValidator> {
     return 'depth'
   }
 
+  get message() {
+    return `password needs more class complexity (uppercase, lowercase, digit, special)`
+  }
+
   fn(options: any, min: number): IValidator {
 
     if (typeof min !== 'number') {
@@ -18,12 +22,12 @@ export class DepthValidator implements IPlugin<IValidator> {
     }
 
     const name = this.name
+    const message = this.message
 
     const validator: IValidator = {
       request: ['depth'],
       validate(depth: number) {
         if (depth < min) {
-          const message = `password needs more class complexity (uppercase, lowercase, digit, special)`
           return [{ name, message }]
         }
         return []

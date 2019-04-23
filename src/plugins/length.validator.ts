@@ -11,6 +11,10 @@ export class LengthValidator implements IPlugin<IValidator> {
     return 'length'
   }
 
+  message(min: number, max: number) {
+    return `password length should be between ${min} and ${max} characters, inclusive`
+  }
+
   fn(options: any): IValidator {
     const min = options.min
     const max = options.max
@@ -20,13 +24,13 @@ export class LengthValidator implements IPlugin<IValidator> {
     }
 
     const name = this.name
+    const message = this.message
 
     const validator: IValidator = {
       request: ['length'],
       validate(length: number) {
         if (length < min || length > max) {
-          const message = `password length should be between ${min} and ${max} characters, inclusive`
-          return [{ name, message }]
+          return [{ name, message: message(min, max) }]
         }
         return []
       }

@@ -11,6 +11,10 @@ export class EntropyValidator implements IPlugin<IValidator> {
     return 'entropy'
   }
 
+  get message() {
+    return `password is either too short or not complex enough`
+  }
+
   fn(options: any, min: number): IValidator {
 
     if (typeof min !== 'number') {
@@ -18,6 +22,7 @@ export class EntropyValidator implements IPlugin<IValidator> {
     }
 
     const name = this.name
+    const message = this.message
 
     const validator: IValidator = {
       request: ['length', 'entropy'],
@@ -25,7 +30,6 @@ export class EntropyValidator implements IPlugin<IValidator> {
         const _entropy = length * entropy
         console.log(_entropy)
         if (_entropy < min) {
-          const message = `password is either too short or not complex enough`
           return [{ name, message }]
         }
         return []
