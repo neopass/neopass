@@ -7,8 +7,8 @@ import { IPluginInfo } from './plugin-info'
 import { passwordInfo } from './password-info'
 import { runValidator } from './helpers/run-validator'
 import { LengthValidator } from './plugins/length.validator'
-import { RandomGenerator } from './generators/random.generator'
-import { LettersNumbersGenerator } from './generators/letters-numbers.generator'
+import { RandomGenerator } from './plugins/random.generator'
+import { LettersNumbersGenerator } from './plugins/letters-numbers.generator'
 import passTemplate from './views/password-template.html'
 
 // Neopass configuration interface.
