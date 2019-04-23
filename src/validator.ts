@@ -6,7 +6,8 @@ export interface IValidatorError {
   name: string,
   message?: string,
   description?: string,
-  score?: number
+  score?: number,
+  metadata?: any,
 }
 
 export interface IValidator {
