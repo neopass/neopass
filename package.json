@@ -1,0 +1,47 @@
+{
+  "name": "neopass",
+  "version": "0.1.0",
+  "description": "A password validation and generation tool kit",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "tsc && npm run load",
+    "clean": "rm -rf lib",
+    "load": "node ./util/file-loader ./src/views ./lib",
+    "test": "npm run clean && npm run build && mocha **/*.spec.js",
+    "test-watch": "nodemon -e ts --ignore '*.d.ts' --exec 'npm run test'",
+    "prepublishOnly": "npm run test",
+    "word-gen": "./word-gen"
+  },
+  "homepage": "https://github.com/neopass/neopass#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neopass/neopass.git"
+  },
+  "bugs": {
+    "url": "https://github.com/neopass/neopass/issues"
+  },
+  "keywords": [
+    "password",
+    "passphrase",
+    "validation",
+    "strength",
+    "topology",
+    "middleware"
+  ],
+  "author": "James Abney",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@types/mocha": "^5.2.3",
+    "@types/node": "^10.5.8",
+    "mocha": "^5.2.0",
+    "nodemon": "^1.17.5",
+    "tslint": "^5.10.0",
+    "typescript": "^3.4.2"
+  },
+  "files": [
+    "lib"
+  ],
+  "dependencies": {
+    "regex-each": "^1.0.3"
+  }
+}
