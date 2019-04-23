@@ -61,10 +61,7 @@ function init(config?: INeoConfig|null) {
   if (config != null) {
     const plugins: IPlugin[] = config.plugins || []
     registerPlugins(plugins)
-    return true
   }
-
-  return false
 }
 
 /**
@@ -77,7 +74,7 @@ let _initialized = false
  */
 function neopass(config?: INeoConfig|null) {
 
-  if (!_initialized && config != null) {
+  if (!_initialized) {
     const _config = {...defaultConfig, ...config}
 
     if (_config.useBuiltinGenerators) {
@@ -88,7 +85,7 @@ function neopass(config?: INeoConfig|null) {
       registerPlugins(_builtinValidators)
     }
 
-    _initialized = init(_config)
+    _initialized = true
   }
 
   return neopass
