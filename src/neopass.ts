@@ -77,7 +77,7 @@ let _initialized = false
  */
 function neopass(config?: INeoConfig|null) {
 
-  if (!_initialized) {
+  if (!_initialized && config != null) {
     const _config = {...defaultConfig, ...config}
 
     if (_config.useBuiltinGenerators) {
