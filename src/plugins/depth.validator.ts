@@ -28,7 +28,8 @@ export class DepthValidator implements IPlugin<IValidator> {
       request: ['depth'],
       validate(depth: number) {
         if (depth < min) {
-          return [{ name, message }]
+          const score = depth / min
+          return [{ name, message, score }]
         }
         return []
       }

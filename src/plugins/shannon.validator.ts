@@ -29,7 +29,8 @@ export class ShannonValidator implements IPlugin<IValidator> {
       validate(length: number, shannon: number) {
         const bits = length * shannon
         if (bits < min) {
-          return [{ name, message }]
+          const score = bits / min
+          return [{ name, message, score }]
         }
         return []
       }

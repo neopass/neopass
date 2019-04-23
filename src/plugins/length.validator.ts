@@ -30,7 +30,8 @@ export class LengthValidator implements IPlugin<IValidator> {
       request: ['length'],
       validate(length: number) {
         if (length < min || length > max) {
-          return [{ name, message: message(min, max) }]
+          const score = length / min
+          return [{ name, message: message(min, max), score }]
         }
         return []
       }
