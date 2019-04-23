@@ -9,14 +9,17 @@ export class PluginResolver {
   constructor(_store: PluginStore) {
     this.resolve = function resolve(type: PluginType, value: string|IPluginInfo) {
       let plugin: string
+      let args: any
       let options: any
 
       if (typeof value === 'string') {
         const info = parsePluginRef(value)
         plugin = info.plugin
+        args = info.args
         options = info.options || {}
       } else {
         plugin = value.plugin
+        args = value.args
         options = value.options || {}
       }
 
@@ -25,7 +28,7 @@ export class PluginResolver {
       }
 
       const _plugin = _store.get(type, plugin)
-      return _plugin.fn(options)
+      return _plugin.fn(options, ...args)
     }
   }
 }

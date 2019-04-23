@@ -7,18 +7,18 @@ const tSign = String.raw`(?:\+|-)`
 const tNumber = String.raw`${tSign}?${tDecimal}(?:[eE]${tSign}?\d+)?`
 const tChar = String.raw`[a-z0-9_-]`
 const tPlugin = String.raw`${tChar}+(?=:|$)`
-const tNamedArg = String.raw`${tChar}+=(?:${tNumber}|${tChar}+)`
-// const tArg = String.raw`${tChar}+`
-const tParser = String.raw`^(${tPlugin})|:(${tNamedArg})`
-// const tParser = String.raw`^(${tPlugin})|:(${tNamedArg})|:(${tArg})`
+const tValue = String.raw`(?:${tNumber}|${tChar}+)`
+const tKeyVal = String.raw`${tChar}+=${tValue}`
+// const tParser = String.raw`^(${tPlugin})|:(${tNamedArg})`
+const tParser = String.raw`^(${tPlugin})|:(${tKeyVal})|:(${tValue})`
 const parser = new RegExp(tParser, 'yi')
 
 export function parsePluginRef(str: string): IPluginInfo {
-  const info: any = { plugin: '', /* args: [], */ options: {} }
+  const info: any = { plugin: '', args: [], options: {} }
 
   let lastIndex = 0
   regexEach(parser, str, (match, expr) => {
-    const [,plugin, keyval/* , val */] = match
+    const [,plugin, keyval, val] = match
 
     if (plugin != null) {
       info.plugin = plugin
@@ -29,9 +29,9 @@ export function parsePluginRef(str: string): IPluginInfo {
       info.options[key] = parseJson(val)
     }
 
-    // if (val != null) {
-    //   info.args.push(parseJson(val))
-    // }
+    if (val != null) {
+      info.args.push(parseJson(val))
+    }
 
     lastIndex = expr.lastIndex
   })
