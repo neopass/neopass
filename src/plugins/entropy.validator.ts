@@ -27,9 +27,8 @@ export class EntropyValidator implements IPlugin<IValidator> {
     const validator: IValidator = {
       request: ['length', 'entropy'],
       validate(length: number, entropy: number) {
-        const _entropy = length * entropy
-        console.log(_entropy)
-        if (_entropy < min) {
+        const bits = length * entropy
+        if (bits < min) {
           return [{ name, message }]
         }
         return []
