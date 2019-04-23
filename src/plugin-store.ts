@@ -3,7 +3,7 @@ import { IPlugin, PluginType } from './plugin'
 type PluginMap = Map<string, IPlugin>
 
 export class PluginStore {
-  public register: (plugin: IPlugin, force?: boolean) => void
+  public register: (plugin: IPlugin, force?: boolean) => this
   public getAll: <T = any>(type: PluginType) => IPlugin<T>[]
   public get: <T = any>(type: PluginType, name: string) => IPlugin<T>
 
@@ -39,6 +39,8 @@ export class PluginStore {
 
       // Update the plugins map.
       _plugins.set(plugin.type, pMap)
+
+      return this
     }
 
     /**
