@@ -149,7 +149,7 @@ neopass.validators = {
     'shannon:32',
     'sequence:3',
     'run:2',
-  ]
+  ],
 }
 
 /**
