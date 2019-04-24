@@ -15,6 +15,8 @@ import { DepthValidator } from './plugins/depth.validator'
 import { EntropyValidator } from './plugins/entropy.validator'
 import { ShannonValidator } from './plugins/shannon.validator'
 import { ClassesValidator } from './plugins/classes-validator'
+import { SequenceValidator } from './plugins/sequence.validator'
+import { RunValidator } from './plugins/run.validator'
 
 // Neopass configuration interface.
 export interface INeoConfig {
@@ -54,6 +56,8 @@ const _builtinValidators = [
   EntropyValidator,
   ShannonValidator,
   ClassesValidator,
+  SequenceValidator,
+  RunValidator,
 ]
 
 /**
@@ -89,7 +93,7 @@ function neopass(config?: INeoConfig|null) {
     }
 
     if (_config.useBuiltinValidators) {
-      _registerPlugins(_builtinValidators.map(P => new P()))
+      _registerPlugins(_builtinValidators.map(V => new V()))
     }
 
     _init(_config)
