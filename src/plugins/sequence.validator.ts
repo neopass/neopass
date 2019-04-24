@@ -24,7 +24,7 @@ export class SequenceValidator implements IPlugin<IValidator> {
     let offending: string[] = []
 
     regexEach(parser, pass, (match) => {
-      const candidate = match[1] || match[2]
+      const candidate = (match[1] || match[2]).toLowerCase()
       const nums = Array.from(candidate).map(c => c.codePointAt(0)) as number[]
 
       let inSequence = 0
