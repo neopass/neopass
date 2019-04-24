@@ -42,7 +42,6 @@ export class SequenceValidator implements IPlugin<IValidator> {
       }
     })
 
-    console.log(offending)
     return offending
   }
 
