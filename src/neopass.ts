@@ -43,17 +43,17 @@ const _pluginResolver = new PluginResolver(_pluginStore)
 
 // Built-in generators.
 const _builtinGenerators = [
-  new RandomGenerator(),
-  new LettersNumbersGenerator(),
+  RandomGenerator,
+  LettersNumbersGenerator,
 ]
 
 // Built-in validators.
 const _builtinValidators = [
-  new LengthValidator(),
-  new DepthValidator(),
-  new EntropyValidator(),
-  new ShannonValidator(),
-  new ClassesValidator(),
+  LengthValidator,
+  DepthValidator,
+  EntropyValidator,
+  ShannonValidator,
+  ClassesValidator,
 ]
 
 /**
@@ -85,11 +85,11 @@ function neopass(config?: INeoConfig|null) {
     const _config = {..._defaultConfig, ...config}
 
     if (_config.useBuiltinGenerators) {
-      _registerPlugins(_builtinGenerators)
+      _registerPlugins(_builtinGenerators.map(G => new G()))
     }
 
     if (_config.useBuiltinValidators) {
-      _registerPlugins(_builtinValidators)
+      _registerPlugins(_builtinValidators.map(P => new P()))
     }
 
     _init(_config)
