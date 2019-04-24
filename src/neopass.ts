@@ -83,7 +83,7 @@ let _initialized = false
 /**
  * Neopass instance.
  */
-function neopass(config?: INeoConfig|null) {
+export function neopass(config?: INeoConfig|null) {
 
   if (!_initialized) {
     const _config = {..._defaultConfig, ...config}
@@ -200,5 +200,3 @@ neopass.middleware = {
     }
   }
 }
-
-export default neopass
