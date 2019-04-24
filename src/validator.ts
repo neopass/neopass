@@ -11,6 +11,6 @@ export interface IValidatorError {
 }
 
 export interface IValidator {
-  request: ('password'|RequestType)[]
+  request: (RequestType)[]
   validate(...args: any[]): IValidatorError[]
 }
