@@ -1,5 +1,5 @@
 import { profile } from './utils/profile'
-import neopass from './neopass'
+import { neopass } from './neopass'
 
 export default neopass
 
@@ -12,11 +12,30 @@ neopass({
 const ms = profile(() => {
 
   // console.log(neopass)
-  const result = neopass.validate('abcd', [
-    'length:min=10:max=20',
+  // Abcd1$laaa7zyxw
+  const result = neopass.validate('LosAangeles2019!', [
+    // 'length:min=10:max=20',
+    // 'depth:62',
+    // 'entropy:64',
+    // 'shannon:32',
+    // 'sequence:3',
+    // 'classes:and=ul,or=ds',
+    // 'run:2',
+    {
+      plugin: 'topology',
+      options: {
+        // shannon: 64,
+        entropy: 96,
+        standard: true,
+        patterns: [/^u+l+u+l+d+s+$/],
+      },
+    },
   ])
 
   console.log(result)
 })
 
 console.log(`${ms} ms`)
+
+const mb = process.memoryUsage().heapUsed / 1024**2
+console.log(mb.toFixed(2) + ' mb')
