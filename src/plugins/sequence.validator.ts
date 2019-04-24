@@ -24,8 +24,8 @@ export class SequenceValidator implements IPlugin<IValidator> {
     let offending: string[] = []
 
     regexEach(parser, pass, (match) => {
-      const sequence = match[1] || match[2]
-      const nums = Array.from(sequence).map(c => c.codePointAt(0)) as number[]
+      const candidate = match[1] || match[2]
+      const nums = Array.from(candidate).map(c => c.codePointAt(0)) as number[]
 
       let inSequence = 0
       for (let i = 1; i < nums.length; i++) {
@@ -38,7 +38,7 @@ export class SequenceValidator implements IPlugin<IValidator> {
       }
 
       if (inSequence + 1 > max) {
-        offending.push(sequence)
+        offending.push(candidate)
       }
     })
 
