@@ -7,9 +7,9 @@ import { IPlugin } from './plugin'
 import { passwordInfo } from './password-info'
 import { runValidator } from './helpers/run-validator'
 
-type PluginInfo = string|IPluginInfo
+export type PasswordStrength = [number, IValidatorError[]]
 
-type PasswordStrength = [number, IValidatorError[]]
+export type PluginInfo = string|IPluginInfo
 
 export interface IEvaluator {
   weight?: number
