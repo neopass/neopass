@@ -196,5 +196,11 @@ neopass.middleware = {
     return (req: any, res: any, next: () => void) => {
       next()
     }
+  },
+
+  evaluate: function () {
+    return (req: any, res: any, next: () => void) => {
+      next()
+    }
   }
 }
