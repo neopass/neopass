@@ -21,12 +21,20 @@ import { TopologyValidator } from './plugins/topology.validator'
 
 type PluginInfo = string|IPluginInfo
 
+interface IEvaluator {
+  weight?: number
+  validators: PluginInfo[]
+}
+
+export type PasswordStrength = [number, IValidatorError[]]
+
 // Neopass configuration interface.
 export interface INeoConfig {
   useBuiltinGenerators?: boolean
   useBuiltinValidators?: boolean
   plugins?: IPlugin[]
   validators?: PluginInfo[]
+  evaluators?: IEvaluator[]
 }
 
 // Information about a registered generator.
@@ -118,8 +126,57 @@ neopass.generate = function generate(len: number, generator: PluginInfo): string
 /**
  *
  */
-neopass.evaluate = function evaluate(password: string): any {
-  return null
+neopass.evaluate = function evaluate(password: string, evaluators?: IEvaluator[]): PasswordStrength {
+  evaluators = evaluators || _configuration.evaluators
+
+  if (!Array.isArray(evaluators) || evaluators.length === 0) {
+    throw new Error('evaluate not configured correctly')
+  }
+
+  // Get the password info object.
+  const info = passwordInfo(password)
+
+  // Start with ideal strength and reduce for any validation error.
+  let strength = 1
+
+  // Get a list of warnings and do other work.
+  const warnings = evaluators.reduce((list, evaluator) => {
+    const { weight, validators } = evaluator
+
+    // Process each validator and apply errors to the strength.
+    validators.forEach((validator) => {
+      const _validator = _pluginResolver.resolve<IValidator>('validator', validator)
+      const errors = runValidator(_validator, info)
+
+      // For every error, reduce strength.
+      errors.forEach((error) => {
+        if (typeof error.score === 'number') {
+          // If the error has a score, multiply strength by the score.
+          strength *= Math.min(error.score, 1.0)
+        } else {
+          // The validator doesn't provide a score. Use weight fallback.
+          if (typeof weight !== 'number') {
+            throw new Error('no fallback weight specified in configuration')
+          }
+
+          // Check that weight is in range.
+          if (weight > 1.0 || weight < 0.0) {
+            throw new Error('wieght must be in the range [0, 1]')
+          }
+
+          // Multiply the strength by the weight.
+          strength *= weight
+        }
+      })
+
+      // strength = strength * weight ** errors.length
+      list.push.apply(list, errors)
+    })
+
+    return list
+  }, [] as IValidatorError[])
+
+  return [strength, warnings]
 }
 
 /**
