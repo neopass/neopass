@@ -164,6 +164,23 @@ neopass.generators = function generators(): IGeneratorInfo[] {
  *
  */
 
+neopass.validators = {
+  classic: [
+    'length:min=10,max=72',
+    'classes:and=ul,or=ds',
+  ],
+  neo: [
+    'entropy:64',
+    'shannon:32',
+    'sequence:3',
+    'run:2',
+  ]
+}
+
+/**
+ *
+ */
+
 neopass.middleware = {
   password: function (template?: string) {
     return (req: any, res: any) => {
