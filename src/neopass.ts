@@ -61,6 +61,11 @@ const _builtinValidators = [
 ]
 
 /**
+ * Global configuration object.
+ */
+let _configuration: INeoConfig
+
+/**
  *
  */
 function _registerPlugins(plugins: IPlugin[]) {
@@ -73,19 +78,14 @@ function _registerPlugins(plugins: IPlugin[]) {
 function _init(config: INeoConfig) {
   const plugins: IPlugin[] = config.plugins || []
   _registerPlugins(plugins)
+  return config
 }
-
-/**
- * Only initialize once.
- */
-let _initialized = false
 
 /**
  * Neopass instance.
  */
 export function neopass(config?: INeoConfig|null) {
-
-  if (!_initialized) {
+  if (!_configuration) {
     const _config = {..._defaultConfig, ...config}
 
     if (_config.useBuiltinGenerators) {
@@ -96,9 +96,7 @@ export function neopass(config?: INeoConfig|null) {
       _registerPlugins(_builtinValidators.map(V => new V()))
     }
 
-    _init(_config)
-
-    _initialized = true
+    _configuration = _init(_config)
   }
 
   return neopass
