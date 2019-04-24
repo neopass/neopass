@@ -4,23 +4,7 @@ import { neopass } from './neopass'
 export default neopass
 
 neopass({
-  plugins: [
-    // new LengthValidator()
-  ]
-})
-
-const ms = profile(() => {
-
-  // console.log(neopass)
-  // Abcd1$laaa7zyxw
-  const result = neopass.validate('LosAangeles2019!', [
-    // 'length:min=10:max=20',
-    // 'depth:62',
-    // 'entropy:64',
-    // 'shannon:32',
-    // 'sequence:3',
-    // 'classes:and=ul,or=ds',
-    // 'run:2',
+  validators: [
     {
       plugin: 'topology',
       options: {
@@ -30,8 +14,50 @@ const ms = profile(() => {
         patterns: [/^u+l+u+l+d+s+$/],
       },
     },
-  ])
+  ],
+  plugins: [
+    // new LengthValidator()
+  ],
+  evaluators: [
+    {
+      weight: 0.9,
+      validators: [
+        'depth:95',
+      ],
+    },
+    {
+      weight: 0.5,
+      validators: [
+        'shannon: 64',
+      ]
+    },
+  ],
+})
 
+const ms = profile(() => {
+
+  // // console.log(neopass)
+  // // Abcd1$laaa7zyxw
+  // const result = neopass.validate('LosAangeles2019!', [
+  //   // 'length:min=10:max=20',
+  //   // 'depth:62',
+  //   // 'entropy:64',
+  //   // 'shannon:32',
+  //   // 'sequence:3',
+  //   // 'classes:and=ul,or=ds',
+  //   // 'run:2',
+  //   /* {
+  //     plugin: 'topology',
+  //     options: {
+  //       // shannon: 64,
+  //       entropy: 96,
+  //       standard: true,
+  //       patterns: [/^u+l+u+l+d+s+$/],
+  //     },
+  //   }, */
+  // ])
+
+  const result = neopass.evaluate('abcdefghijA1$34')
   console.log(result)
 })
 
