@@ -61,7 +61,7 @@ function _classList(topoChars: TopoChar[]) {
 /**
  * Convert a topology string into a TopoChar[]
  */
-function _toTopoChars(topoStr: string): TopoChar[] {
+export function toTopoChars(topoStr: string): TopoChar[] {
   const topo = Array.from(topoStr)
     .filter(t => {
       if (!_topoChars.has(<TopoChar>t)) {
@@ -121,7 +121,7 @@ export function classes(topoChars: TopoChar[]): IClassMap
  */
 export function classes(value: string|TopoChar[]): IClassMap {
   if (typeof value === 'string') {
-    const topo = _toTopoChars(value)
+    const topo = toTopoChars(value)
     return _classes(topo)
   }
   return _classes(value)
@@ -140,7 +140,7 @@ export function classList(topoChars: TopoChar[]): CharSet
  */
 export function classList(value: string|TopoChar[]): CharSet {
   if (typeof value === 'string') {
-    const topo = _toTopoChars(value)
+    const topo = toTopoChars(value)
     return _classList(topo)
   }
   return _classList(value)
