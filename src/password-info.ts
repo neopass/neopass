@@ -3,6 +3,7 @@ import { entropy } from './utils/entropy'
 import { shannon } from './utils/shannon'
 
 export interface IPasswordInfo {
+  readonly password: string
   readonly length: number
   readonly depth: number
   readonly topology: string
@@ -27,6 +28,7 @@ export function passwordInfo(password: string): IPasswordInfo {
   const topology = _topology(password).join('')
 
   const info = {
+    password,
     depth,
     topology,
     length: password.length,
