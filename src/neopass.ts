@@ -124,12 +124,12 @@ neopass.validate = function validate(
   password: string,
   validators: (string|IPluginInfo)[]
 ): IValidatorError[] {
-  // Get the password info object.
-  const info = passwordInfo(password)
-
   // Map supplied validator references to plugins.
   const _validators = validators.map(validator =>
     _pluginResolver.resolve<IValidator>('validator', validator))
+
+  // Get the password info object.
+  const info = passwordInfo(password)
 
   /**
    * Get a list of validation errors by executing all
