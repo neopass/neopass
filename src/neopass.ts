@@ -136,7 +136,7 @@ neopass.validate = function validate(
    * validators against the password and password info.
    */
   const errors = _validators.reduce((errList, validator) => {
-    const _errors = runValidator(validator, password, info)
+    const _errors = runValidator(validator, info)
     return errList.push.apply(errList, _errors) && errList || errList
   }, [] as IValidatorError[])
 
