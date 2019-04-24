@@ -37,6 +37,31 @@ export class NeoCore {
   public validate: (password: string,validators?: PluginInfo[]) => IValidatorError[]
   public generators: () => IGeneratorInfo[]
 
+  private _applyEvalErrors(errors: IValidatorError[], strength: number, weight?: number): number {
+    // For every error, reduce strength.
+    errors.forEach((error) => {
+      if (typeof error.score === 'number') {
+        // If the error has a score, multiply strength by the score.
+        strength *= Math.min(error.score, 1.0)
+      } else {
+        // The validator doesn't provide a score. Use weight fallback.
+        if (typeof weight !== 'number') {
+          throw new Error('no fallback weight specified in configuration')
+        }
+
+        // Check that weight is in range.
+        if (weight > 1.0 || weight < 0.0) {
+          throw new Error('wieght must be in the range [0, 1]')
+        }
+
+        // Multiply the strength by the weight.
+        strength *= weight
+      }
+    })
+
+    return strength
+  }
+
   constructor(config: INeoConfig, store: PluginStore, resolver: PluginResolver) {
     /**
      *
@@ -63,40 +88,22 @@ export class NeoCore {
       let strength = 1
 
       // Get a list of warnings and do other work.
-      const warnings = evaluators.reduce((list, evaluator) => {
+      const warnings = evaluators.reduce((warningList, evaluator) => {
         const { weight, validators } = evaluator
 
         // Process each validator and apply errors to the strength.
         validators.forEach((validator) => {
+          // Get the validator plugin.
           const _validator = resolver.resolve<IValidator>('validator', validator)
+          // Run the validator.
           const errors = runValidator(_validator, info)
-
-          // For every error, reduce strength.
-          errors.forEach((error) => {
-            if (typeof error.score === 'number') {
-              // If the error has a score, multiply strength by the score.
-              strength *= Math.min(error.score, 1.0)
-            } else {
-              // The validator doesn't provide a score. Use weight fallback.
-              if (typeof weight !== 'number') {
-                throw new Error('no fallback weight specified in configuration')
-              }
-
-              // Check that weight is in range.
-              if (weight > 1.0 || weight < 0.0) {
-                throw new Error('wieght must be in the range [0, 1]')
-              }
-
-              // Multiply the strength by the weight.
-              strength *= weight
-            }
-          })
-
-          // strength = strength * weight ** errors.length
-          list.push.apply(list, errors)
+          // Update strength.
+          strength = this._applyEvalErrors(errors, strength, weight)
+          // Add errors to the list.
+          warningList.push.apply(warningList, errors)
         })
 
-        return list
+        return warningList
       }, [] as IValidatorError[])
 
       return [strength, warnings]
