@@ -31,12 +31,19 @@ export interface IGeneratorInfo {
   title: string
 }
 
+/**
+ * The core instance for encapsulating validation, encapsulation and
+ * miscellaneous logic.
+ */
 export class NeoCore {
   public generate: (len: number, generator: PluginInfo) => string
   public evaluate: (password: string, evaluators?: IEvaluator[]) => PasswordStrength
-  public validate: (password: string,validators?: PluginInfo[]) => IValidatorError[]
+  public validate: (password: string, validators?: PluginInfo[]) => IValidatorError[]
   public generators: () => IGeneratorInfo[]
 
+  /**
+   * Update the given strength by applying validation error logic.
+   */
   private _applyEvalErrors(errors: IValidatorError[], strength: number, weight?: number): number {
     // For every error, reduce strength.
     errors.forEach((error) => {
