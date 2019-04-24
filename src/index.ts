@@ -29,7 +29,7 @@ neopass({
       weight: 0.5,
       validators: [
         'shannon: 64',
-      ]
+      ],
     },
   ],
 })
@@ -56,6 +56,7 @@ const ms = profile(() => {
   //     },
   //   }, */
   // ])
+  // console.log(result)
 
   const result = neopass.evaluate('abcdefghijA1$34')
   console.log(result)
