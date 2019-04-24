@@ -33,7 +33,6 @@ export class ClassesValidator implements IPlugin<IValidator> {
     }
 
     const name = this.name
-    // const message = this.message
 
     const validator: IValidator = {
       request: ['classes'],
@@ -49,8 +48,8 @@ export class ClassesValidator implements IPlugin<IValidator> {
 
             if (!re.test(classes)) {
               // const message = <string>topoMap.get(c)
-              const message = `missing ${topoNames.get(c)} character`
-              errors.push({ name, msg: message, meta: c })
+              const msg = `missing ${topoNames.get(c)} character`
+              errors.push({ name, msg, meta: c })
             }
           })
         }

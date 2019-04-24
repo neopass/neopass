@@ -22,7 +22,7 @@ export class ShannonValidator implements IPlugin<IValidator> {
     }
 
     const name = this.name
-    const message = this.message
+    const msg = this.message
 
     const validator: IValidator = {
       request: ['length', 'shannon'],
@@ -30,7 +30,7 @@ export class ShannonValidator implements IPlugin<IValidator> {
         const bits = length * shannon
         if (bits < min) {
           const score = bits / min
-          return [{ name, msg: message, score }]
+          return [{ name, msg, score }]
         }
         return []
       }

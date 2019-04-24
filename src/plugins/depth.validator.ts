@@ -22,14 +22,14 @@ export class DepthValidator implements IPlugin<IValidator> {
     }
 
     const name = this.name
-    const message = this.message
+    const msg = this.message
 
     const validator: IValidator = {
       request: ['depth'],
       validate(depth: number) {
         if (depth < min) {
           const score = depth / min
-          return [{ name, msg: message, score }]
+          return [{ name, msg, score }]
         }
         return []
       }
