@@ -17,6 +17,7 @@ import { ShannonValidator } from './plugins/shannon.validator'
 import { ClassesValidator } from './plugins/classes-validator'
 import { SequenceValidator } from './plugins/sequence.validator'
 import { RunValidator } from './plugins/run.validator'
+import { TopologyValidator } from './plugins/topology.validator'
 
 // Neopass configuration interface.
 export interface INeoConfig {
@@ -58,6 +59,7 @@ const _builtinValidators = [
   ClassesValidator,
   SequenceValidator,
   RunValidator,
+  TopologyValidator,
 ]
 
 /**
@@ -161,7 +163,6 @@ neopass.generators = function generators(): IGeneratorInfo[] {
 /**
  *
  */
-
 neopass.validators = {
   classic: [
     'length:min=10,max=72',
@@ -178,7 +179,6 @@ neopass.validators = {
 /**
  *
  */
-
 neopass.middleware = {
   password: function (template?: string) {
     return (req: any, res: any) => {
