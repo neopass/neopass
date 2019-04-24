@@ -19,6 +19,8 @@ import { SequenceValidator } from './plugins/sequence.validator'
 import { RunValidator } from './plugins/run.validator'
 import { TopologyValidator } from './plugins/topology.validator'
 
+type PluginInfo = string|IPluginInfo
+
 // Neopass configuration interface.
 export interface INeoConfig {
   useBuiltinGenerators?: boolean
@@ -107,7 +109,7 @@ export function neopass(config?: INeoConfig|null) {
 /**
  * Generate a password using the given generator reference.
  */
-neopass.generate = function generate(len: number, generator: string|IPluginInfo): string {
+neopass.generate = function generate(len: number, generator: PluginInfo): string {
   const _generate = _pluginResolver.resolve<Generator>('generator', generator)
   return _generate(len)
 }
@@ -124,7 +126,7 @@ neopass.evaluate = function evaluate(password: string): any {
  */
 neopass.validate = function validate(
   password: string,
-  validators: (string|IPluginInfo)[]
+  validators: PluginInfo[]
 ): IValidatorError[] {
   // Map supplied validator references to plugins.
   const _validators = validators.map(validator =>
