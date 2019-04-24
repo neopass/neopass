@@ -26,6 +26,7 @@ export interface INeoConfig {
   useBuiltinGenerators?: boolean
   useBuiltinValidators?: boolean
   plugins?: IPlugin[]
+  validators?: PluginInfo[]
 }
 
 // Information about a registered generator.
@@ -126,8 +127,17 @@ neopass.evaluate = function evaluate(password: string): any {
  */
 neopass.validate = function validate(
   password: string,
-  validators: PluginInfo[]
+  validators?: PluginInfo[]
 ): IValidatorError[] {
+    // Get validators from config if not given in arg list.
+    validators = Array.isArray(validators) && validators.length > 0
+      ? validators : _configuration.validators
+
+  // Check that we have a non-zero-length array.
+  if (!Array.isArray(validators) || validators.length === 0) {
+    throw new Error('no validators specified')
+  }
+
   // Map supplied validator references to plugins.
   const _validators = validators.map(validator =>
     _pluginResolver.resolve<IValidator>('validator', validator))
