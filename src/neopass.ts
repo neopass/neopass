@@ -30,12 +30,6 @@ const _defaultConfig: INeoConfig = {
   useBuiltinValidators: true,
 }
 
-// Store registered plugins.
-const _pluginStore = new PluginStore(['validator', 'generator'])
-
-// Resolve strings or objects to plugins.
-const _pluginResolver = new PluginResolver(_pluginStore)
-
 // Built-in generators.
 const _builtinGenerators = [
   RandomGenerator,
@@ -55,11 +49,6 @@ const _builtinValidators = [
 ]
 
 /**
- * Global configuration object.
- */
-let _configuration: INeoConfig
-
-/**
  * Core class for neo functionality.
  */
 let _core: NeoCore
@@ -67,16 +56,16 @@ let _core: NeoCore
 /**
  *
  */
-function _registerPlugins(plugins: IPlugin[]) {
-  plugins.forEach(p => _pluginStore.register(p))
+function _registerPlugins(store: PluginStore, plugins: IPlugin[]) {
+  plugins.forEach(p => store.register(p))
 }
 
 /**
  * Initialize neopass.
  */
-function _init(config: INeoConfig) {
+function _init(store: PluginStore, config: INeoConfig) {
   const plugins: IPlugin[] = config.plugins || []
-  _registerPlugins(plugins)
+  _registerPlugins(store, plugins)
   return config
 }
 
@@ -84,20 +73,28 @@ function _init(config: INeoConfig) {
  * Neopass instance.
  */
 export function neopass(config?: INeoConfig|null) {
-  if (!_configuration) {
-    const _config = {..._defaultConfig, ...config}
+  if (!_core) {
+    config = {..._defaultConfig, ...config}
 
-    if (_config.useBuiltinGenerators) {
-      _registerPlugins(_builtinGenerators.map(G => new G()))
+    // Store registered plugins.
+    const _pluginStore = new PluginStore(['validator', 'generator'])
+
+    // Resolve strings or objects to plugins.
+    const _pluginResolver = new PluginResolver(_pluginStore)
+
+    if (config.useBuiltinGenerators) {
+      _registerPlugins(_pluginStore, _builtinGenerators.map(G => new G()))
     }
 
-    if (_config.useBuiltinValidators) {
-      _registerPlugins(_builtinValidators.map(V => new V()))
+    if (config.useBuiltinValidators) {
+      _registerPlugins(_pluginStore, _builtinValidators.map(V => new V()))
     }
 
-    _configuration = _init(_config)
+    // Give init an opportunity to modify the config.
+    let _config = _init(_pluginStore, config)
 
-    _core = new NeoCore(_configuration, _pluginStore, _pluginResolver)
+    // Create the neopass core instance.
+    _core = new NeoCore(_config, _pluginStore, _pluginResolver)
   }
 
   return neopass
