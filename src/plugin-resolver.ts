@@ -15,11 +15,11 @@ export class PluginResolver {
       if (typeof value === 'string') {
         const info = parsePluginRef(value)
         plugin = info.plugin
-        args = info.args
+        args = info.args || []
         options = info.options || {}
       } else {
         plugin = value.plugin
-        args = value.args
+        args = value.args || []
         options = value.options || {}
       }
 
