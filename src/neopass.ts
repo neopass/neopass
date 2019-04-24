@@ -6,10 +6,15 @@ import { IGenerator, Generator } from './generator'
 import { IPluginInfo } from './plugin-info'
 import { passwordInfo } from './password-info'
 import { runValidator } from './helpers/run-validator'
-import { LengthValidator } from './plugins/length.validator'
+
+// Plugins
 import { RandomGenerator } from './plugins/random.generator'
 import { LettersNumbersGenerator } from './plugins/letters-numbers.generator'
-import passTemplate from './views/password-template.html'
+import { LengthValidator } from './plugins/length.validator'
+import { DepthValidator } from './plugins/depth.validator'
+import { EntropyValidator } from './plugins/entropy.validator'
+import { ShannonValidator } from './plugins/shannon.validator'
+import { ClassesValidator } from './plugins/classes-validator'
 
 // Neopass configuration interface.
 export interface INeoConfig {
@@ -44,7 +49,11 @@ const _builtinGenerators = [
 
 // Built-in validators.
 const _builtinValidators = [
-  new LengthValidator()
+  new LengthValidator(),
+  new DepthValidator(),
+  new EntropyValidator(),
+  new ShannonValidator(),
+  new ClassesValidator(),
 ]
 
 /**
