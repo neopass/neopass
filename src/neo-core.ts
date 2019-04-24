@@ -32,7 +32,7 @@ export interface IGeneratorInfo {
 }
 
 export class NeoCore {
-  public generate: (len: number, generator: IPluginInfo) => string
+  public generate: (len: number, generator: PluginInfo) => string
   public evaluate: (password: string, evaluators?: IEvaluator[]) => PasswordStrength
   public validate: (password: string,validators?: PluginInfo[]) => IValidatorError[]
   public generators: () => IGeneratorInfo[]
