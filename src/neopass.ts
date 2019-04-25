@@ -8,8 +8,8 @@ import {
   INeoConfig,
   PluginInfo,
   IEvaluator,
-  PasswordStrength,
-  IGeneratorInfo
+  IGeneratorInfo,
+  IEvaluatorInfo,
 } from './neo-core'
 
 import {
@@ -113,7 +113,7 @@ neopass.generate = generate
 /**
  *
  */
-function evaluate(password: string, evaluators?: IEvaluator[]): PasswordStrength {
+function evaluate(password: string, evaluators?: IEvaluator[]): IEvaluatorInfo {
   return _core.evaluate(password, evaluators)
 }
 

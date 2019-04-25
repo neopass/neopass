@@ -7,7 +7,10 @@ import { IPlugin } from './plugin'
 import { passwordInfo } from './password-info'
 import { runValidator } from './helpers/run-validator'
 
-export type PasswordStrength = [number, IValidatorError[]]
+export interface IEvaluatorInfo {
+  strength: number
+  warnings: IValidatorError[]
+}
 
 export type PluginInfo = string|IPluginInfo
 
@@ -37,7 +40,7 @@ export interface IGeneratorInfo {
  */
 export class NeoCore {
   public generate: (len: number, generator: PluginInfo) => string
-  public evaluate: (password: string, evaluators?: IEvaluator[]) => PasswordStrength
+  public evaluate: (password: string, evaluators?: IEvaluator[]) => IEvaluatorInfo
   public validate: (password: string, validators?: PluginInfo[]) => IValidatorError[]
   public generators: () => IGeneratorInfo[]
 
@@ -81,7 +84,7 @@ export class NeoCore {
     /**
      *
      */
-    this.evaluate = function evaluate(password: string, evaluators?: IEvaluator[]): PasswordStrength {
+    this.evaluate = function evaluate(password: string, evaluators?: IEvaluator[]): IEvaluatorInfo {
       evaluators = evaluators || config.evaluators
 
       if (!Array.isArray(evaluators) || evaluators.length === 0) {
@@ -89,7 +92,7 @@ export class NeoCore {
       }
 
       // Get the password info object.
-      const info = passwordInfo(password)
+      const pInfo = passwordInfo(password)
 
       // Start with ideal strength and reduce for any validation error.
       let strength = 1
@@ -103,7 +106,7 @@ export class NeoCore {
           // Get the validator plugin.
           const _validator = resolver.resolve<IValidator>('validator', validator)
           // Run the validator.
-          const errors = runValidator(_validator, info)
+          const errors = runValidator(_validator, pInfo)
           // Update strength.
           strength = this._applyEvalErrors(errors, strength, weight)
           // Add errors to the list.
@@ -113,7 +116,12 @@ export class NeoCore {
         return warningList
       }, [] as IValidatorError[])
 
-      return [strength, warnings]
+      const eInfo = {
+        strength,
+        warnings,
+      }
+
+      return eInfo
     }
 
     /**
