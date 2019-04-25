@@ -1,6 +1,7 @@
 
 /**
  * Return a freqency map of the given iterable, e.g.,
+ *
  * `frequencies('aaabbc')` => `Map { 'a' => 3, 'b' => 2, 'c' => 1 }`
  *
  * @param iterable
