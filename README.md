@@ -57,7 +57,7 @@ Output:
 ]
 ```
 
-### Validation Chain
+### The Validation Chain
 
 The validation chain reports errors from each configured validator.
 
