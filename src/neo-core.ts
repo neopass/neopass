@@ -3,46 +3,15 @@ import { PluginResolver } from './plugin-resolver'
 import { PluginInfo } from './plugin-info'
 import { IGenerator, Generator } from './generator'
 import { IValidatorError, IValidator } from './validator'
-import { IPlugin } from './plugin'
-import { runValidator } from './helpers/run-validator'
 import { classDepth, topology as _topology } from './topology'
+import { IEvaluator } from './evaluator'
+import { IEvaluatorInfo } from './evaluator-info'
+import { IGeneratorInfo } from './generator-info'
+import { INeoConfig } from './neo-config'
+import { IPasswordInfo } from './password-info'
+import { runValidator } from './helpers/run-validator'
 import { entropy } from './utils/entropy'
 import { shannon } from './utils/shannon'
-
-export interface IEvaluatorInfo {
-  strength: number
-  warnings: IValidatorError[]
-}
-
-export interface IEvaluator {
-  weight?: number
-  validators: PluginInfo[]
-}
-
-// Neopass configuration interface.
-export interface INeoConfig {
-  useBuiltinGenerators?: boolean
-  useBuiltinValidators?: boolean
-  plugins?: IPlugin[]
-  validators?: PluginInfo[]
-  evaluators?: IEvaluator[]
-}
-
-// Information about a registered generator.
-export interface IGeneratorInfo {
-  name: string
-  title: string
-}
-
-export interface IPasswordInfo {
-  readonly password: string
-  readonly length: number
-  readonly depth: number
-  readonly topology: string
-  readonly classes: string
-  readonly entropy: number
-  readonly shannon: number
-}
 
 /**
  * Reduce a topology to its constituent classes.
@@ -55,7 +24,7 @@ function _reduceClasses(topology: string): string {
 /**
  * Generate a password info object.
  */
-export function _passwordInfo(password: string): IPasswordInfo {
+function _passwordInfo(password: string): IPasswordInfo {
   const depth = classDepth(password)
   const topology = _topology(password).join('')
 

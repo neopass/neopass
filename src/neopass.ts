@@ -1,16 +1,13 @@
+import { NeoCore } from './neo-core'
 import { IPlugin } from './plugin'
 import { PluginStore } from './plugin-store'
 import { PluginResolver } from './plugin-resolver'
 import { IValidatorError } from './validator'
 import { PluginInfo } from './plugin-info'
-
-import {
-  NeoCore,
-  INeoConfig,
-  IEvaluator,
-  IGeneratorInfo,
-  IEvaluatorInfo,
-} from './neo-core'
+import { INeoConfig } from './neo-config'
+import { IEvaluator } from './evaluator'
+import { IEvaluatorInfo } from './evaluator-info'
+import { IGeneratorInfo } from './generator-info'
 
 import {
   LettersNumbersGenerator,
