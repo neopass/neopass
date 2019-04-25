@@ -2,16 +2,24 @@ import { PluginStore } from './plugin-store'
 import { PluginResolver } from './plugin-resolver'
 import { PluginInfo } from './plugin-info'
 import { IGenerator, Generator } from './generator'
-import { IValidatorError, IValidator } from './validator'
+import { IValidatorError, IValidator, RequestType } from './validator'
 import { classDepth, topology as _topology } from './topology'
 import { IEvaluator } from './evaluator'
 import { IEvaluatorInfo } from './evaluator-info'
 import { IGeneratorInfo } from './generator-info'
 import { INeoConfig } from './neo-config'
-import { IPasswordInfo } from './password-info'
-import { runValidator } from './helpers/run-validator'
 import { entropy } from './utils/entropy'
 import { shannon } from './utils/shannon'
+
+interface IPasswordInfo {
+  readonly password: string
+  readonly length: number
+  readonly depth: number
+  readonly topology: string
+  readonly classes: string
+  readonly entropy: number
+  readonly shannon: number
+}
 
 /**
  * Reduce a topology to its constituent classes.
@@ -39,6 +47,30 @@ function _passwordInfo(password: string): IPasswordInfo {
   }
 
   return info
+}
+
+/**
+ * Run a validator against a password/info and return any errors
+ * it generates.
+ */
+function _runValidator(
+  validator: IValidator,
+  info: IPasswordInfo,
+): IValidatorError[] {
+  // Create a set of the requested stats items.
+  const request = new Set(validator.request || [])
+
+  // The arguments to be passed to the validation handler.
+  const args: any[] = []
+
+  // Map request strings to their corresponding stats items.
+  const _requests = [...request].map(r => info[<RequestType>r])
+
+  // Add the request variables to the arguments.
+  args.push.apply(args, _requests)
+
+  // Run validation.
+  return validator.validate(...args)
 }
 
 /**
@@ -128,7 +160,7 @@ export class NeoCore {
           // Get the validator plugin.
           const _validator = resolver.resolve<IValidator>('validator', validator)
           // Run the validator.
-          const errors = runValidator(_validator, pInfo)
+          const errors = _runValidator(_validator, pInfo)
           // Update strength.
           strength = _applyEvalErrors(errors, strength, weight)
           // Add errors to the list.
@@ -171,7 +203,7 @@ export class NeoCore {
        * validators against the password and password info.
        */
       const errors = _validators.reduce((errList, validator) => {
-        const _errors = runValidator(validator, info)
+        const _errors = _runValidator(validator, info)
         return errList.push.apply(errList, _errors) && errList || errList
       }, [] as IValidatorError[])
 
