@@ -1,5 +1,5 @@
 
-import { IGenerator, Generator } from '../generator'
+import { Generate, GeneratorPlugin } from '../generator'
 import { generate as _generate } from '../utils/generate'
 import { pullFromClass } from '../utils/pull'
 import { classes } from '../topology'
@@ -7,15 +7,17 @@ import { PluginType } from '../plugin'
 
 const { u, l, d, s } = classes('ulds')
 
-export class RandomGenerator implements IGenerator {
-  public fn: (options: any) => Generator
+export class RandomGenerator extends GeneratorPlugin {
+  public fn: (options: any) => Generate
 
   constructor() {
     // Pull the space character from the 'special' class.
     const special = pullFromClass(s, 0x20)
     const _classes = [u, l, d, special]
 
-    this.fn = function fn(options: any): Generator {
+    super()
+
+    this.fn = function fn(options: any): Generate {
       return function generate(len: number) {
         return _generate(len, _classes)
       }
