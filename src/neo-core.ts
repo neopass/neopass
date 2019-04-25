@@ -4,8 +4,10 @@ import { PluginInfo } from './plugin-info'
 import { IGenerator, Generator } from './generator'
 import { IValidatorError, IValidator } from './validator'
 import { IPlugin } from './plugin'
-import { passwordInfo } from './password-info'
 import { runValidator } from './helpers/run-validator'
+import { classDepth, topology as _topology } from './topology'
+import { entropy } from './utils/entropy'
+import { shannon } from './utils/shannon'
 
 export interface IEvaluatorInfo {
   strength: number
@@ -30,6 +32,44 @@ export interface INeoConfig {
 export interface IGeneratorInfo {
   name: string
   title: string
+}
+
+export interface IPasswordInfo {
+  readonly password: string
+  readonly length: number
+  readonly depth: number
+  readonly topology: string
+  readonly classes: string
+  readonly entropy: number
+  readonly shannon: number
+}
+
+/**
+ * Reduce a topology to its constituent classes.
+ */
+function _reduceClasses(topology: string): string {
+  const topoSet = new Set([...topology])
+  return [...topoSet].sort().join('')
+}
+
+/**
+ * Generate a password info object.
+ */
+export function _passwordInfo(password: string): IPasswordInfo {
+  const depth = classDepth(password)
+  const topology = _topology(password).join('')
+
+  const info = {
+    password,
+    depth,
+    topology,
+    length: password.length,
+    classes: _reduceClasses(topology),
+    entropy: entropy(depth),
+    shannon: shannon(password)
+  }
+
+  return info
 }
 
 /**
@@ -105,7 +145,7 @@ export class NeoCore {
       }
 
       // Get the password info object.
-      const pInfo = passwordInfo(password)
+      const pInfo = _passwordInfo(password)
 
       // Start with ideal strength and reduce for any validation error.
       let strength = 1
@@ -155,7 +195,7 @@ export class NeoCore {
         resolver.resolve<IValidator>('validator', validator))
 
       // Get the password info object.
-      const info = passwordInfo(password)
+      const info = _passwordInfo(password)
 
       /**
        * Get a list of validation errors by executing all

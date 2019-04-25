@@ -1,4 +1,4 @@
-import { IPasswordInfo } from './password-info'
+import { IPasswordInfo } from './neo-core'
 
 export type RequestType = keyof IPasswordInfo
 

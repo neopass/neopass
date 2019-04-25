@@ -1,5 +1,5 @@
 import { IValidator, RequestType, IValidatorError } from '../validator'
-import { IPasswordInfo } from '../password-info'
+import { IPasswordInfo } from '../neo-core'
 
 /**
  * Run a validator against a password/info and return any errors
