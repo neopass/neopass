@@ -1,7 +1,7 @@
 # neopass
 A password validation and generation tool kit
 
-"The only good password is a random password of sufficient entropy." - Unknown
+"The only good password is a random password of sufficient entropy." - _unknown_
 
 ## Under development
 
@@ -31,7 +31,7 @@ Output:
 
 ```
 random: |6Tc/]>4KY:5
-letters/numbers: WIW71lZEuUsN
+letters-numbers: WIW71lZEuUsN
 ```
 
 #### Registered Generators
@@ -203,13 +203,13 @@ neopass(config)
 
 ```typescript
 const pass = neopass.generate(12, 'letters-numbers')
-console.log('pass:', pass)
+console.log('password:', pass)
 ```
 
 Output:
 
 ```
-pass: v2mQsx6SKZ3s
+password: v2mQsx6SKZ3s
 ```
 
 ***Validate:***
