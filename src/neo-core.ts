@@ -35,6 +35,34 @@ export interface IGeneratorInfo {
 }
 
 /**
+ * Update the given strength by applying validation error logic.
+ */
+function _applyEvalErrors(errors: IValidatorError[], strength: number, weight?: number): number {
+  // For every error, reduce strength.
+  errors.forEach((error) => {
+    if (typeof error.score === 'number') {
+      // If the error has a score, multiply strength by the score.
+      strength *= Math.min(error.score, 1.0)
+    } else {
+      // The validator doesn't provide a score. Use weight fallback.
+      if (typeof weight !== 'number') {
+        throw new Error('no fallback weight specified in configuration')
+      }
+
+      // Check that weight is in range.
+      if (weight > 1.0 || weight < 0.0) {
+        throw new Error('wieght must be in the range [0, 1]')
+      }
+
+      // Multiply the strength by the weight.
+      strength *= weight
+    }
+  })
+
+  return strength
+}
+
+/**
  * The core instance for encapsulating validation, evaluation and
  * miscellaneous logic.
  */
@@ -43,34 +71,6 @@ export class NeoCore {
   public evaluate: (password: string, evaluators?: IEvaluator[]) => IEvaluatorInfo
   public validate: (password: string, validators?: PluginInfo[]) => IValidatorError[]
   public generators: () => IGeneratorInfo[]
-
-  /**
-   * Update the given strength by applying validation error logic.
-   */
-  private _applyEvalErrors(errors: IValidatorError[], strength: number, weight?: number): number {
-    // For every error, reduce strength.
-    errors.forEach((error) => {
-      if (typeof error.score === 'number') {
-        // If the error has a score, multiply strength by the score.
-        strength *= Math.min(error.score, 1.0)
-      } else {
-        // The validator doesn't provide a score. Use weight fallback.
-        if (typeof weight !== 'number') {
-          throw new Error('no fallback weight specified in configuration')
-        }
-
-        // Check that weight is in range.
-        if (weight > 1.0 || weight < 0.0) {
-          throw new Error('wieght must be in the range [0, 1]')
-        }
-
-        // Multiply the strength by the weight.
-        strength *= weight
-      }
-    })
-
-    return strength
-  }
 
   constructor(config: INeoConfig, store: PluginStore, resolver: PluginResolver) {
     /**
@@ -108,7 +108,7 @@ export class NeoCore {
           // Run the validator.
           const errors = runValidator(_validator, pInfo)
           // Update strength.
-          strength = this._applyEvalErrors(errors, strength, weight)
+          strength = _applyEvalErrors(errors, strength, weight)
           // Add errors to the list.
           warningList.push.apply(warningList, errors)
         })
