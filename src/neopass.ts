@@ -105,8 +105,8 @@ export function neopass(config?: INeoConfig|null) {
 /**
  * Generate a password using the given generator reference.
  */
-function generate(len: number, generator: PluginInfo): string {
-  return _core.generate(len, generator)
+function generate(len: number, generator: PluginInfo, retry?: number): string {
+  return _core.generate(len, generator, retry)
 }
 
 neopass.generate = generate

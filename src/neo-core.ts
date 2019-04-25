@@ -60,7 +60,7 @@ function _applyEvalErrors(errors: IValidatorError[], strength: number, weight?: 
  * miscellaneous logic.
  */
 export class NeoCore {
-  public generate: (len: number, generator: PluginInfo) => string
+  public generate: (len: number, generator: PluginInfo, validate?: number) => string
   public evaluate: (password: string, evaluators?: IEvaluator[]) => IEvaluatorInfo
   public validate: (password: string, validators?: PluginInfo[]) => IValidatorError[]
   public generators: () => IGeneratorInfo[]
@@ -69,9 +69,29 @@ export class NeoCore {
     /**
      *
      */
-    this.generate = function generate(len: number, generator: PluginInfo): string {
+    this.generate = function generate(len: number, generator: PluginInfo, retry?: number): string {
       const _generate = resolver.resolve<Generator>('generator', generator)
-      return _generate(len)
+
+      // Retry generation to pass validation.
+      if (typeof retry === 'number') {
+        let count = 0
+
+        while(true) {
+          if (++count > retry) {
+            throw new Error('could not generate a password that passed configured validators')
+          }
+
+          const pass = _generate(len)
+          const errors = this.validate(pass)
+
+          if (errors.length === 0) {
+            return pass
+          }
+        }
+
+      } else {
+        return _generate(len)
+      }
     }
 
     /**
