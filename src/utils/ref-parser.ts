@@ -2,17 +2,15 @@ import regexEach from 'regex-each'
 import { parseJson } from './ parse-json'
 import { IPluginInfo } from '../plugin-info'
 
-// const tDecimal = String.raw`(?:\d+(?:\.\d*)?|\.\d+)`
-// const tSign = String.raw`(?:\+|-)`
-// const tNumber = String.raw`${tSign}?${tDecimal}(?:[eE]${tSign}?\d+)?`
-// const tChar = String.raw`[a-z0-9_-]`
 const tChar = String.raw`[^ ,:=]`
 const tPlugin = String.raw`${tChar}+(?= *:|$)`
-// const tValue = String.raw`(?:${tNumber}|${tChar}+)`
 const tKeyVal = String.raw`${tChar}+=${tChar}+`
 const tParser = String.raw`^(${tPlugin})| *(?:,|:) *(${tKeyVal})| *(?:,|:) *(${tChar}+)`
 const parser = new RegExp(tParser, 'yi')
 
+/**
+ * Parse a plugin reference into name, options, and arguments.
+ */
 export function parsePluginRef(str: string): IPluginInfo {
   const info: any = { plugin: '', args: [], options: {} }
 
