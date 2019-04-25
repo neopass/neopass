@@ -12,17 +12,18 @@ import {
   IGeneratorInfo
 } from './neo-core'
 
-// Plugins
-import { RandomGenerator } from './plugins/random.generator'
-import { LettersNumbersGenerator } from './plugins/letters-numbers.generator'
-import { LengthValidator } from './plugins/length.validator'
-import { DepthValidator } from './plugins/depth.validator'
-import { EntropyValidator } from './plugins/entropy.validator'
-import { ShannonValidator } from './plugins/shannon.validator'
-import { ClassesValidator } from './plugins/classes.validator'
-import { SequenceValidator } from './plugins/sequence.validator'
-import { RunValidator } from './plugins/run.validator'
-import { TopologyValidator } from './plugins/topology.validator'
+import {
+  LettersNumbersGenerator,
+  RandomGenerator,
+  ClassesValidator,
+  DepthValidator,
+  EntropyValidator,
+  LengthValidator,
+  RunValidator,
+  SequenceValidator,
+  ShannonValidator,
+  TopologyValidator,
+} from './plugins'
 
 // Create a default configuration.
 const _defaultConfig: INeoConfig = {
