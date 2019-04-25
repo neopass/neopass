@@ -18,6 +18,7 @@ export class NeoPass extends NeoCore {
   constructor(config: INeoConfig, generators: Generator[], validators: Validator[]) {
     const store = new PluginStore(['validator', 'generator'])
     const resolver = new PluginResolver(store)
+
     super(config, store, resolver)
 
     if (config.useBuiltinGenerators) {
