@@ -36,24 +36,19 @@ export interface IGeneratorInfo {
  * Update the given strength by applying validation error logic.
  */
 function _applyEvalErrors(errors: IValidatorError[], strength: number, weight?: number): number {
+  // Constrain weight to [0, 1] if it exists, 1.0 otherwise.
+  const _weight = typeof weight === 'number'
+    ? Math.min(Math.max(weight, 0), 1)
+    : 1.0
+
   // For every error, reduce strength.
   errors.forEach((error) => {
     if (typeof error.score === 'number') {
       // If the error has a score, multiply strength by the score.
-      strength *= Math.min(error.score, 1.0)
+      strength *= _weight * Math.min(error.score, 1.0)
     } else {
-      // The validator doesn't provide a score. Use weight fallback.
-      if (typeof weight !== 'number') {
-        throw new Error('no fallback weight specified in configuration')
-      }
-
-      // Check that weight is in range.
-      if (weight > 1.0 || weight < 0.0) {
-        throw new Error('wieght must be in the range [0, 1]')
-      }
-
       // Multiply the strength by the weight.
-      strength *= weight
+      strength *= _weight
     }
   })
 
