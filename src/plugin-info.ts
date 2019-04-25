@@ -4,3 +4,5 @@ export interface IPluginInfo {
   readonly args?: any[]
   readonly options?: {readonly [key: string]: any}
 }
+
+export type PluginInfo = string|IPluginInfo

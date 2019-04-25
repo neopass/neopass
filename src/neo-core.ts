@@ -1,6 +1,6 @@
 import { PluginStore } from './plugin-store'
 import { PluginResolver } from './plugin-resolver'
-import { IPluginInfo } from './plugin-info'
+import { PluginInfo } from './plugin-info'
 import { IGenerator, Generator } from './generator'
 import { IValidatorError, IValidator } from './validator'
 import { IPlugin } from './plugin'
@@ -11,8 +11,6 @@ export interface IEvaluatorInfo {
   strength: number
   warnings: IValidatorError[]
 }
-
-export type PluginInfo = string|IPluginInfo
 
 export interface IEvaluator {
   weight?: number
