@@ -21,17 +21,17 @@ const config: INeoConfig = {
 neopass(config)
 
 const pass1 = neopass.generate(12, 'random')
-console.log(pass1)
+console.log('random:', pass1)
 
 const pass2 = neopass.generate(12, 'letters-numbers')
-console.log(pass2)
+console.log('letters-numbers', pass2)
 ```
 
 Output:
 
 ```
-|6Tc/]>4KY:5
-WIW71lZEuUsN
+random: |6Tc/]>4KY:5
+letters/numbers: WIW71lZEuUsN
 ```
 
 #### Registered Generators
@@ -39,13 +39,14 @@ WIW71lZEuUsN
 A list of registered generators can be obtained with the following call:
 
 ```typescript
-  neopass.generators()
+  const generators = neopass.generators()
+  console.log('generators:', generators)
 ```
 
 Output:
 
 ```
-[
+generators: [
   {
     name: 'random',
     title: 'Random'
@@ -104,7 +105,7 @@ Output:
 
 ## The Evaluation Chain
 
-The evaluation chain reports a password's strength based on configured validators.
+The evaluation chain reports a password's strength based on configured evaluators.
 
 ```typescript
 import neopass, { INeoConfig } from 'neopass'
@@ -112,7 +113,7 @@ import neopass, { INeoConfig } from 'neopass'
 const config: INeoConfig = {
   useBuiltinValidators: true, // default
 
-  // These are run when validate is called.
+  // These are run when evaluate is called.
   evaluators: [
     {
       weight: 0.9,
@@ -131,8 +132,8 @@ const config: INeoConfig = {
 
 neopass(config)
 
-const strength = neopass.evaluate('Spokane')
-console.log(strength)
+const result = neopass.evaluate('Spokane')
+console.log(result)
 ```
 
 Output:
@@ -172,6 +173,9 @@ import {
   RunValidator,
 } from 'neopass/plugins'
 
+/**
+ * Configuration
+ */
 const config: INeoConfig = {
   useBuiltinGenerators: false,
   useBuiltinValidators: false,
@@ -211,6 +215,7 @@ pass: v2mQsx6SKZ3s
 ***Validate:***
 
 ```typescript
+// Validate the generated password.
 const errors = neopass.validate('v2mQsx6SKZ3s')
 console.log('errors:', errors)
 ```
@@ -222,6 +227,7 @@ errors: []
 ```
 
 ```typescript
+// Validate some other password.
 const errors = neopass.validate('abcdefg777')
 console.log('errors:', errors)
 ```
