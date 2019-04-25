@@ -1,7 +1,7 @@
-import { IPlugin, PluginType } from '../plugin'
-import { IValidator } from '../validator'
+import { PluginType } from '../plugin'
+import { IValidator, ValidatorPlugin } from '../validator'
 
-export class EntropyValidator implements IPlugin<IValidator> {
+export class EntropyValidator extends ValidatorPlugin {
 
   get type(): PluginType {
     return 'validator'

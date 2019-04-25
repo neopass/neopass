@@ -1,5 +1,5 @@
-import { IPlugin, PluginType } from '../plugin'
-import { IValidator, IValidatorError } from '../validator'
+import { PluginType } from '../plugin'
+import { IValidator, IValidatorError, ValidatorPlugin } from '../validator'
 import { toTopoChars } from '../topology'
 import { TopoChar } from '../types'
 
@@ -10,7 +10,7 @@ const topoNames = new Map<TopoChar, string>([
   ['s', 'special'],
 ])
 
-export class ClassesValidator implements IPlugin<IValidator> {
+export class ClassesValidator extends ValidatorPlugin {
 
   get type(): PluginType {
     return 'validator'

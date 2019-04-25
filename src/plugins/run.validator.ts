@@ -1,8 +1,8 @@
-import { IPlugin, PluginType } from '../plugin'
-import { IValidator } from '../validator'
+import { PluginType } from '../plugin'
+import { IValidator, ValidatorPlugin } from '../validator'
 import regexEach from 'regex-each'
 
-export class RunValidator implements IPlugin<IValidator> {
+export class RunValidator extends ValidatorPlugin {
 
   get type(): PluginType {
     return 'validator'

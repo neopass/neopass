@@ -1,5 +1,5 @@
-import { IPlugin, PluginType } from '../plugin'
-import { IValidator } from '../validator'
+import { PluginType } from '../plugin'
+import { IValidator, ValidatorPlugin } from '../validator'
 import { typeOf } from '../utils/type-of'
 
 const _standardPatterns = [
@@ -45,7 +45,7 @@ interface IBitsInfo {
   shannon: number
 }
 
-export class TopologyValidator implements IPlugin<IValidator> {
+export class TopologyValidator extends ValidatorPlugin {
 
   get type(): PluginType {
     return 'validator'

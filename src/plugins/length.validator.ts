@@ -1,7 +1,7 @@
-import { IPlugin, PluginType } from '../plugin'
-import { IValidator } from '../validator'
+import { PluginType } from '../plugin'
+import { ValidatorPlugin, IValidator } from '../validator'
 
-export class LengthValidator implements IPlugin<IValidator> {
+export class LengthValidator extends ValidatorPlugin {
 
   get type(): PluginType {
     return 'validator'
