@@ -1,5 +1,6 @@
 import { neopass } from './neopass'
 
+export { NeoPass } from './neo-pass'
 export { IEvaluatorInfo } from './evaluator-info'
 export { IEvaluator } from './evaluator'
 export { IGeneratorInfo } from './generator-info'
