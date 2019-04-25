@@ -54,7 +54,7 @@ export function generate(length: number, classes: CharSet) {
  * @param length
  * @param topoStr
  */
-export function password(length: number, topoStr: string): string {
+function _password(length: number, topoStr: string): string {
   const topoChars = [...new Set([...topoStr])]
   const _classList = classList(topoChars.join(''))
   return generate(length, _classList)
