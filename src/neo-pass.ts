@@ -6,7 +6,6 @@ import { IPlugin } from './plugin'
 import { Generator } from './generator'
 import { Validator } from './validator'
 
-
 /**
  *
  */
