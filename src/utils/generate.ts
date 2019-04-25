@@ -47,9 +47,6 @@ export function generate(length: number, classes: CharSet) {
 
 /**
  * Generate a password of a given length and topology.
- *
- * @param length
- * @param topoStr
  */
 function _password(length: number, topoStr: string): string {
   const topoChars = [...new Set([...topoStr])]
