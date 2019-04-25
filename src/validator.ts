@@ -1,4 +1,4 @@
-import { IPasswordInfo } from './password-info'
+import { IPasswordInfo } from './core/password-info'
 
 export type RequestType = keyof IPasswordInfo
 

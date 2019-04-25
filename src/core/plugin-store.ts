@@ -1,4 +1,4 @@
-import { IPlugin, PluginType } from './plugin'
+import { IPlugin, PluginType } from '../plugin'
 
 type PluginMap = Map<string, IPlugin>
 

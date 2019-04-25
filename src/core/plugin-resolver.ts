@@ -1,7 +1,7 @@
 import { PluginStore } from './plugin-store'
-import { PluginType } from './plugin'
+import { PluginType } from '../plugin'
 import regexEach from 'regex-each'
-import { IPluginInfo } from './plugin-info'
+import { IPluginInfo } from '../plugin-info'
 
 const tChar = String.raw`[^ ,:=]`
 const tPlugin = String.raw`${tChar}+(?= *:|$)`
