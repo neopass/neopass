@@ -8,11 +8,11 @@ export class SequenceValidator implements IPlugin<IValidator> {
     return 'validator'
   }
 
-  get name() {
+  get name(): string {
     return 'sequence'
   }
 
-  message(num: number) {
+  message(num: number): string {
     return `password contains at least ${num} character sequence(s)`
   }
 

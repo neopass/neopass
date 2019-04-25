@@ -7,11 +7,11 @@ export class LengthValidator implements IPlugin<IValidator> {
     return 'validator'
   }
 
-  get name() {
+  get name(): string {
     return 'length'
   }
 
-  message(min: number, max: number) {
+  message(min: number, max: number): string {
     return `password length should be between ${min} and ${max} characters, inclusive`
   }
 

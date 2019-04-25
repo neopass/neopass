@@ -7,11 +7,11 @@ export class DepthValidator implements IPlugin<IValidator> {
     return 'validator'
   }
 
-  get name() {
+  get name(): string {
     return 'depth'
   }
 
-  get message() {
+  get message(): string {
     return `password needs more class complexity (uppercase, lowercase, digit, special)`
   }
 

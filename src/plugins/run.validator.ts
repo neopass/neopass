@@ -8,11 +8,11 @@ export class RunValidator implements IPlugin<IValidator> {
     return 'validator'
   }
 
-  get name() {
+  get name(): string {
     return 'run'
   }
 
-  message(num: number) {
+  message(num: number): string {
     return `password contains at least ${num} character run(s)`
   }
 

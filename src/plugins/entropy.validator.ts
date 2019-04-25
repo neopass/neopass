@@ -7,11 +7,11 @@ export class EntropyValidator implements IPlugin<IValidator> {
     return 'validator'
   }
 
-  get name() {
+  get name(): string {
     return 'entropy'
   }
 
-  get message() {
+  get message(): string {
     return `password is either too short or not complex enough`
   }
 

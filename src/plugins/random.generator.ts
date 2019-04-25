@@ -26,11 +26,11 @@ export class RandomGenerator implements IGenerator {
     return 'generator'
   }
 
-  get name() {
+  get name(): string {
     return 'random'
   }
 
-  get title() {
+  get title(): string {
     return 'Random'
   }
 }

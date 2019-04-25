@@ -7,11 +7,11 @@ export class ShannonValidator implements IPlugin<IValidator> {
     return 'validator'
   }
 
-  get name() {
+  get name(): string {
     return 'shannon'
   }
 
-  get message() {
+  get message(): string {
     return `password is too simple`
   }
 

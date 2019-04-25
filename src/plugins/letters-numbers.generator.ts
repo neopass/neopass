@@ -23,11 +23,11 @@ export class LettersNumbersGenerator implements IGenerator {
     return 'generator'
   }
 
-  get name() {
+  get name(): string {
     return 'letters-numbers'
   }
 
-  get title() {
+  get title(): string {
     return 'Letters & Numbers'
   }
 }
