@@ -1,7 +1,6 @@
 
 import { IGenerator, Generator } from '../generator'
 import { generate as _generate } from '../utils/generate'
-import { CharClass } from '../types'
 import { classes } from '../topology'
 import { PluginType } from '../plugin'
 
