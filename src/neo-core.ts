@@ -7,19 +7,10 @@ import { classDepth, topology as _topology } from './topology'
 import { IEvaluator } from './evaluator'
 import { IEvaluatorInfo } from './evaluator-info'
 import { IGeneratorInfo } from './generator-info'
+import { IPasswordInfo } from './password-info'
 import { INeoConfig } from './neo-config'
 import { entropy } from './utils/entropy'
 import { shannon } from './utils/shannon'
-
-interface IPasswordInfo {
-  readonly password: string
-  readonly length: number
-  readonly depth: number
-  readonly topology: string
-  readonly classes: string
-  readonly entropy: number
-  readonly shannon: number
-}
 
 /**
  * Reduce a topology to its constituent classes.
