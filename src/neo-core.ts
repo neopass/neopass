@@ -78,7 +78,7 @@ export class NeoCore {
 
         while(true) {
           if (++count > retry) {
-            throw new Error('could not generate a password that passed configured validators')
+            throw new Error('could not generate a password that passes configured validators')
           }
 
           const pass = _generate(len)
