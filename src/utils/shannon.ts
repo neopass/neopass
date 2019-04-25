@@ -2,10 +2,6 @@ import { frequencies } from './frequencies'
 
 /**
  * Return the Shannon entropy of a string in bits per symbol.
- *
- * @param {string} str
- *
- * @return {number}
  */
 export function shannon(str: string): number {
   const len = str.length

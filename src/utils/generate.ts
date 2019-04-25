@@ -7,9 +7,6 @@ import { classList } from '../topology'
 /**
  * Generate a random string of the given length from the given list
  * of character classes.
- *
- * @param length
- * @param classes
  */
 export function generate(length: number, classes: CharSet) {
   const rangeData = probabilities(classes)
