@@ -15,6 +15,7 @@ import {
 import {
   LettersNumbersGenerator,
   RandomGenerator,
+
   ClassesValidator,
   DepthValidator,
   EntropyValidator,
@@ -39,13 +40,13 @@ const _builtinGenerators = [
 
 // Built-in validators.
 const _builtinValidators = [
-  LengthValidator,
+  ClassesValidator,
   DepthValidator,
   EntropyValidator,
-  ShannonValidator,
-  ClassesValidator,
-  SequenceValidator,
+  LengthValidator,
   RunValidator,
+  SequenceValidator,
+  ShannonValidator,
   TopologyValidator,
 ]
 
