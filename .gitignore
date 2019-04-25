@@ -71,4 +71,6 @@ typings/
 
 # Temp
 **/temp/
+temp.*
+
 src.old/
