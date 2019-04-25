@@ -131,8 +131,8 @@ const config: INeoConfig = {
 
 neopass(config)
 
-const errors = neopass.evaluate('Spokane')
-console.log(errors)
+const strength = neopass.evaluate('Spokane')
+console.log(strength)
 ```
 
 Output:
