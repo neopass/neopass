@@ -32,7 +32,7 @@ export interface IGeneratorInfo {
 }
 
 /**
- * The core instance for encapsulating validation, encapsulation and
+ * The core instance for encapsulating validation, evaluation and
  * miscellaneous logic.
  */
 export class NeoCore {
