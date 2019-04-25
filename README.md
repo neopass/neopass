@@ -154,3 +154,99 @@ Output:
   ]
 }
 ```
+
+## Plugins
+
+Config:
+
+```typescript
+import neopass, { INeoConfig } from 'neopass'
+
+import {
+  // Generators
+  LettersNumbersGenerator,
+  // Validators
+  EntropyValidator,
+  ShannonValidator,
+  SequenceValidator,
+  RunValidator,
+} from 'neopass/plugins'
+
+const config: INeoConfig = {
+  useBuiltinGenerators: false,
+  useBuiltinValidators: false,
+
+  plugins: [
+    LettersNumbersGenerator,
+    EntropyValidator,
+    ShannonValidator,
+    SequenceValidator,
+    RunValidator,
+  ],
+
+  validators: [
+    'entropy:64',
+    'shannon:32',
+    'sequence:3',
+    'run:2',
+  ]
+}
+
+neopass(config)
+```
+
+**Generate:**
+
+```typescript
+const pass = neopass.generate(12, 'letters-numbers')
+console.log('pass:', pass)
+```
+
+Output:
+
+```
+pass: v2mQsx6SKZ3s
+```
+
+***Validate:***
+
+```typescript
+const errors = neopass.validate('v2mQsx6SKZ3s')
+console.log('errors:', errors)
+```
+
+Output:
+
+```
+errors: []
+```
+
+```typescript
+const errors = neopass.validate('abcdefg777')
+console.log('errors:', errors)
+```
+
+Output:
+
+```
+errors: [
+  {
+    name: 'entropy',
+    msg: 'password is either too short or not complex enough',
+    score: 0.8078007814753613,
+  },
+  {
+    name: 'shannon',
+    msg: 'password is too simple',
+    score: 0.8895122952096924,
+  },
+  {
+    name: 'sequence',
+    message: 'password contains at least 1 character sequence(s)'
+  },
+  {
+    name: 'run',
+    message: 'password contains at least 1 character run(s)'
+  }
+]
+```
