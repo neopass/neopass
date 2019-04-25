@@ -9,7 +9,7 @@ export function copyClass(cls: CharClass) {
     newClass.push(copyRange(range)) && newClass || newClass, [] as CharClass)
 }
 
-export function copy(classes: CharSet) {
+export function copySet(classes: CharSet) {
   return classes.reduce((newCls, cls: CharClass) =>
     newCls.push(copyClass(cls)) && newCls || newCls, [] as CharSet)
 }
