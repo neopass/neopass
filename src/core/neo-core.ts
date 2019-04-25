@@ -1,7 +1,7 @@
 import { PluginStore } from './plugin-store'
 import { PluginResolver } from './plugin-resolver'
 import { PluginInfo } from '../plugin-info'
-import { IGenerator, Generator } from '../generator'
+import { IGenerator, Generate } from '../generator'
 import { IValidatorError, IValidator, RequestType } from '../validator'
 import { classDepth, topology as _topology } from '../topology'
 import { IEvaluator } from '../evaluator'
@@ -102,7 +102,7 @@ export class NeoCore {
      *
      */
     this.generate = function generate(len: number, generator: PluginInfo, retries?: number): string {
-      const _generate = resolver.resolve<Generator>('generator', generator)
+      const _generate = resolver.resolve<Generate>('generator', generator)
 
       // Retry generation to pass validation.
       if (typeof retries === 'number') {
