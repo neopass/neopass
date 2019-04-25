@@ -1,6 +1,15 @@
 import { CharSet, RangeData } from '../types'
 import { cardinality, rangeSize } from './cardinality'
-import { concat } from './concat'
+
+
+/**
+ * Concatenate nested arrays into a single list.
+ */
+function concat<T>(list: T[][]): T[] {
+  const result: T[] = []
+  list.forEach(subList => result.push.apply(result, subList))
+  return result
+}
 
 /**
  * Generate a probability table for each range in the character classes.
