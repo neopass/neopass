@@ -16,13 +16,9 @@ export class ClassesValidator implements IPlugin<IValidator> {
     return 'validator'
   }
 
-  get name() {
+  get name(): string {
     return 'classes'
   }
-
-  // get message() {
-  //   return `password characters do not contain enough variety`
-  // }
 
   fn(options: any): IValidator {
     const and = options.and
@@ -43,11 +39,11 @@ export class ClassesValidator implements IPlugin<IValidator> {
           // Get a list character classes.
           const topoChars = toTopoChars(and)
 
+          // Determine if all the 'and' classes are present.
           topoChars.forEach(c => {
             const re = new RegExp(c)
-
+            // Test if the class is present.
             if (!re.test(classes)) {
-              // const message = <string>topoMap.get(c)
               const msg = `missing ${topoNames.get(c)} character`
               errors.push({ name, msg, meta: c })
             }
