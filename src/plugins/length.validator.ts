@@ -28,7 +28,7 @@ export class LengthValidator extends ValidatorPlugin {
 
     const validator: IValidator = {
       request: ['length'],
-      validate(length: number) {
+      exec(length: number) {
         if (length < min || length > max) {
           const score = length / min
           const meta = length < min ? 'min' : length > max ? 'max' : undefined

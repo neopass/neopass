@@ -26,7 +26,7 @@ export class ShannonValidator extends ValidatorPlugin {
 
     const validator: IValidator = {
       request: ['length', 'shannon'],
-      validate(length: number, shannon: number) {
+      exec(length: number, shannon: number) {
         const bits = length * shannon
         if (bits < min) {
           const score = bits / min

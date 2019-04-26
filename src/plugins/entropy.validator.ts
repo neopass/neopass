@@ -26,7 +26,7 @@ export class EntropyValidator extends ValidatorPlugin {
 
     const validator: IValidator = {
       request: ['length', 'entropy'],
-      validate(length: number, entropy: number) {
+      exec(length: number, entropy: number) {
         const bits = length * entropy
         if (bits < min) {
           const score = bits / min

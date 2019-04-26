@@ -26,7 +26,7 @@ export class DepthValidator extends ValidatorPlugin {
 
     const validator: IValidator = {
       request: ['depth'],
-      validate(depth: number) {
+      exec(depth: number) {
         if (depth < min) {
           const score = depth / min
           return [{ name, msg, score }]

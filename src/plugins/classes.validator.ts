@@ -32,7 +32,7 @@ export class ClassesValidator extends ValidatorPlugin {
 
     const validator: IValidator = {
       request: ['classes'],
-      validate(classes: string) {
+      exec(classes: string) {
         const errors: IValidatorError[] = []
 
         if (typeof and === 'string') {

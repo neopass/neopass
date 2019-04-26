@@ -56,7 +56,7 @@ export class SequenceValidator extends ValidatorPlugin {
 
     const validator: IValidator = {
       request: ['password'],
-      validate(password: string) {
+      exec(password: string) {
         const offending = inSequence(max, password)
         if (offending.length > 0) {
           return [{ name, message: message(offending.length) }]
