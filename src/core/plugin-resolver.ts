@@ -78,7 +78,7 @@ export class PluginResolver {
       }
 
       const _plugin = _store.get(type, plugin)
-      return _plugin.fn(options, ...args)
+      return _plugin.configure(options, ...args)
     }
   }
 }

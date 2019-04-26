@@ -8,7 +8,7 @@ import { PluginType } from '../plugin'
 const { u, l, d, s } = classes('ulds')
 
 export class RandomGenerator extends GeneratorPlugin {
-  public fn: (options: any) => Generate
+  public configure: (options: any) => Generate
 
   constructor() {
     // Pull the space character from the 'special' class.
@@ -17,7 +17,7 @@ export class RandomGenerator extends GeneratorPlugin {
 
     super()
 
-    this.fn = function fn(options: any): Generate {
+    this.configure = function fn(options: any): Generate {
       return function generate(len: number) {
         return _generate(len, _classes)
       }

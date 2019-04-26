@@ -17,7 +17,7 @@ export interface IValidator extends IRequestor {
 export abstract class ValidatorPlugin implements IPlugin<IValidator> {
   public abstract type: PluginType
   public abstract name: string
-  public abstract fn(...args: any[]): IValidator
+  public abstract configure(...args: any[]): IValidator
 }
 
 export type Validator = new () => ValidatorPlugin

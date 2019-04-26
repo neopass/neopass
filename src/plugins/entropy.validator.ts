@@ -15,7 +15,7 @@ export class EntropyValidator extends ValidatorPlugin {
     return `password is either too short or not complex enough`
   }
 
-  fn(options: any, min: number): IValidator {
+  configure(options: any, min: number): IValidator {
 
     if (typeof min !== 'number') {
       throw new Error('entropy validator requires a single argument')

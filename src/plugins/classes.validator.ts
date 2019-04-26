@@ -20,7 +20,7 @@ export class ClassesValidator extends ValidatorPlugin {
     return 'classes'
   }
 
-  fn(options: any): IValidator {
+  configure(options: any): IValidator {
     const and = options.and
     const or = options.or
 

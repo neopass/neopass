@@ -45,7 +45,7 @@ export class SequenceValidator extends ValidatorPlugin {
     return offending
   }
 
-  fn(options: any, max: number): IValidator {
+  configure(options: any, max: number): IValidator {
     if (typeof max !== 'number') {
       throw new Error('sequence validator needs a max argument')
     }

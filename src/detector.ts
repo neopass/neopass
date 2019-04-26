@@ -8,7 +8,7 @@ export interface IDetector extends IRequestor {
 export abstract class DetectorPlugin implements IPlugin<IRequestor> {
   public abstract type: PluginType
   public abstract name: string
-  public abstract fn(...args: any[]): IDetector
+  public abstract configure(...args: any[]): IDetector
 }
 
 export type Detector = new () => DetectorPlugin

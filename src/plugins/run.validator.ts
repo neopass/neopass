@@ -45,7 +45,7 @@ export class RunValidator extends ValidatorPlugin {
     return offending
   }
 
-  fn(options: any, max: number): IValidator {
+  configure(options: any, max: number): IValidator {
     if (typeof max !== 'number') {
       throw new Error('run validator needs a max argument')
     }

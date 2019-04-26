@@ -15,7 +15,7 @@ export class LengthValidator extends ValidatorPlugin {
     return `password length should be between ${min} and ${max} characters, inclusive`
   }
 
-  fn(options: any): IValidator {
+  configure(options: any): IValidator {
     const min = options.min
     const max = options.max
 

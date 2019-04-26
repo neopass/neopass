@@ -15,7 +15,7 @@ export class ShannonValidator extends ValidatorPlugin {
     return `password is too simple`
   }
 
-  fn(options: any, min: number): IValidator {
+  configure(options: any, min: number): IValidator {
 
     if (typeof min !== 'number') {
       throw new Error('shannon validator requires a single argument')

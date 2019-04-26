@@ -11,7 +11,7 @@ export class PassphraseDetector extends DetectorPlugin {
     return 'passphrase'
   }
 
-  fn(options: any, min: number): IDetector {
+  configure(options: any, min: number): IDetector {
     if (typeof min !== 'number') {
       throw new Error('passphrase detector needs a min argument')
     }

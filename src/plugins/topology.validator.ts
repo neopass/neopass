@@ -121,7 +121,7 @@ export class TopologyValidator extends ValidatorPlugin {
   /**
    * Validator pattern.
    */
-  fn(options: any): IValidator {
+  configure(options: any): IValidator {
     const patterns: RegExp[] = this.patterns(options)
 
     const name = this.name

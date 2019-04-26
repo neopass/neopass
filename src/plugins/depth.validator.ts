@@ -15,7 +15,7 @@ export class DepthValidator extends ValidatorPlugin {
     return `password needs more class complexity (uppercase, lowercase, digit, special)`
   }
 
-  fn(options: any, min: number): IValidator {
+  configure(options: any, min: number): IValidator {
 
     if (typeof min !== 'number') {
       throw new Error('depth validator requires a single argument')
