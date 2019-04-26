@@ -1,13 +1,13 @@
+import { IBaseConfig } from './base-config'
 import { PluginStore } from './plugin-store'
 import { PluginResolver } from './plugin-resolver'
-import { PluginInfo } from '../plugin-info'
+import { PluginInfo, IPluginInfo } from '../plugin-info'
 import { IGenerator, Generate } from '../generator'
 import { IValidatorError, IValidator } from '../validator'
 import { classDepth, topology as _topology } from '../topology'
 import { IEvaluator } from '../evaluator'
 import { IEvaluatorInfo } from '../evaluator-info'
 import { IGeneratorInfo } from '../generator-info'
-import { INeoConfig } from '../neo-config'
 import { entropy } from '../utils/entropy'
 import { shannon } from '../utils/shannon'
 import { IDetector } from '../detector'
@@ -107,10 +107,10 @@ function _applyEvalErrors(errors: IValidatorError[], strength: number, weight?: 
 export class NeoCore {
   public generate: (len: number, generator: PluginInfo, retries?: number) => string
   public evaluate: (password: string, evaluators?: IEvaluator[]) => IEvaluatorInfo
-  public validate: (password: string, validators?: PluginInfo[]) => IValidatorError[]
+  public validate: (password: string, validators?: PluginInfo[], passphrase?: PluginInfo) => IValidatorError[]
   public generators: () => IGeneratorInfo[]
 
-  constructor(config: INeoConfig, store: PluginStore, resolver: PluginResolver) {
+  constructor(config: IBaseConfig, store: PluginStore, resolver: PluginResolver) {
     /**
      *
      */
@@ -185,21 +185,27 @@ export class NeoCore {
     /**
      *
      */
-    this.validate = function validate(password: string,validators?: PluginInfo[]): IValidatorError[] {
+    this.validate = function validate(
+      password: string, validators?: PluginInfo[], passphrase?: PluginInfo): IValidatorError[] {
+
       // Get the password info object.
       const info = _passwordInfo(password)
 
-      if (config.passphrase != null) {
-        const detector = resolver.resolve<IDetector>('detector', config.passphrase)
+      // Get passphrase from config if not given in arg list.
+      passphrase = passphrase || config.passphrase
+
+      // Run passphrase detection.
+      if (passphrase != null) {
+        const detector = resolver.resolve<IDetector>('detector', passphrase)
         const isPassphrase = _runRequestor(detector, info)
-        if (isPassphrase) {
-          return []
-        }
+
+        // If a passphrase is detected, halt further validation.
+        if (isPassphrase) { return [] }
       }
 
       // Get validators from config if not given in arg list.
-      validators = Array.isArray(validators) && validators.length > 0
-        ? validators : config.validators
+      const hasValidators = Array.isArray(validators) && validators.length > 0
+      validators = hasValidators ? validators : config.validators
 
       // Check that we have a non-zero-length array.
       if (!Array.isArray(validators) || validators.length === 0) {

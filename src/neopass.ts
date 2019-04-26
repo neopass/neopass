@@ -9,13 +9,12 @@ import { IEvaluatorInfo } from './evaluator-info'
 import { IGeneratorInfo } from './generator-info'
 
 import {
-  LettersNumbersGenerator,
-  RandomGenerator,
-
   ClassesValidator,
   DepthValidator,
   EntropyValidator,
   LengthValidator,
+  LettersNumbersGenerator,
+  RandomGenerator,
   RunValidator,
   SequenceValidator,
   ShannonValidator,
@@ -67,7 +66,10 @@ export function neopass(config?: INeoConfig|null) {
 
     // Create the neopass core instance.
     _core = new NeoPass(
-      config, _builtinGenerators, _builtinValidators, _builtinDetectors)
+      config,
+      config.useBuiltinGenerators ? _builtinGenerators : [],
+      config.useBuiltinValidators ? _builtinValidators : [],
+      config.useBuiltinDetectors  ? _builtinDetectors : [])
   }
 
   return neopass
@@ -83,7 +85,7 @@ function generate(len: number, generator: PluginInfo, retries?: number): string 
 neopass.generate = generate
 
 /**
- *
+ * Run evaluation chain against a password.
  */
 function evaluate(password: string, evaluators?: IEvaluator[]): IEvaluatorInfo {
   return _core.evaluate(password, evaluators)

@@ -1,5 +1,5 @@
 import { NeoCore } from './core/neo-core'
-import { INeoConfig } from './neo-config'
+import { IBaseConfig } from './core/base-config'
 import { PluginStore } from './core/plugin-store'
 import { PluginResolver } from './core/plugin-resolver'
 import { IPlugin } from './plugin'
@@ -16,28 +16,24 @@ function _registerPlugins(store: PluginStore, plugins: IPlugin[]) {
 
 export class NeoPass extends NeoCore {
 
-  constructor(config: INeoConfig, generators?: Generator[], validators?: Validator[], detectors?: Detector[]) {
+  constructor(config?: IBaseConfig, generators?: Generator[], validators?: Validator[], detectors?: Detector[]) {
     const store = new PluginStore(['validator', 'generator', 'detector'])
     const resolver = new PluginResolver(store)
 
+    config = config || {}
+
     super(config, store, resolver)
 
-    if (config.useBuiltinGenerators) {
-      if (Array.isArray(generators)) {
-        _registerPlugins(store, generators.map(G => new G()))
-      }
+    if (Array.isArray(generators)) {
+      _registerPlugins(store, generators.map(G => new G()))
     }
 
-    if (config.useBuiltinValidators) {
-      if (Array.isArray(validators)) {
-        _registerPlugins(store, validators.map(V => new V()))
-      }
+    if (Array.isArray(validators)) {
+      _registerPlugins(store, validators.map(V => new V()))
     }
 
-    if (config.useBuiltinDetectors) {
-      if (Array.isArray(detectors)) {
-        _registerPlugins(store, detectors.map(D => new D()))
-      }
+    if (Array.isArray(detectors)) {
+      _registerPlugins(store, detectors.map(D => new D()))
     }
 
     const plugins: IPlugin[] = config.plugins || []
