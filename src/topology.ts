@@ -49,7 +49,7 @@ function _classes(topoChars: TopoChar[]) {
 }
 
 /**
- * Convert a list of topology characters into a list of character classes.
+ * Convert a list of topology characters into a character set.
  */
 function _classList(topoChars: TopoChar[]) {
   return topoChars.reduce((list, char) => {
