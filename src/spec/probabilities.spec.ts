@@ -20,6 +20,6 @@ describe('probabilities', () => {
     const rangeData = ranges.map(range => [rangeSize(range) / size, range])
 
     prob = probabilities(carset2)
-    assert.deepStrictEqual(probabilities(carset2), rangeData)
+    assert.deepStrictEqual(prob, rangeData)
   })
 })
