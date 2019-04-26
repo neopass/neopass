@@ -1,4 +1,3 @@
-import { IPasswordInfo } from './core/password-info'
 import { IPlugin, PluginType } from './plugin'
 import { RequestType } from './core/request-type'
 
