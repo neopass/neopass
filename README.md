@@ -244,7 +244,7 @@ const config: INeoConfig = {
 neopass(config)
 ```
 
-**Generate:**
+**Generate**
 
 ```typescript
 const pass = neopass.generate(12, 'letters-numbers')
@@ -257,10 +257,11 @@ Output:
 password: v2mQsx6SKZ3s
 ```
 
-***Validate:***
+**Validate**
+
+Validate the generated password:
 
 ```typescript
-// Validate the generated password.
 const errors = neopass.validate('v2mQsx6SKZ3s')
 console.log('errors:', errors)
 ```
@@ -271,8 +272,9 @@ Output:
 errors: []
 ```
 
+Validate some other password:
+
 ```typescript
-// Validate some other password.
 const errors = neopass.validate('abcdefg777')
 console.log('errors:', errors)
 ```
