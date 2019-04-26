@@ -1,14 +1,8 @@
-import { IPlugin } from './plugin'
-import { PluginInfo } from './plugin-info'
-import { IEvaluator } from './evaluator'
+import { IBaseConfig } from './core/base-config'
 
 // Neopass configuration interface.
-export interface INeoConfig {
+export interface INeoConfig extends IBaseConfig {
   useBuiltinGenerators?: boolean
   useBuiltinValidators?: boolean
   useBuiltinDetectors?: boolean
-  plugins?: IPlugin[]
-  passphrase?: PluginInfo
-  validators?: PluginInfo[]
-  evaluators?: IEvaluator[]
 }
