@@ -1,6 +1,7 @@
 
 /**
  * Return the internal type of the given object, e.g.,
+ *
  * `typeOf(/a/) => RegExp`
  *
  * @param obj
