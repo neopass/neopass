@@ -2,7 +2,7 @@ import assert from 'assert'
 import { probabilities } from '../utils'
 import { classList } from '../topology'
 import { cardinality, rangeSize, concatAll } from '../utils'
-import { RangeData, Range, CharClass, CharSet } from '../types'
+import { RangeData, Range, CharSet } from '../types'
 
 describe('probabilities', () => {
 
