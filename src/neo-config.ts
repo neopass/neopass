@@ -6,7 +6,9 @@ import { IEvaluator } from './evaluator'
 export interface INeoConfig {
   useBuiltinGenerators?: boolean
   useBuiltinValidators?: boolean
+  useBuiltinDetectors?: boolean
   plugins?: IPlugin[]
+  passphrase?: PluginInfo
   validators?: PluginInfo[]
   evaluators?: IEvaluator[]
 }
