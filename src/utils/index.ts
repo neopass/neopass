@@ -2,6 +2,7 @@
 export * from './cardinality'
 export * from './classify'
 export * from './copy'
+export * from './concat-all'
 export * from './entropy'
 export * from './expand'
 export * from './fill'
