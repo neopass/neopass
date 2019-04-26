@@ -1,11 +1,18 @@
 # neopass
-A password validation and generation tool kit
+A password validation and generation tool kit - simple to use yet maximally flexible.
+
+- Password generation
+- Password validation
+- Password strength
+- Passphrase support
 
 "The only good password is a random password of sufficient entropy." - _unknown_
 
 ## Under development
 
 This package is currently experimental and the interface is unstable. While the package remains at `0.x.y`, the minor version will be updated when known breaking changes occur.
+
+Currently geared toward English passwords and passphrases.
 
 ## Basics
 
@@ -78,13 +85,13 @@ const config: INeoConfig = {
 neopass(config)
 
 const errors = neopass.validate('spokane')
-console.log(errors)
+console.log('errors:', errors)
 ```
 
 Output:
 
 ```
-[
+errors: [
   {
     name: 'length',
     msg: 'password length should be between 10 and 72 characters, inclusive',
@@ -133,13 +140,13 @@ const config: INeoConfig = {
 neopass(config)
 
 const result = neopass.evaluate('Spokane')
-console.log(result)
+console.log('result:', result)
 ```
 
 Output:
 
 ```
-{
+result: {
   strength: 0.44099999999999995,
   warnings: [
     {
@@ -154,6 +161,41 @@ Output:
     }
   ]
 }
+```
+
+## Passphrase Detection
+
+Passphrases are long passwords typically comprised of multiple words. These
+are considered to be more secure than shorter, mixed-class passwords. If configured,
+`neopass` will detect a passphrase and bypass additional validation in the validation chain.
+
+```typescript
+import neopass, { INeoConfig } from 'neopass'
+
+const config: INeoConfig = {
+  useBuiltinDetectorss: true, // default
+
+  // Configure the passphrase detector for passwords of 20 or more characters.
+  passphrase: 'passphrase:20',
+
+  // These are run when validate is called.
+  validators: [
+    'length:min=10,max=72',
+    'classes:and=ul,or=ds', // This would normally trigger a failure
+                            // because there is no uppercase letter.
+  ]
+}
+
+neopass(config)
+
+const errors = neopass.validate('lemme get this straight')
+console.log('errors:', errors)
+```
+
+Output:
+
+```
+errors: []
 ```
 
 ## Plugins
