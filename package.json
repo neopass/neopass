@@ -7,7 +7,7 @@
     "build": "tsc && npm run load",
     "clean": "rm -rf lib",
     "load": "node ./util/file-loader ./src/views ./lib",
-    "test": "npm run build && mocha **/*.spec.js",
+    "test": "npm run build && mocha lib/spec/**/*spec.js",
     "test-watch": "nodemon -e ts --ignore '*.d.ts' --exec 'npm run test'",
     "prepublishOnly": "npm run clean && npm run test",
     "word-gen": "./word-gen"
