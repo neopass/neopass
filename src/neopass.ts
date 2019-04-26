@@ -1,5 +1,7 @@
 import { NeoPass } from './neo-pass'
-import { IValidatorError, Validator } from './validator'
+import { Validator, IValidatorError } from './validator'
+import { Generator } from './generator'
+import { Detector } from './detector'
 import { PluginInfo } from './plugin-info'
 import { INeoConfig } from './neo-config'
 import { IEvaluator } from './evaluator'
@@ -18,13 +20,14 @@ import {
   SequenceValidator,
   ShannonValidator,
   TopologyValidator,
+  PassphraseDetector,
 } from './plugins'
-import { Generator } from './generator'
 
 // Create a default configuration.
 const _defaultConfig: INeoConfig = {
   useBuiltinGenerators: true,
   useBuiltinValidators: true,
+  useBuiltinDetectors: true,
 }
 
 // Built-in generators.
@@ -45,6 +48,10 @@ const _builtinValidators: Validator[] = [
   TopologyValidator,
 ]
 
+const _builtinDetectors: Detector[] = [
+  PassphraseDetector,
+]
+
 /**
  * Core class for neo functionality.
  */
@@ -59,7 +66,8 @@ export function neopass(config?: INeoConfig|null) {
     config = {..._defaultConfig, ...config}
 
     // Create the neopass core instance.
-    _core = new NeoPass(config, _builtinGenerators, _builtinValidators)
+    _core = new NeoPass(
+      config, _builtinGenerators, _builtinValidators, _builtinDetectors)
   }
 
   return neopass
