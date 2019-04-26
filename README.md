@@ -191,7 +191,7 @@ neopass(config)
  * The below password would normally fail the 'classes' validator
  * as configured because there is no digit/special character.
  */
-const errors = neopass.validate('Lemme get this straight')
+const errors = neopass.validate('Lemme get this smooth')
 console.log('errors:', errors)
 ```
 
