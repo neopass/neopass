@@ -9,3 +9,5 @@ export { RunValidator } from './run.validator'
 export { SequenceValidator } from './sequence.validator'
 export { ShannonValidator } from './shannon.validator'
 export { TopologyValidator } from './topology.validator'
+
+export { PassphraseDetector } from './passphrase.detector'
