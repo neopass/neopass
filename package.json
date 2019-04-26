@@ -5,9 +5,12 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "tsc && npm run load",
+    "build-test": "tsc",
     "clean": "rm -rf lib",
+    "coverage": "nyc --reporter=lcov mocha lib/spec/**/*spec.js",
     "load": "node ./util/file-loader ./src/views ./lib",
     "test": "npm run build && mocha lib/spec/**/*spec.js",
+    "test-dev": "npm run build-test && npm run coverage",
     "test-watch": "nodemon -e ts --ignore '*.d.ts' --exec 'npm run test'",
     "prepublishOnly": "npm run clean && npm run test",
     "word-gen": "./word-gen"
@@ -35,6 +38,7 @@
     "@types/node": "^10.5.8",
     "mocha": "^5.2.0",
     "nodemon": "^1.17.5",
+    "nyc": "^14.0.0",
     "tslint": "^5.10.0",
     "typescript": "^3.4.2"
   },
