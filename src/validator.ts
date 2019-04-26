@@ -1,5 +1,5 @@
 import { IPlugin, PluginType } from './plugin'
-import { RequestType } from './core/request-type'
+import { RequestType } from './core/neo-core'
 
 export interface IValidatorError {
   name: string,
