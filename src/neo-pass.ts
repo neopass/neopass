@@ -16,7 +16,7 @@ function _registerPlugins(store: PluginStore, plugins: IPlugin[]) {
 
 export class NeoPass extends NeoCore {
 
-  constructor(config: INeoConfig, generators?: Generator[], validators?: Validator[]) {
+  constructor(config: INeoConfig, generators?: Generator[], validators?: Validator[], detectors?: Detector[]) {
     const store = new PluginStore(['validator', 'generator', 'detector'])
     const resolver = new PluginResolver(store)
 
@@ -31,6 +31,12 @@ export class NeoPass extends NeoCore {
     if (config.useBuiltinValidators) {
       if (Array.isArray(validators)) {
         _registerPlugins(store, validators.map(V => new V()))
+      }
+    }
+
+    if (config.useBuiltinDetectors) {
+      if (Array.isArray(detectors)) {
+        _registerPlugins(store, detectors.map(D => new D()))
       }
     }
 
