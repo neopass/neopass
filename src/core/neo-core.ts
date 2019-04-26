@@ -3,15 +3,25 @@ import { PluginResolver } from './plugin-resolver'
 import { PluginInfo } from '../plugin-info'
 import { IGenerator, Generate } from '../generator'
 import { IValidatorError, IValidator } from '../validator'
-import { RequestType } from './request-type'
 import { classDepth, topology as _topology } from '../topology'
 import { IEvaluator } from '../evaluator'
 import { IEvaluatorInfo } from '../evaluator-info'
 import { IGeneratorInfo } from '../generator-info'
-import { IPasswordInfo } from './password-info'
 import { INeoConfig } from '../neo-config'
 import { entropy } from '../utils/entropy'
 import { shannon } from '../utils/shannon'
+
+interface IPasswordInfo {
+  readonly password: string
+  readonly length: number
+  readonly depth: number
+  readonly topology: string
+  readonly classes: string
+  readonly entropy: number
+  readonly shannon: number
+}
+
+export type RequestType = keyof IPasswordInfo
 
 /**
  * Reduce a topology to its constituent classes.
