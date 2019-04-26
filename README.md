@@ -181,14 +181,17 @@ const config: INeoConfig = {
   // These are run when validate is called.
   validators: [
     'length:min=10,max=72',
-    'classes:and=ul,or=ds', // This would normally trigger a failure
-                            // because there is no uppercase letter.
+    'classes:and=ul,or=ds',
   ]
 }
 
 neopass(config)
 
-const errors = neopass.validate('lemme get this straight')
+/**
+ * The below password would normally fail the 'classes' validator
+ * as configured because there is no digit/special character.
+ */
+const errors = neopass.validate('Lemme get this straight')
 console.log('errors:', errors)
 ```
 
