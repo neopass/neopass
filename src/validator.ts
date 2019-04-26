@@ -1,5 +1,6 @@
 import { IPlugin, PluginType } from './plugin'
 import { RequestType } from './core/neo-core'
+import { IRequestor } from './requestor'
 
 export interface IValidatorError {
   name: string,
@@ -9,9 +10,8 @@ export interface IValidatorError {
   meta?: any,
 }
 
-export interface IValidator {
-  request: RequestType[]
-  validate(...args: any[]): IValidatorError[]
+export interface IValidator extends IRequestor {
+  exec(...args: any[]): IValidatorError[]
 }
 
 export abstract class ValidatorPlugin implements IPlugin<IValidator> {
