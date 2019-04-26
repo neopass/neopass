@@ -1,13 +1,11 @@
-export { LettersNumbersGenerator } from './letters-numbers.generator'
-export { RandomGenerator } from './random.generator'
-
 export { ClassesValidator } from './classes.validator'
 export { DepthValidator } from './depth.validator'
 export { EntropyValidator } from './entropy.validator'
 export { LengthValidator } from './length.validator'
+export { LettersNumbersGenerator } from './letters-numbers.generator'
+export { PassphraseDetector } from './passphrase.detector'
 export { RunValidator } from './run.validator'
+export { RandomGenerator } from './random.generator'
 export { SequenceValidator } from './sequence.validator'
 export { ShannonValidator } from './shannon.validator'
 export { TopologyValidator } from './topology.validator'
-
-export { PassphraseDetector } from './passphrase.detector'
