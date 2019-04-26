@@ -10,6 +10,8 @@ import { IGeneratorInfo } from '../generator-info'
 import { INeoConfig } from '../neo-config'
 import { entropy } from '../utils/entropy'
 import { shannon } from '../utils/shannon'
+import { IDetector } from '../detector'
+import { IRequestor } from '../requestor'
 
 interface IPasswordInfo {
   readonly password: string
@@ -55,12 +57,12 @@ function _passwordInfo(password: string): IPasswordInfo {
  * Run a validator against a password/info and return any errors
  * it generates.
  */
-function _runValidator(
-  validator: IValidator,
+function _runRequestor(
+  item: IRequestor,
   info: IPasswordInfo,
 ): IValidatorError[] {
   // Create a set of the requested stats items.
-  const request = new Set(validator.request || [])
+  const request = new Set(item.request || [])
 
   // The arguments to be passed to the validation handler.
   const args: any[] = []
@@ -72,7 +74,7 @@ function _runValidator(
   args.push.apply(args, _requests)
 
   // Run validation.
-  return validator.validate(...args)
+  return item.exec(...args)
 }
 
 /**
@@ -162,7 +164,7 @@ export class NeoCore {
           // Get the validator plugin.
           const _validator = resolver.resolve<IValidator>('validator', validator)
           // Run the validator.
-          const errors = _runValidator(_validator, pInfo)
+          const errors = _runRequestor(_validator, pInfo)
           // Update strength.
           strength = _applyEvalErrors(errors, strength, weight)
           // Add errors to the list.
@@ -184,6 +186,17 @@ export class NeoCore {
      *
      */
     this.validate = function validate(password: string,validators?: PluginInfo[]): IValidatorError[] {
+      // Get the password info object.
+      const info = _passwordInfo(password)
+
+      if (config.passphrase != null) {
+        const detector = resolver.resolve<IDetector>('detector', config.passphrase)
+        const isPassphrase = _runRequestor(detector, info)
+        if (isPassphrase) {
+          return []
+        }
+      }
+
       // Get validators from config if not given in arg list.
       validators = Array.isArray(validators) && validators.length > 0
         ? validators : config.validators
@@ -197,15 +210,12 @@ export class NeoCore {
       const _validators = validators.map(validator =>
         resolver.resolve<IValidator>('validator', validator))
 
-      // Get the password info object.
-      const info = _passwordInfo(password)
-
       /**
        * Get a list of validation errors by executing all
        * validators against the password and password info.
        */
       const errors = _validators.reduce((errList, validator) => {
-        const _errors = _runValidator(validator, info)
+        const _errors = _runRequestor(validator, info)
         return errList.push.apply(errList, _errors) && errList || errList
       }, [] as IValidatorError[])
 
