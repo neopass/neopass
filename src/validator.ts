@@ -1,7 +1,6 @@
 import { IPasswordInfo } from './core/password-info'
 import { IPlugin, PluginType } from './plugin'
-
-export type RequestType = keyof IPasswordInfo
+import { RequestType } from './core/request-type'
 
 export interface IValidatorError {
   name: string,
