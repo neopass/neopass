@@ -16,7 +16,7 @@ const neo = new NeoPass({
 })
 
 describe('LengthValidator', () => {
-  it('generates error when length threshhold is not met', () => {
+  it('generates error when length threshold is not met', () => {
     const errors = neo.validate('abcdefg')
     const [{name, score = -1}] = errors
 

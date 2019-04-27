@@ -16,7 +16,7 @@ const neo = new NeoPass({
 })
 
 describe('DepthValidator', () => {
-  it('generates error when depth threshhold is not met', () => {
+  it('generates error when depth threshold is not met', () => {
     const errors = neo.validate('abcdefg')
     const [{name, score = -1}] = errors
 
