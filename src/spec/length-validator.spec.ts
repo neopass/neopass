@@ -31,7 +31,7 @@ describe('LengthValidator', () => {
     })
 
     assert.throws(() => {
-      neo.validate('abcdefg', ['length:true'])
+      neo.validate('abcdefg', ['length:min=true,max=false'])
     })
   })
 
