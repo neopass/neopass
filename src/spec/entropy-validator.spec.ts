@@ -21,6 +21,7 @@ describe('EntropyValidator', () => {
     const [{name, score=-1}] = errors
 
     assert.strictEqual(errors.length, 1)
+    assert.strictEqual(score > 0 && score < 1, true)
     assert.strictEqual(name, 'entropy')
   })
 
