@@ -16,12 +16,12 @@ export class SequenceValidator extends ValidatorPlugin {
     return `password contains at least ${num} character sequence(s)`
   }
 
-  inSequence(max: number, pass: string): string[] {
+  sequences(max: number, pass: string): number {
     const num = max + 1
     const expr = String.raw`([a-z]{${num},})|([0-9]{${num},})`
     const parser = new RegExp(expr, 'gi')
 
-    let offending: string[] = []
+    let offending = 0
 
     regexEach(parser, pass, (match) => {
       const candidate = (match[1] || match[2]).toLowerCase()
@@ -39,7 +39,7 @@ export class SequenceValidator extends ValidatorPlugin {
         }
 
         if (inSequence + 1 > max) {
-          offending.push(candidate)
+          offending += 1
           inSequence = 0
         }
       }
@@ -55,14 +55,14 @@ export class SequenceValidator extends ValidatorPlugin {
 
     const name = this.name
     const message = this.message
-    const inSequence = this.inSequence
+    const inSequence = this.sequences
 
     const validator: IValidator = {
       request: ['password'],
       exec(password: string) {
         const offending = inSequence(max, password)
-        if (offending.length > 0) {
-          return [{ name, message: message(offending.length) }]
+        if (offending > 0) {
+          return [{ name, message: message(offending) }]
         }
         return []
       }

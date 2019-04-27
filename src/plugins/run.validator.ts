@@ -16,12 +16,12 @@ export class RunValidator extends ValidatorPlugin {
     return `password contains at least ${num} character run(s)`
   }
 
-  run(max: number, pass: string): string[] {
+  runs(max: number, pass: string): number {
     const num = max + 1
     const expr = String.raw`([a-z]{${num},})|([0-9]{${num},})`
     const parser = new RegExp(expr, 'gi')
 
-    let offending: string[] = []
+    let offending = 0
     regexEach(parser, pass, (match) => {
       const candidate = match[1] || match[2]
       const chars = Array.from(candidate)
@@ -38,7 +38,7 @@ export class RunValidator extends ValidatorPlugin {
         }
 
         if (run + 1 > max) {
-          offending.push(candidate)
+          offending += 1
           run = 0
         }
       }
@@ -54,14 +54,14 @@ export class RunValidator extends ValidatorPlugin {
 
     const name = this.name
     const message = this.message
-    const run = this.run
+    const run = this.runs
 
     const validator: IValidator = {
       request: ['password'],
       exec(password: string) {
         const offending = run(max, password)
-        if (offending.length > 0) {
-          return [{ name, message: message(offending.length) }]
+        if (offending > 0) {
+          return [{ name, message: message(offending), meta: offending }]
         }
         return []
       }
