@@ -20,7 +20,6 @@ describe('EntropyValidator', () => {
     const errors = neo.validate('abcdefg')
     const [{name, score=-1}] = errors
 
-    console.log(score)
     assert.strictEqual(errors.length, 1)
     assert.strictEqual(name, 'entropy')
   })
