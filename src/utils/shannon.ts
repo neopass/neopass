@@ -12,6 +12,6 @@ export function shannon(str: string): number {
     // The probability of each character.
     const p = f/len
     // Accumulate Shannon entropy on the character's probability.
-    return sum -= p * Math.log2(p)
+    return sum - p * Math.log2(p)
   }, 0)
 }
