@@ -131,31 +131,31 @@ neopass.validators = {
   ],
 }
 
-/**
- *
- */
-neopass.middleware = {
-  password: function (template?: string) {
-    return (req: any, res: any) => {
-      res.render(template)
-    }
-  },
+// /**
+//  *
+//  */
+// neopass.middleware = {
+//   password: function (template?: string) {
+//     return (req: any, res: any) => {
+//       res.render(template)
+//     }
+//   },
 
-  generate: function (generators: any[]) {
-    return (req: any, res: any, next: () => void) => {
-      next()
-    }
-  },
+//   generate: function (generators: any[]) {
+//     return (req: any, res: any, next: () => void) => {
+//       next()
+//     }
+//   },
 
-  validate: function () {
-    return (req: any, res: any, next: () => void) => {
-      next()
-    }
-  },
+//   validate: function () {
+//     return (req: any, res: any, next: () => void) => {
+//       next()
+//     }
+//   },
 
-  evaluate: function () {
-    return (req: any, res: any, next: () => void) => {
-      next()
-    }
-  }
-}
+//   evaluate: function () {
+//     return (req: any, res: any, next: () => void) => {
+//       next()
+//     }
+//   }
+// }
