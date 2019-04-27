@@ -10,8 +10,7 @@
     "coverage": "nyc mocha",
     "load": "node ./util/file-loader ./src/views ./lib",
     "test": "npm run build && npm run coverage",
-    "test-dev": "npm run build-test && npm run coverage",
-    "test-watch": "nodemon -e ts --ignore '*.d.ts' --exec 'npm run build-test'",
+    "test-watch": "nodemon -e ts --ignore '*.d.ts' --exec 'npm run coverage'",
     "prepublishOnly": "npm run clean && npm run test",
     "word-gen": "./word-gen"
   },
