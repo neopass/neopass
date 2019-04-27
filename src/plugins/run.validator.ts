@@ -22,23 +22,25 @@ export class RunValidator extends ValidatorPlugin {
     const parser = new RegExp(expr, 'gi')
 
     let offending: string[] = []
-
     regexEach(parser, pass, (match) => {
       const candidate = match[1] || match[2]
       const chars = Array.from(candidate)
 
-      let runs = 0
+      let run = 0
       for (let i = 1; i < chars.length; i++) {
         const prev = chars[i-1]
         const curr = chars[i]
 
         if (curr === prev) {
-          runs += 1
+          run += 1
+        } else {
+          run = 0
         }
-      }
 
-      if (runs + 1 > max) {
-        offending.push(candidate)
+        if (run + 1 > max) {
+          offending.push(candidate)
+          run = 0
+        }
       }
     })
 

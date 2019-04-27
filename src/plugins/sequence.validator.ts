@@ -34,11 +34,14 @@ export class SequenceValidator extends ValidatorPlugin {
 
         if (curr === prev + 1 || curr + 1 === prev) {
           inSequence += 1
+        } else {
+          inSequence = 0
         }
-      }
 
-      if (inSequence + 1 > max) {
-        offending.push(candidate)
+        if (inSequence + 1 > max) {
+          offending.push(candidate)
+          inSequence = 0
+        }
       }
     })
 
