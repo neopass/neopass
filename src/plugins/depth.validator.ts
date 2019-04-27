@@ -18,7 +18,7 @@ export class DepthValidator extends ValidatorPlugin {
   configure(options: any, min: number): IValidator {
 
     if (typeof min !== 'number') {
-      throw new Error('depth validator requires a single argument')
+      throw new Error('depth validator requires a single numeric argument')
     }
 
     const name = this.name
