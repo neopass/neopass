@@ -1,17 +1,21 @@
 import { IBaseConfig } from './base-config'
 import { PluginStore } from './plugin-store'
 import { PluginResolver } from './plugin-resolver'
-import { PluginInfo, IPluginInfo } from '../plugin-info'
+import { PluginInfo } from '../plugin-info'
 import { IGenerator, Generate } from '../generator'
 import { IValidatorError, IValidator } from '../validator'
 import { classDepth, topology as _topology } from '../topology'
 import { IEvaluator } from '../evaluator'
 import { IEvaluatorInfo } from '../evaluator-info'
 import { IGeneratorInfo } from '../generator-info'
-import { entropy } from '../utils/entropy'
-import { shannon } from '../utils/shannon'
 import { IDetector } from '../detector'
 import { IRequestor } from '../requestor'
+
+import {
+  reduceClasses,
+  entropy,
+  shannon,
+} from '../utils'
 
 interface IPasswordInfo {
   readonly password: string
@@ -26,14 +30,6 @@ interface IPasswordInfo {
 export type RequestType = keyof IPasswordInfo
 
 /**
- * Reduce a topology to its constituent classes.
- */
-function _reduceClasses(topology: string): string {
-  const topoSet = new Set([...topology])
-  return [...topoSet].sort().join('')
-}
-
-/**
  * Generate a password info object.
  */
 function _passwordInfo(password: string): IPasswordInfo {
@@ -45,7 +41,7 @@ function _passwordInfo(password: string): IPasswordInfo {
     depth,
     topology,
     length: password.length,
-    classes: _reduceClasses(topology),
+    classes: reduceClasses(topology),
     entropy: entropy(depth),
     shannon: shannon(password)
   }
