@@ -5,7 +5,7 @@ export interface IDetector extends IRequestor {
   exec(...args: any[]): boolean
 }
 
-export abstract class DetectorPlugin implements IPlugin<IRequestor> {
+export abstract class DetectorPlugin implements IPlugin<IDetector> {
   public abstract type: PluginType
   public abstract name: string
   public abstract configure(...args: any[]): IDetector
