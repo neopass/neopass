@@ -31,7 +31,7 @@
     "middleware"
   ],
   "author": "James Abney",
-  "license": "BSD-3-Clause",
+  "license": "MIT",
   "devDependencies": {
     "@types/mocha": "^5.2.3",
     "@types/node": "^10.5.8",
