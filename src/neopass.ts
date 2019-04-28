@@ -99,12 +99,24 @@ neopass.evaluate = evaluate
 function validate(
   password: string,
   validators?: null|PluginInfo[],
-  passphrase?: PluginInfo): IValidatorError[]
-{
+  passphrase?: PluginInfo
+): IValidatorError[] {
   return _core.validate(password, validators, passphrase)
 }
 
 neopass.validate = validate
+
+/**
+ * Run a validation chain against a password.
+ */
+function verify(password: string) {
+  return {
+    validation: neopass.validate(password),
+    evaluation: neopass.evaluate(password)
+  }
+}
+
+neopass.verify = verify
 
 /**
  * Get a list of registered generators.
