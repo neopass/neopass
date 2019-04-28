@@ -2,7 +2,6 @@ import { CharSet } from '../types'
 import { randomFloat, randomIn } from './random'
 import { fill } from './fill'
 import { probabilities } from './probabilities'
-import { charSet } from '../topology'
 
 /**
  * Generate a random string of the given length from the given list
