@@ -204,6 +204,75 @@ Output:
 errors: []
 ```
 
+### Optional $ules
+
+If you want optional rules - that is, rules that are considered warnings instead of errors - you can use both the validation chain and the evaluation chain together.
+
+```typescript
+import neopass, { INeoConfig } from 'neopass'
+
+const config: INeoConfig = {
+  validators: [
+    'length:min=10,max=72',
+    'classes:and=ul,or=ds',
+  ],
+
+  evaluators: [
+    {
+      validators: [
+        'shannon:32',
+        'entropy:64',
+        'topology:standard=true',
+      ],
+    },
+  ],
+}
+
+neopass(config)
+
+function verify(password: string) {
+  const result = {
+    validation: neopass.validate(password),
+    evaluation: neopass.evaluate(password),
+  }
+  return result
+}
+
+console.log(verify('Denver2016'))
+```
+
+Output:
+
+```
+{
+  validation: [],
+  evaluation: [
+    {
+      strength: 0.9076451535093485,
+      warnings:
+      [
+        {
+          name: 'shannon',
+          msg: 'password is too simple',
+          score: 0.9756025296523007
+        },
+        {
+          name: 'entropy',
+          msg: 'password is either too short or not complex enough',
+          score: 0.9303431734979493
+        },
+        {
+          name: 'topology',
+          message: 'password matches vulnerable pattern topology'
+        }
+      ]
+    }
+  ]
+}
+```
+
+The `neopass.verify` helper function does this for you.
+
 ### Plugins
 
 Config:
