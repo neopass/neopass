@@ -130,15 +130,15 @@ export function classes(value: string|TopoChar[]): IClassMap {
 /**
  *
  */
-export function classList(topoStr: string): CharSet
+export function charSet(topoStr: string): CharSet
 /**
  *
  */
-export function classList(topoChars: TopoChar[]): CharSet
+export function charSet(topoChars: TopoChar[]): CharSet
 /**
  *
  */
-export function classList(value: string|TopoChar[]): CharSet {
+export function charSet(value: string|TopoChar[]): CharSet {
   if (typeof value === 'string') {
     const topo = toTopoChars(value)
     return _classList(topo)

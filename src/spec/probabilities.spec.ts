@@ -1,6 +1,6 @@
 import assert from 'assert'
 import { probabilities } from '../utils'
-import { classList } from '../topology'
+import { charSet } from '../topology'
 import { cardinality, rangeSize, concatAll } from '../utils'
 import { RangeData, Range, CharSet } from '../types'
 
@@ -9,7 +9,7 @@ describe('probabilities', () => {
   it('calculates character set probabilities', () => {
     let prob: RangeData[]
 
-    const charset1 = classList('ulds')
+    const charset1 = charSet('ulds')
     prob = probabilities(charset1)
     const total = prob.reduce((sum, data) => sum + data[0], 0)
     assert(total === 1)

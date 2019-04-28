@@ -2,7 +2,7 @@ import { CharSet } from '../types'
 import { randomFloat, randomIn } from './random'
 import { fill } from './fill'
 import { probabilities } from './probabilities'
-import { classList } from '../topology'
+import { charSet } from '../topology'
 
 /**
  * Generate a random string of the given length from the given list
@@ -50,6 +50,6 @@ export function generate(length: number, classes: CharSet) {
  */
 function _password(length: number, topoStr: string): string {
   const topoChars = [...new Set([...topoStr])]
-  const _classList = classList(topoChars.join(''))
+  const _classList = charSet(topoChars.join(''))
   return generate(length, _classList)
 }
