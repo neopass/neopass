@@ -233,7 +233,6 @@ export class NeoCore {
        * Get a list of validation errors by executing all
        * validators against the password and password info.
        */
-
       const errors: IValidatorError[] = []
 
       for (let i = 0; i < _validators.length; i++) {
@@ -254,7 +253,7 @@ export class NeoCore {
      *
      */
     this.generators = function generators(): IGeneratorInfo[] {
-      const generators = <IGenerator[]>store.getAll('generator')
+      const generators = store.getAll('generator') as IGenerator[]
 
       // Create a list of generator info objects.
       const infoList = generators.map((gen) => {
