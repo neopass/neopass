@@ -1,5 +1,8 @@
+[![Build Status](https://travis-ci.org/neopass/neopass.svg?branch=master)](https://travis-ci.org/neopass/neopass)
+[![codecov](https://codecov.io/gh/neopass/neopass/branch/master/graph/badge.svg)](https://codecov.io/gh/neopass/neopass)
+
 # neopass
-A password validation and generation tool kit - simple to use yet maximally flexible.
+A password validation and generation tool kit
 
 - Password generation
 - Password validation
