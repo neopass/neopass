@@ -29,9 +29,9 @@ interface IPasswordInfo {
 
 export type RequestType = keyof IPasswordInfo
 
-interface IRunResult {
+interface IRunResult<T> {
   halt: boolean
-  data: any
+  data: T
 }
 
 /**
@@ -58,10 +58,10 @@ function _passwordInfo(password: string): IPasswordInfo {
  * Run a validator against a password/info and return any errors
  * it generates.
  */
-function _runRequestor(
+function _runRequestor<T>(
   item: IRequestor,
   info: IPasswordInfo,
-): IRunResult {
+): IRunResult<T> {
   // Create a set of the requested stats items.
   const request = new Set(item.request || [])
 
@@ -177,7 +177,7 @@ export class NeoCore {
           // Get the validator plugin.
           const _validator = resolver.resolve<IValidator>('validator', validator)
           // Run the validator.
-          const result = _runRequestor(_validator, pInfo)
+          const result = _runRequestor<IValidatorError[]>(_validator, pInfo)
           // Update strength.
           strength = _applyEvalErrors(result.data, strength, weight)
           // Add errors to the list.
@@ -210,8 +210,8 @@ export class NeoCore {
       // Run passphrase detection.
       if (passphrase != null) {
         const detector = resolver.resolve<IDetector>('detector', passphrase)
-        const result = _runRequestor(detector, info)
-        const isPassphrase: boolean = result.data
+        const result = _runRequestor<boolean>(detector, info)
+        const isPassphrase = result.data
         // If a passphrase is detected, halt further validation.
         if (isPassphrase) { return [] }
       }
@@ -233,13 +233,21 @@ export class NeoCore {
        * Get a list of validation errors by executing all
        * validators against the password and password info.
        */
-      const errors = _validators.reduce((errList, validator) => {
-        const result = _runRequestor(validator, info)
-        return errList.push.apply(errList, result.data) && errList || errList
-      }, [] as IValidatorError[])
+
+      const _errors: IValidatorError[] = []
+
+      for (let i = 0; i < _validators.length; i++) {
+        const validator = _validators[i]
+        const result = _runRequestor<IValidatorError[]>(validator, info)
+        _errors.push.apply(_errors, result.data)
+
+        if (result.halt) {
+          return _errors
+        }
+      }
 
       // Return generated errors.
-      return errors
+      return _errors
     }
 
     /**
