@@ -127,7 +127,7 @@ export class TopologyValidator extends ValidatorPlugin {
     const name = this.name
     const bypass = this.bypass
     const topologyMatch = this.topologyMatch
-    const message = 'password matches easily-guessable pattern topology'
+    const message = 'password matches vulnerable pattern topology'
 
     const validator: IValidator = {
       request: ['topology', 'entropy', 'shannon', 'length'],
