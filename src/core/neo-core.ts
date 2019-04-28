@@ -234,20 +234,20 @@ export class NeoCore {
        * validators against the password and password info.
        */
 
-      const _errors: IValidatorError[] = []
+      const errors: IValidatorError[] = []
 
       for (let i = 0; i < _validators.length; i++) {
         const validator = _validators[i]
         const result = _runRequestor<IValidatorError[]>(validator, info)
-        _errors.push.apply(_errors, result.data)
+        errors.push.apply(errors, result.data)
 
         if (result.halt) {
-          return _errors
+          return errors
         }
       }
 
       // Return generated errors.
-      return _errors
+      return errors
     }
 
     /**
