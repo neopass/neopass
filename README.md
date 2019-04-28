@@ -4,10 +4,10 @@
 # neopass
 A password validation and generation tool kit
 
-- Password generation
-- Password validation
-- Password strength
-- Passphrase support
+- [Password generation](#password-generation)
+- [Password validation](#the-validation-chain)
+- [Password strength](#the-evaluation-chain)
+- [Passphrase support](#passphrase-detection)
 
 "The only good password is a random password of sufficient entropy." - _unknown_
 
@@ -15,7 +15,7 @@ A password validation and generation tool kit
 
 This package is currently under development and the interface is unstable. While the package remains at `0.x.y`, the minor version will be updated when known breaking changes occur.
 
-Currently geared toward English passwords and passphrases.
+_Currently geared toward English passwords and passphrases._
 
 ## Basics
 
@@ -113,7 +113,7 @@ errors: [
 ]
 ```
 
-## The Evaluation Chain
+### The Evaluation Chain
 
 The evaluation chain reports a password's strength based on configured evaluators.
 
@@ -166,7 +166,7 @@ result: {
 }
 ```
 
-## Passphrase Detection
+### Passphrase Detection
 
 Passphrases are long passwords typically comprised of multiple words. These
 are considered to be more secure than shorter, mixed-class passwords. If configured,
@@ -179,7 +179,7 @@ const config: INeoConfig = {
   useBuiltinDetectorss: true, // default
 
   // Configure the passphrase detector for passwords of 20 or more characters.
-  passphrase: 'passphrase:20',
+  passphrase: 'passphrase:min=20',
 
   // These are run when validate is called.
   validators: [
@@ -204,7 +204,7 @@ Output:
 errors: []
 ```
 
-## Plugins
+### Plugins
 
 Config:
 
@@ -214,11 +214,16 @@ import neopass, { INeoConfig } from 'neopass'
 import {
   // Generators
   LettersNumbersGenerator,
+  RandomGenerator,
   // Validators
+  ClassesValidator,
+  DepthValidator,
   EntropyValidator,
-  ShannonValidator,
-  SequenceValidator,
+  LengthValidator,
   RunValidator,
+  SequenceValidator,
+  ShannonValidator,
+  TopologyValidator,
 } from 'neopass/plugins'
 
 /**
@@ -241,6 +246,7 @@ const config: INeoConfig = {
     'shannon:32',
     'sequence:3',
     'run:2',
+    'topology:standard=true',
   ]
 }
 
@@ -286,23 +292,29 @@ Output:
 
 ```
 errors: [
+[
   {
     name: 'entropy',
     msg: 'password is either too short or not complex enough',
-    score: 0.8078007814753613,
+    score: 0.8078007814753613
   },
   {
     name: 'shannon',
     msg: 'password is too simple',
-    score: 0.8895122952096924,
+    score: 0.8895122952096924
   },
   {
     name: 'sequence',
-    message: 'password contains at least 1 character sequence(s)'
+    message: 'password contains at least 2 character sequence(s)'
   },
   {
     name: 'run',
-    message: 'password contains at least 1 character run(s)'
+    message: 'password contains at least 1 character run(s)',
+    meta: 1
+  },
+  {
+    name: 'topology',
+    message: 'password matches vulnerable pattern topology'
   }
 ]
 ```
