@@ -1,7 +1,6 @@
 import assert from 'assert'
 import { NeoPass } from '../neo-pass'
 import { TopologyValidator } from '../plugins'
-import { entropy, shannon } from '../utils'
 
 const neo = new NeoPass({
   plugins: [ new TopologyValidator() ],
