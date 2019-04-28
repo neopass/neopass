@@ -13,7 +13,7 @@ A password validation and generation tool kit
 
 ## Under development
 
-This package is currently under development and the interface is unstable. While the package remains at `0.x.y`, the minor version will be updated when known breaking changes occur.
+This package is currently under development and the interface is unstable. While the package remains at version `0.x.y`, the minor version will be updated when known breaking changes occur.
 
 _Currently geared toward English passwords and passphrases._
 
