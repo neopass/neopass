@@ -1,5 +1,4 @@
 import { IPlugin, PluginType } from './plugin'
-import { RequestType } from './core/neo-core'
 import { IRequestor } from './requestor'
 
 export interface IValidatorError {
