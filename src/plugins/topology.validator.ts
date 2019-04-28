@@ -38,6 +38,9 @@ const _standardPatterns = [
   /^l+s+d+$/,     // lsd
 
   /^u+l+d+s+$/,     // ulds
+  // /^u+l+u+l+s+$/,   // ululs
+  // /^u+l+u+l+d+$/,   // ululd
+  // /^u+l+u+l+d+s+$/, // ululds
 ]
 
 interface IBitsInfo {
