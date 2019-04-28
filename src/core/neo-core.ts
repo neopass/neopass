@@ -59,7 +59,7 @@ function _passwordInfo(password: string): IPasswordInfo {
  * it generates.
  */
 function _runRequestor<T>(
-  item: IRequestor,
+  item: IRequestor<any>,
   info: IPasswordInfo,
 ): IRunResult<T> {
   // Create a set of the requested stats items.

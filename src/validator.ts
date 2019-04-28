@@ -9,7 +9,7 @@ export interface IValidatorError {
   meta?: any,
 }
 
-export interface IValidator extends IRequestor {
+export interface IValidator extends IRequestor<IValidatorError[]> {
   exec(...args: any[]): IValidatorError[]
 }
 
