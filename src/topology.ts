@@ -51,7 +51,7 @@ function _classes(topoChars: TopoChar[]) {
 /**
  * Convert a list of topology characters into a character set.
  */
-function _classList(topoChars: TopoChar[]) {
+function _charSet(topoChars: TopoChar[]) {
   return topoChars.reduce((list, char) => {
     list.push(_charClasses[char])
     return list
@@ -141,9 +141,9 @@ export function charSet(topoChars: TopoChar[]): CharSet
 export function charSet(value: string|TopoChar[]): CharSet {
   if (typeof value === 'string') {
     const topo = toTopoChars(value)
-    return _classList(topo)
+    return _charSet(topo)
   }
-  return _classList(value)
+  return _charSet(value)
 }
 
 /**

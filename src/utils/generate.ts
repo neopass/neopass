@@ -50,6 +50,6 @@ export function generate(length: number, classes: CharSet) {
  */
 function _password(length: number, topoStr: string): string {
   const topoChars = [...new Set([...topoStr])]
-  const _classList = charSet(topoChars.join(''))
-  return generate(length, _classList)
+  const set = charSet(topoChars.join(''))
+  return generate(length, set)
 }
