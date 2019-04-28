@@ -4,7 +4,7 @@ import { shannon } from '../utils'
 
 describe('neopass', () => {
   neopass({
-    passphrase: 'passphrase:20',
+    passphrase: 'passphrase:min=20',
     validators: ['length:min=10,max=20'],
     evaluators: [{ validators: ['shannon:32'] }],
   })
@@ -66,7 +66,7 @@ describe('neopass', () => {
   })
 
   it('bypasses registered passphrase detector', () => {
-    const result = neopass.validate('abcdefg', null, 'passphrase:5')
+    const result = neopass.validate('abcdefg', null, 'passphrase:min=5')
     assert(result.length === 0)
   })
 })
