@@ -11,7 +11,7 @@
     "codecov": "npm run coverage && codecov -t $CODECOV_TOKEN",
     "load": "source .env && node ./util/file-loader ./src/views ./lib",
     "test": "npm run build && npm run coverage",
-    "test-watch": "nodemon -e ts --ignore '*.d.ts' --exec 'npm run coverage'",
+    "test-watch": "nodemon -e ts --ignore '*.d.ts' --exec 'mocha'",
     "prepublishOnly": "npm run clean && npm run test",
     "word-gen": "./word-gen"
   },
