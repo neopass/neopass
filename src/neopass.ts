@@ -1,12 +1,12 @@
 import { NeoPass } from './neo-pass'
 import { Validator, IValidatorError } from './validator'
 import { Generator } from './generator'
-import { Detector } from './detector'
 import { PluginInfo } from './plugin-info'
 import { INeoConfig } from './neo-config'
 import { IEvaluator } from './evaluator'
 import { IEvaluatorInfo } from './evaluator-info'
 import { IGeneratorInfo } from './generator-info'
+import { IVerifyResult } from './verify-result'
 
 import {
   ClassesValidator,
@@ -100,16 +100,10 @@ neopass.validate = validate
 /**
  * Run a validation chain against a password.
  */
-function verify(password: string) {
-  const errors = neopass.validate(password)
-  const info = neopass.evaluate(password)
-
-  const report = {
-    errors,
-    warnings: info.warnings
-  }
-
-  return report
+function verify(
+  password: string, validators?: null|PluginInfo[], evaluators?: IEvaluator[]
+): IVerifyResult {
+  return _core.verify(password, validators, evaluators)
 }
 
 neopass.verify = verify
