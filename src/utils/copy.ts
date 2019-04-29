@@ -5,11 +5,15 @@ export function copyRange(range: Range): Range {
 }
 
 export function copyClass(cls: CharClass) {
-  return cls.reduce((newClass: CharClass, range: Range) =>
-    newClass.push(copyRange(range)) && newClass || newClass, [] as CharClass)
+  return cls.reduce((newClass: CharClass, range: Range) => {
+    newClass.push(copyRange(range))
+    return newClass
+  }, [] as CharClass)
 }
 
 export function copySet(classes: CharSet) {
-  return classes.reduce((newCls, cls: CharClass) =>
-    newCls.push(copyClass(cls)) && newCls || newCls, [] as CharSet)
+  return classes.reduce((newSet, cls: CharClass) => {
+    newSet.push(copyClass(cls))
+    return newSet
+  }, [] as CharSet)
 }
