@@ -63,4 +63,12 @@ describe('neopass', () => {
     assert(warnings.length === 1)
     assert(warning.name === 'entropy')
   })
+
+  it('verifies a password', () => {
+    const result = neopass.verify('abcdefghi')
+    const {errors, warnings} = result
+
+    assert.strictEqual(errors.length, 1)
+    assert.strictEqual(warnings.length, 1)
+  })
 })
