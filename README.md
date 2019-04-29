@@ -381,3 +381,71 @@ errors: [
   }
 ]
 ```
+
+#### Authoring a Validator Plugin
+
+```typescript
+import { IValidator, ValidatorPlugin, IValidatorError } from 'neopass'
+
+/**
+ * A simplified version of the LenthValidator plugin
+ */
+export class SimpleLengthValidator extends ValidatorPlugin {
+  // Implement required plugin name as a getter.
+  get name(): string { return 'simple-length' }
+
+  /**
+   * This gets called to pass arguments to the plugin. For example,
+   *
+   *   validators: [ 'simple-length:10' ]
+   *
+   * will pass the number 10 to the configure method.
+   */
+  configure(options: any, min: number): IValidator {
+    const name = this.name  // alias for use in exec
+    const msg = 'password too short!'
+
+    const validator: IValidator = {
+      // Any requested password stats will be passed to exec, in order.
+      request: ['length'],
+
+      // The validation logic.
+      exec(length: number): IValidatorError[] {
+        if (length < min) {
+          // Return one or more error objects.
+          return [{ name, msg }]
+        }
+        // No errors!
+        return []
+      }
+    }
+
+    return validator
+  }
+}
+```
+
+Configuration:
+
+```typescript
+import { SimpleLengthValidator } from './somewhere'
+
+neopass({
+  plugins: [
+    new SimpleLengthValidator()
+  ],
+
+  validators: [
+    'simple-length:10'
+  ]
+})
+
+neopass.validate('abc')
+
+```
+
+Output:
+
+```
+[ { name: 'simple-length', msg: 'password too short!' } ]
+```
