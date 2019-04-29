@@ -1,5 +1,4 @@
-import { PluginType } from '../plugin'
-import { IValidator, ValidatorPlugin } from '../validator'
+import { IValidator, ValidatorPlugin, IValidatorError } from '../validator'
 import regexEach from 'regex-each'
 
 export class SequenceValidator extends ValidatorPlugin {
@@ -55,10 +54,10 @@ export class SequenceValidator extends ValidatorPlugin {
 
     const validator: IValidator = {
       request: ['password'],
-      exec(password: string) {
+      exec(password: string): IValidatorError[] {
         const offending = inSequence(max, password)
         if (offending > 0) {
-          return [{ name, message: message(offending) }]
+          return [{ name, msg: message(offending) }]
         }
         return []
       }
