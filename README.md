@@ -166,7 +166,7 @@ result: {
 
 ### Passphrase Detection
 
-Passphrases are long passwords typically comprised of multiple words. These
+[Passphrases](https://xkcd.com/936/) are long passwords typically comprised of multiple words. These
 are considered to be more secure than shorter, mixed-class passwords. If configured,
 `neopass` will detect a passphrase and bypass additional validation in the validation chain.
 
