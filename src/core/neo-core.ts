@@ -110,7 +110,7 @@ function _applyEvalErrors(errors: IValidatorError[], strength: number, weight?: 
 export class NeoCore {
   public generate: (len: number, generator: PluginInfo, retries?: number) => string
   public evaluate: (password: string, evaluators?: IEvaluator[]) => IEvaluatorInfo
-  public validate: (password: string, validators?: null|PluginInfo[], passphrase?: PluginInfo) => IValidatorError[]
+  public validate: (password: string, validators?: null|PluginInfo[]) => IValidatorError[]
   public generators: () => IGeneratorInfo[]
 
   constructor(config: IBaseConfig, store: PluginStore, resolver: PluginResolver) {
@@ -193,7 +193,7 @@ export class NeoCore {
      *
      */
     this.validate = function validate(
-      password: string, validators?: null|PluginInfo[], passphrase?: PluginInfo): IValidatorError[] {
+      password: string, validators?: null|PluginInfo[]): IValidatorError[] {
 
       // Get the password info object.
       const info = _passwordInfo(password)
