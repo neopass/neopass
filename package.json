@@ -8,9 +8,9 @@
     "build-test": "tsc",
     "clean": "rm -rf lib",
     "cover": "nyc mocha",
-    "codecov": "npm run cover && codecov -t $CODECOV_TOKEN",
+    "codecov": "source .env && npm run cover && codecov -t $CODECOV_TOKEN",
     "load": "source .env && node ./util/file-loader ./src/views ./lib",
-    "test": "npm run build && npm run cover",
+    "test": "npm run build && mocha",
     "test-watch": "nodemon -e ts --ignore '*.d.ts' --exec 'mocha'",
     "prepublishOnly": "npm run clean && npm run test",
     "word-gen": "./word-gen"
