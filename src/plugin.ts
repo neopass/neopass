@@ -1,4 +1,4 @@
-export type PluginType = 'validator'|'generator'|'detector'
+export type PluginType = 'validator'|'generator'
 
 export interface IPlugin<T = any> {
   type: PluginType
