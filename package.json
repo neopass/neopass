@@ -7,10 +7,10 @@
     "build": "tsc && npm run load",
     "build-test": "tsc",
     "clean": "rm -rf lib",
-    "coverage": "nyc mocha",
-    "codecov": "npm run coverage && codecov -t $CODECOV_TOKEN",
+    "cover": "nyc mocha",
+    "codecov": "npm run cover && codecov -t $CODECOV_TOKEN",
     "load": "source .env && node ./util/file-loader ./src/views ./lib",
-    "test": "npm run build && npm run coverage",
+    "test": "npm run build && npm run cover",
     "test-watch": "nodemon -e ts --ignore '*.d.ts' --exec 'mocha'",
     "prepublishOnly": "npm run clean && npm run test",
     "word-gen": "./word-gen"
