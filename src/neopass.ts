@@ -26,7 +26,6 @@ import {
 const _defaultConfig: INeoConfig = {
   useBuiltinGenerators: true,
   useBuiltinValidators: true,
-  useBuiltinDetectors: true,
 }
 
 // Built-in generators.
@@ -41,14 +40,11 @@ const _builtinValidators: Validator[] = [
   DepthValidator,
   EntropyValidator,
   LengthValidator,
+  PassphraseDetector,
   RunValidator,
   SequenceValidator,
   ShannonValidator,
   TopologyValidator,
-]
-
-const _builtinDetectors: Detector[] = [
-  PassphraseDetector,
 ]
 
 /**
@@ -68,8 +64,7 @@ export function neopass(config?: INeoConfig|null) {
     _core = new NeoPass(
       config,
       config.useBuiltinGenerators ? _builtinGenerators : [],
-      config.useBuiltinValidators ? _builtinValidators : [],
-      config.useBuiltinDetectors  ? _builtinDetectors : [])
+      config.useBuiltinValidators ? _builtinValidators : [])
   }
 
   return neopass

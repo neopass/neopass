@@ -5,7 +5,6 @@ import { PluginResolver } from './core/plugin-resolver'
 import { IPlugin } from './plugin'
 import { Generator } from './generator'
 import { Validator } from './validator'
-import { Detector } from './detector'
 
 /**
  *
@@ -16,7 +15,7 @@ function _registerPlugins(store: PluginStore, plugins: IPlugin[]) {
 
 export class NeoPass extends NeoCore {
 
-  constructor(config?: IBaseConfig, generators?: Generator[], validators?: Validator[], detectors?: Detector[]) {
+  constructor(config?: IBaseConfig, generators?: Generator[], validators?: Validator[]) {
     const store = new PluginStore(['validator', 'generator'])
     const resolver = new PluginResolver(store)
 
@@ -30,10 +29,6 @@ export class NeoPass extends NeoCore {
 
     if (Array.isArray(validators)) {
       _registerPlugins(store, validators.map(V => new V()))
-    }
-
-    if (Array.isArray(detectors)) {
-      _registerPlugins(store, detectors.map(D => new D()))
     }
 
     const plugins: IPlugin[] = config.plugins || []
