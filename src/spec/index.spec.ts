@@ -4,8 +4,7 @@ import { shannon } from '../utils'
 
 describe('neopass', () => {
   neopass({
-    passphrase: 'passphrase:min=20',
-    validators: ['length:min=10,max=20'],
+    validators: ['length:min=10,max=72'],
     evaluators: [{ validators: ['shannon:32'] }],
   })
 
@@ -18,18 +17,18 @@ describe('neopass', () => {
   })
 
   it('evaluates a password', () => {
-    const weak = neopass.evaluate('abcdefg')
-    assert(weak.strength < 1)
+    const fail = neopass.evaluate('abcdefg')
+    assert(fail.strength < 1)
 
-    const strong = neopass.evaluate('abcdefghij')
-    assert(strong.strength >= 1)
+    const pass = neopass.evaluate('abcdefghij')
+    assert(pass.strength >= 1)
   })
 
   it('detects a passphrase', () => {
     const noPhrase = neopass.validate('abcdefg')
     assert.strictEqual(noPhrase.length, 1)
 
-    const phrase = neopass.validate('abcdefghijklmnopqrst', ['shannon:128'])
+    const phrase = neopass.validate('abcdefghijklmnopqrst', ['passphrase:min=20', 'shannon:128'])
     assert.strictEqual(phrase.length, 0)
   })
 
@@ -63,10 +62,5 @@ describe('neopass', () => {
     assert(strength < 1)
     assert(warnings.length === 1)
     assert(warning.name === 'entropy')
-  })
-
-  it('bypasses registered passphrase detector', () => {
-    const result = neopass.validate('abcdefg', null, 'passphrase:min=5')
-    assert(result.length === 0)
   })
 })
