@@ -1,11 +1,7 @@
 import { PluginType } from '../plugin'
-import { DetectorPlugin, IDetector } from '../detector'
+import { IDetector, DetectorPlugin } from '../detector'
 
 export class PassphraseDetector extends DetectorPlugin {
-
-  get type(): PluginType {
-    return 'detector'
-  }
 
   get name(): string {
     return 'passphrase'

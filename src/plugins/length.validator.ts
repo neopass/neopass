@@ -3,10 +3,6 @@ import { ValidatorPlugin, IValidator } from '../validator'
 
 export class LengthValidator extends ValidatorPlugin {
 
-  get type(): PluginType {
-    return 'validator'
-  }
-
   get name(): string {
     return 'length'
   }

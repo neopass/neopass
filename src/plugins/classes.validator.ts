@@ -12,10 +12,6 @@ const topoNames = new Map<TopoChar, string>([
 
 export class ClassesValidator extends ValidatorPlugin {
 
-  get type(): PluginType {
-    return 'validator'
-  }
-
   get name(): string {
     return 'classes'
   }

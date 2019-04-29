@@ -3,10 +3,6 @@ import { IValidator, ValidatorPlugin } from '../validator'
 
 export class EntropyValidator extends ValidatorPlugin {
 
-  get type(): PluginType {
-    return 'validator'
-  }
-
   get name(): string {
     return 'entropy'
   }

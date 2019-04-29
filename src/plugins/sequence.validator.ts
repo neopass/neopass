@@ -4,10 +4,6 @@ import regexEach from 'regex-each'
 
 export class SequenceValidator extends ValidatorPlugin {
 
-  get type(): PluginType {
-    return 'validator'
-  }
-
   get name(): string {
     return 'sequence'
   }

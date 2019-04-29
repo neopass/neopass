@@ -50,10 +50,6 @@ interface IBitsInfo {
 
 export class TopologyValidator extends ValidatorPlugin {
 
-  get type(): PluginType {
-    return 'validator'
-  }
-
   get name(): string {
     return 'topology'
   }
