@@ -14,7 +14,7 @@ export class LettersNumbersGenerator extends GeneratorPlugin {
 
     super()
 
-    this.configure = function fn(options: any): Generate {
+    this.configure = function configure(options: any): Generate {
       return function generate(len: number) {
         return _generate(len, _classes)
       }
