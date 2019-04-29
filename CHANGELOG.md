@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add `verify` function to neopass module.
 
 ## [0.5.0] - 2019-04-28
-- Rename `classList` utility to charSet.
+- Rename `classList` utility to `charSet`.
 
 ## [0.4.0] - 2019-04-27
 - Implement unit tests.
