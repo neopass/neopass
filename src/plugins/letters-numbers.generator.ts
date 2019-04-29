@@ -21,10 +21,6 @@ export class LettersNumbersGenerator extends GeneratorPlugin {
     }
   }
 
-  get type(): PluginType {
-    return 'generator'
-  }
-
   get name(): string {
     return 'letters-numbers'
   }
