@@ -5,7 +5,6 @@ import { IEvaluator } from '../evaluator'
 // Neopass configuration interface.
 export interface IBaseConfig {
   plugins?: IPlugin[]
-  passphrase?: PluginInfo
   validators?: PluginInfo[]
   evaluators?: IEvaluator[]
 }
