@@ -5,4 +5,5 @@ node_js:
   - "10"
   - "node"
 script:
+  - nyc mocha
   - codecov -t $CODECOV_TOKEN
