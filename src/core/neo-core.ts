@@ -8,7 +8,6 @@ import { classDepth, topology as _topology } from '../topology'
 import { IEvaluator } from '../evaluator'
 import { IEvaluatorInfo } from '../evaluator-info'
 import { IGeneratorInfo } from '../generator-info'
-import { IDetector } from '../detector'
 import { IRequestor } from '../requestor'
 
 import {
@@ -29,9 +28,9 @@ interface IPasswordInfo {
 
 export type RequestType = keyof IPasswordInfo
 
-interface IRunResult<T> {
+interface IRunResult {
   halt: boolean
-  data: T
+  errors: IValidatorError[]
 }
 
 /**
@@ -58,11 +57,7 @@ function _passwordInfo(password: string): IPasswordInfo {
  * Run a validator against a password/info and return any errors
  * it generates.
  */
-function _runRequestor<T>(
-  item: IRequestor<any>,
-  info: IPasswordInfo,
-  resolver: PluginResolver,
-): IRunResult<T> {
+function _runRequestor(item: IRequestor<any>, info: IPasswordInfo): IRunResult {
   // Create a set of the requested stats items.
   const request = new Set(item.request || [])
 
@@ -76,15 +71,13 @@ function _runRequestor<T>(
   args.push.apply(args, _requests)
 
   // Run validation.
-  // return item.exec(...args)
-  const errors = item.exec(...args)
+  const value = item.exec(...args)
 
-  const result = {
-    halt: false,
-    data: errors,
+  if (typeof value === 'boolean') {
+    return { halt: value, errors: [] }
   }
 
-  return result
+  return { halt: false, errors: value }
 }
 
 /**
@@ -178,11 +171,11 @@ export class NeoCore {
           // Get the validator plugin.
           const _validator = resolver.resolve<IValidator>('validator', validator)
           // Run the validator.
-          const result = _runRequestor<IValidatorError[]>(_validator, pInfo, resolver)
+          const result = _runRequestor(_validator, pInfo)
           // Update strength.
-          strength = _applyEvalErrors(result.data, strength, weight)
+          strength = _applyEvalErrors(result.errors, strength, weight)
           // Add errors to the list.
-          warningList.push.apply(warningList, result.data)
+          warningList.push.apply(warningList, result.errors)
         })
 
         return warningList
@@ -205,18 +198,6 @@ export class NeoCore {
       // Get the password info object.
       const info = _passwordInfo(password)
 
-      // Get passphrase from config if not given in arg list.
-      passphrase = passphrase || config.passphrase
-
-      // Run passphrase detection.
-      if (passphrase != null) {
-        const detector = resolver.resolve<IDetector>('detector', passphrase)
-        const result = _runRequestor<boolean>(detector, info, resolver)
-        const isPassphrase = result.data
-        // If a passphrase is detected, halt further validation.
-        if (isPassphrase) { return [] }
-      }
-
       // Get validators from config if not given in arg list.
       const hasValidators = Array.isArray(validators) && validators.length > 0
       validators = hasValidators ? validators : config.validators
@@ -227,8 +208,8 @@ export class NeoCore {
       }
 
       // Map supplied validator references to plugins.
-      const _validators = validators.map(validator =>
-        resolver.resolve<IValidator>('validator', validator))
+      const _validators = validators.map(item =>
+        resolver.resolve<IValidator>('validator', item))
 
       /**
        * Get a list of validation errors by executing all
@@ -238,8 +219,8 @@ export class NeoCore {
 
       for (let i = 0; i < _validators.length; i++) {
         const validator = _validators[i]
-        const result = _runRequestor<IValidatorError[]>(validator, info, resolver)
-        errors.push.apply(errors, result.data)
+        const result = _runRequestor(validator, info)
+        errors.push.apply(errors, result.errors)
 
         if (result.halt) {
           return errors
