@@ -1,5 +1,4 @@
-import { PluginType } from '../plugin'
-import { ValidatorPlugin, IValidator } from '../validator'
+import { ValidatorPlugin, IValidator, IValidatorError } from '../validator'
 
 export class LengthValidator extends ValidatorPlugin {
 
@@ -24,7 +23,7 @@ export class LengthValidator extends ValidatorPlugin {
 
     const validator: IValidator = {
       request: ['length'],
-      exec(length: number) {
+      exec(length: number): IValidatorError[] {
         if (length < min || length > max) {
           const score = length / min
           const meta = length < min ? 'min' : length > max ? 'max' : undefined

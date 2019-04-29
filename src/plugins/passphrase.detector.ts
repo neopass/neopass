@@ -16,7 +16,7 @@ export class PassphraseDetector extends DetectorPlugin {
 
     const validator: IDetector = {
       request: ['length'],
-      exec(length: number) {
+      exec(length: number): boolean {
         return length >= min
       }
     }

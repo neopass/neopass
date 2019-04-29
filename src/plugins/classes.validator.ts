@@ -1,4 +1,3 @@
-import { PluginType } from '../plugin'
 import { IValidator, IValidatorError, ValidatorPlugin } from '../validator'
 import { toTopoChars } from '../topology'
 import { TopoChar } from '../types'
@@ -38,7 +37,7 @@ export class ClassesValidator extends ValidatorPlugin {
 
     const validator: IValidator = {
       request: ['classes'],
-      exec(classes: string) {
+      exec(classes: string): IValidatorError[] {
         const errors: IValidatorError[] = []
 
         if (typeof and === 'string') {

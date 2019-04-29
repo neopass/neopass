@@ -1,7 +1,6 @@
-import { PluginType } from '../plugin'
-import { IValidator, ValidatorPlugin } from '../validator'
+import { IValidator, ValidatorPlugin, IValidatorError } from '../validator'
 
-export class ShannonValidator extends ValidatorPlugin {
+export class ShannonValidator extends ValidatorPlugin<IValidatorError[]> {
 
   get name(): string {
     return 'shannon'
@@ -22,7 +21,7 @@ export class ShannonValidator extends ValidatorPlugin {
 
     const validator: IValidator = {
       request: ['length', 'shannon'],
-      exec(length: number, shannon: number) {
+      exec(length: number, shannon: number): IValidatorError[] {
         const bits = length * shannon
         if (bits < min) {
           const score = bits / min

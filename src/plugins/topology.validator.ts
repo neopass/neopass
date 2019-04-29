@@ -1,5 +1,4 @@
-import { PluginType } from '../plugin'
-import { IValidator, ValidatorPlugin } from '../validator'
+import { IValidator, ValidatorPlugin, IValidatorError } from '../validator'
 import { typeOf } from '../utils/type-of'
 
 const _standardPatterns = [
@@ -134,7 +133,7 @@ export class TopologyValidator extends ValidatorPlugin {
 
     const validator: IValidator = {
       request: ['topology', 'entropy', 'shannon', 'length'],
-      exec(topology: string, entropy: number, shannon: number, length: number) {
+      exec(topology: string, entropy: number, shannon: number, length: number): IValidatorError[] {
         // Calculate bits for entire string.
         const actual: IBitsInfo = {
           entropy: length * entropy,

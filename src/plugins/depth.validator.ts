@@ -1,5 +1,4 @@
-import { PluginType } from '../plugin'
-import { IValidator, ValidatorPlugin } from '../validator'
+import { IValidator, ValidatorPlugin, IValidatorError } from '../validator'
 
 export class DepthValidator extends ValidatorPlugin {
 
@@ -22,7 +21,7 @@ export class DepthValidator extends ValidatorPlugin {
 
     const validator: IValidator = {
       request: ['depth'],
-      exec(depth: number) {
+      exec(depth: number): IValidatorError[] {
         if (depth < min) {
           const score = depth / min
           return [{ name, msg, score }]
