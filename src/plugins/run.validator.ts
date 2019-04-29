@@ -49,14 +49,14 @@ export class RunValidator extends ValidatorPlugin {
 
     const name = this.name
     const message = this.message
-    const run = this.runs
+    const runs = this.runs
 
     const validator: IValidator = {
       request: ['password'],
       exec(password: string): IValidatorError[] {
-        const offending = run(max, password)
+        const offending = runs(max, password)
         if (offending > 0) {
-          return [{ name, msg: message(offending), meta: offending }]
+          return [{ name, msg: message(offending) }]
         }
         return []
       }
