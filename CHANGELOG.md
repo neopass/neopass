@@ -4,12 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased]
+## [0.6.0] - 2019-04-29
 - Detectors are used in the validation chain to halt early.
 - Validator plugins don't need to define a `type` property.
 - `useBuiltinDetectors` removed from IBaseConfig.
 - `neopass.verify` returns { errors, warnings } object.
 - `neopass.validate` no longer accepts a `passphrase` argument.
+- Remove 'quick' configurations (`neopass.validators`).
 
 ## [0.5.1] - 2019-04-28
 - Add `verify` function to neopass module.
