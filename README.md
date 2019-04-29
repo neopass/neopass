@@ -263,6 +263,8 @@ Output:
 
 ### Plugins
 
+`neopass` runs on plugins. Generators and validators are both plugins and can be specified as part of the configuration.
+
 Config:
 
 ```typescript
@@ -288,6 +290,7 @@ import {
  * Configuration
  */
 const config: INeoConfig = {
+  // We'll specify our own list of plugins.
   useBuiltinGenerators: false,
   useBuiltinValidators: false,
 
