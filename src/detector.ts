@@ -1,5 +1,3 @@
-import { PluginType } from './plugin'
-import { IRequestor } from './requestor'
 import { IValidator, ValidatorPlugin } from './validator'
 
 export interface IDetector extends IValidator<boolean> { }
