@@ -174,13 +174,9 @@ are considered to be more secure than shorter, mixed-class passwords. If configu
 import neopass, { INeoConfig } from 'neopass'
 
 const config: INeoConfig = {
-  useBuiltinDetectorss: true, // default
-
-  // Configure the passphrase detector for passwords of 20 or more characters.
-  passphrase: 'passphrase:min=20',
-
-  // These are run when validate is called.
   validators: [
+    // Passwords with 20 or more characters will be treated as passphrases.
+    'passphrase:min=20',
     'length:min=10,max=72',
     'classes:and=ul,or=ds',
   ]
@@ -202,9 +198,9 @@ Output:
 errors: []
 ```
 
-### Optional $ules
+### Optional Rules
 
-If you want optional rules - that is, rules that are considered warnings instead of errors - you can use both the validation chain and the evaluation chain together.
+If you want optional rules - that is, rules where errors are treated as warnings - use the `neopass.verify` helper function, which uses validation and evaluation together.
 
 ```typescript
 import neopass, { INeoConfig } from 'neopass'
@@ -228,42 +224,29 @@ const config: INeoConfig = {
 
 neopass(config)
 
-function verify(password: string) {
-  const result = {
-    validation: neopass.validate(password),
-    evaluation: neopass.evaluate(password),
-  }
-  return result
-}
-
-console.log(verify('Denver2016'))
+const result = neopass.verify('Denver2016')
+console.log(result)
 ```
 
 Output:
 
 ```
 {
-  validation: [],
-  evaluation: [
+  errors: [],
+  warnings: [
     {
-      strength: 0.9076451535093485,
-      warnings:
-      [
-        {
-          name: 'shannon',
-          msg: 'password is too simple',
-          score: 0.9756025296523007
-        },
-        {
-          name: 'entropy',
-          msg: 'password is either too short or not complex enough',
-          score: 0.9303431734979493
-        },
-        {
-          name: 'topology',
-          message: 'password matches vulnerable pattern topology'
-        }
-      ]
+      name: 'shannon',
+      msg: 'password is too simple',
+      score: 0.9756025296523007
+    },
+    {
+      name: 'entropy',
+      msg: 'password is either too short or not complex enough',
+      score: 0.9303431734979493
+    },
+    {
+      name: 'topology',
+      message: 'password matches vulnerable pattern topology'
     }
   ]
 }
