@@ -96,12 +96,8 @@ neopass.evaluate = evaluate
 /**
  * Run a validation chain against a password.
  */
-function validate(
-  password: string,
-  validators?: null|PluginInfo[],
-  passphrase?: PluginInfo
-): IValidatorError[] {
-  return _core.validate(password, validators, passphrase)
+function validate(password: string, validators?: null|PluginInfo[]): IValidatorError[] {
+  return _core.validate(password, validators)
 }
 
 neopass.validate = validate
