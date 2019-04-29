@@ -20,6 +20,7 @@ Contents
   - [Passphrase Detection](#passphrase-detection)
   - [Optional Rules](#optional-rules)
   - [Plugins](#plugins)
+    - [Authoring a Validator Plugin](#authoring-a-validator-plugin)
 
 ## Under Development
 
