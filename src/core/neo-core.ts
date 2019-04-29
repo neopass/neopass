@@ -9,6 +9,7 @@ import { IEvaluator } from '../evaluator'
 import { IEvaluatorInfo } from '../evaluator-info'
 import { IGeneratorInfo } from '../generator-info'
 import { IRequestor } from '../requestor'
+import { IVerifyResult } from '../verify-result'
 
 import {
   reduceClasses,
@@ -112,6 +113,10 @@ export class NeoCore {
   public evaluate: (password: string, evaluators?: IEvaluator[]) => IEvaluatorInfo
   public validate: (password: string, validators?: null|PluginInfo[]) => IValidatorError[]
   public generators: () => IGeneratorInfo[]
+
+  public verify: (
+    password: string, validators?: null|PluginInfo[], evaluators?: IEvaluator[]
+  ) => IVerifyResult
 
   constructor(config: IBaseConfig, store: PluginStore, resolver: PluginResolver) {
     /**
@@ -243,6 +248,24 @@ export class NeoCore {
       })
 
       return infoList
+    }
+
+    /**
+     *
+     */
+    this.verify = function verify(
+      password: string, validators?: null|PluginInfo[], evaluators?: IEvaluator[]
+    ): IVerifyResult {
+      const errors = this.validate(password, validators)
+      const info = this.evaluate(password, evaluators)
+
+      const result = {
+        errors,
+        warnings: info.warnings
+      }
+
+      return result
+
     }
   }
 }
