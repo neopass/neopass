@@ -14,7 +14,6 @@ function _registerPlugins(store: PluginStore, plugins: IPlugin[]) {
 }
 
 export class NeoPass extends NeoCore {
-
   constructor(config?: IBaseConfig, generators?: Generator[], validators?: Validator[]) {
     const store = new PluginStore(['validator', 'generator'])
     const resolver = new PluginResolver(store)
