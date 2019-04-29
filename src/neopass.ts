@@ -112,10 +112,13 @@ neopass.validate = validate
 function verify(password: string) {
   const errors = neopass.validate(password)
   const info = neopass.evaluate(password)
-  return {
+
+  const report = {
     errors,
     warnings: info.warnings
   }
+
+  return report
 }
 
 neopass.verify = verify
