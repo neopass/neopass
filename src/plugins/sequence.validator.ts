@@ -50,12 +50,12 @@ export class SequenceValidator extends ValidatorPlugin {
 
     const name = this.name
     const message = this.message
-    const inSequence = this.sequences
+    const sequences = this.sequences
 
     const validator: IValidator = {
       request: ['password'],
       exec(password: string): IValidatorError[] {
-        const offending = inSequence(max, password)
+        const offending = sequences(max, password)
         if (offending > 0) {
           return [{ name, msg: message(offending) }]
         }
