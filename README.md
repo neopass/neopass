@@ -183,6 +183,121 @@ result: {
 }
 ```
 
+Assessing password _strength_ is subjective and can be rather arbitrary. A good philosopy is to define evaluators that represent a near-ideal or practically-perfect password, so that there is a good range between low-strength and high-strength passwords, and you're not representing an overly-optimistic strength assessment.
+
+Here's an example that makes some attempt at a reasonable strength evaluation:
+
+```typescript
+neopass({
+  // ...
+  evaluators: [
+    {
+      /**
+       * These don't necessarily need 'weight' because they
+       * return a score, which is used to calculate strength.
+       * If weight is present, it's multiplied by the score.
+       */
+      validators: [
+        'length:min=20,max=72',
+        'entropy:64',
+      ],
+    },
+    {
+      /**
+       * These validators don't return a score, so each
+       * error/warning multiplies the strength by 0.75.
+       */
+      weight: 0.75,
+      validators: [
+        'run:2',
+        'sequence:3',
+        'classes:and=ul,or=ds',
+        'topology:standard=true',
+      ],
+    },
+  ],
+})
+```
+
+Bad:
+
+```typescript
+neopass.evaluate('Denver2016')
+```
+
+```
+{ strength: 0.348878690061731,
+  warnings:
+   [ { name: 'length',
+       msg: 'password length should be between 20 and 72 characters, inclusive',
+       score: 0.5,
+       meta: 'min' },
+     { name: 'entropy',
+       msg: 'password is either too short or not complex enough',
+       score: 0.9303431734979493 },
+     { name: 'topology',
+       msg: 'password matches vulnerable pattern topology' } ] }
+```
+
+Still bad:
+
+```typescript
+neopass.evaluate('Denver2016!')
+```
+
+```
+{ strength: 0.41250000000000003,
+  warnings:
+   [ { name: 'length',
+       msg: 'password length should be between 20 and 72 characters, inclusive',
+       score: 0.55,
+       meta: 'min' },
+     { name: 'topology',
+       msg: 'password matches vulnerable pattern topology' } ] }
+```
+
+Not great:
+
+```typescript
+neopass.evaluate('D3nv3r2016!')
+```
+
+```
+{ strength: 0.55,
+  warnings:
+   [ { name: 'length',
+       msg: 'password length should be between 20 and 72 characters, inclusive',
+       score: 0.55,
+       meta: 'min' } ] }
+```
+
+Good:
+
+```typescript
+neopass.evaluate('D3nv3r2016!and17$')
+```
+
+```
+{ strength: 0.85,
+  warnings:
+   [ { name: 'length',
+       msg: 'password length should be between 20 and 72 characters, inclusive',
+       score: 0.85,
+       meta: 'min' } ] }
+```
+
+Great?:
+
+```typescript
+neopass.evaluate('correct Horse battery staple')
+```
+
+```
+{ strength: 1, warnings: [] }
+```
+
+Strength assessment is a bit of both art and science, and it won't assure a great password. However it is a good tool to help users to create better passwords in general.
+
 ### Passphrase Detection
 
 [Passphrases](https://xkcd.com/936/) are long passwords typically comprised of multiple words. These
