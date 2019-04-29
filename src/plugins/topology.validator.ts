@@ -54,6 +54,10 @@ export class TopologyValidator extends ValidatorPlugin {
     return 'topology'
   }
 
+  message(): string {
+    return 'password matches vulnerable pattern topology'
+  }
+
   /**
    * Allow bypassing of topology check if entropy/shannon is high enough.
    */
@@ -126,7 +130,7 @@ export class TopologyValidator extends ValidatorPlugin {
     const name = this.name
     const bypass = this.bypass
     const topologyMatch = this.topologyMatch
-    const message = 'password matches vulnerable pattern topology'
+    const message = this.message
 
     const validator: IValidator = {
       request: ['topology', 'entropy', 'shannon', 'length'],
@@ -144,7 +148,7 @@ export class TopologyValidator extends ValidatorPlugin {
 
         // Check if we have a topology pattern match.
         if (topologyMatch(topology, patterns)) {
-          return [{ name, message }]
+          return [{ name, msg: message() }]
         }
 
         return []

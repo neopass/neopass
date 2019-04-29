@@ -7,7 +7,7 @@ export class ShannonValidator extends ValidatorPlugin {
     return 'shannon'
   }
 
-  get message(): string {
+  message(): string {
     return `password is too simple`
   }
 
@@ -18,7 +18,7 @@ export class ShannonValidator extends ValidatorPlugin {
     }
 
     const name = this.name
-    const msg = this.message
+    const message = this.message
 
     const validator: IValidator = {
       request: ['length', 'shannon'],
@@ -26,7 +26,7 @@ export class ShannonValidator extends ValidatorPlugin {
         const bits = length * shannon
         if (bits < min) {
           const score = bits / min
-          return [{ name, msg, score }]
+          return [{ name, msg: message(), score }]
         }
         return []
       }

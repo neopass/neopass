@@ -16,6 +16,14 @@ export class ClassesValidator extends ValidatorPlugin {
     return 'classes'
   }
 
+  andMessage(cls: string): string {
+    return `missing ${cls} character`
+  }
+
+  orMessage(classes: string[]): string {
+    return `missing one of ${classes.join(', ')}`
+  }
+
   configure(options: any): IValidator {
     const and = options.and
     const or = options.or
@@ -25,6 +33,8 @@ export class ClassesValidator extends ValidatorPlugin {
     }
 
     const name = this.name
+    const andMessage = this.andMessage
+    const orMessage = this.orMessage
 
     const validator: IValidator = {
       request: ['classes'],
@@ -40,7 +50,7 @@ export class ClassesValidator extends ValidatorPlugin {
             const re = new RegExp(c)
             // Test if the class is present.
             if (!re.test(classes)) {
-              const msg = `missing ${topoNames.get(c)} character`
+              const msg = andMessage(<string>topoNames.get(c))
               errors.push({ name, msg, meta: c })
             }
           })
@@ -58,8 +68,8 @@ export class ClassesValidator extends ValidatorPlugin {
 
           if (!passed) {
             const names = topoChars.map(c => topoNames.get(c))
-            const message = `missing one of ${names.join(', ')}`
-            errors.push({ name, msg: message, meta: or })
+            const msg = orMessage(<string[]>names)
+            errors.push({ name, msg, meta: or })
           }
         }
 
