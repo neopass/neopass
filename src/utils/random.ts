@@ -108,27 +108,3 @@ export function replace<T>(list: T[], value: T): T[] {
   list[elem] = value
   return list
 }
-
-// export default {
-//   randomBytes,
-//   randomBit,
-//   randomByte,
-//   randomInt,
-//   randomUInt,
-//   randomFloat,
-//   randomIn,
-//   randomOf
-// }
-
-// console.log(fill(20, randomIn.bind(null, -1, 2)))
-// console.log(randomOf([1, 2, 3, 4]))
-
-// console.log(randomOf([1]))
-// console.log(randomOf([1]))
-// console.log(randomOf([1]))
-// console.log(randomOf([1]))
-// console.log(randomOf([1]))
-// console.log(randomOf([1]))
-// console.log(randomOf([1]))
-// console.log(randomOf([1]))
-// console.log(randomOf([1]))
