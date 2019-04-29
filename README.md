@@ -2,7 +2,7 @@
 [![codecov](https://codecov.io/gh/neopass/neopass/branch/master/graph/badge.svg)](https://codecov.io/gh/neopass/neopass)
 
 # neopass
-A password validation and generation tool kit
+A password validation and generation tool kit.
 
 - [Password generation](#password-generation)
 - [Password validation](#the-validation-chain)
@@ -200,7 +200,7 @@ errors: []
 
 ### Optional Rules
 
-If you want optional rules - that is, rules where errors are treated as warnings - use the `neopass.verify` helper function, which uses validation and evaluation together.
+If you want optional rules - that is, rules where errors are treated as warnings - use `neopass.verify` which joins validation and evaluation. Validation failures are returned as errors and evaluation failures are returned as warnings.
 
 ```typescript
 import neopass, { INeoConfig } from 'neopass'
@@ -251,8 +251,6 @@ Output:
   ]
 }
 ```
-
-The `neopass.verify` helper function does this for you.
 
 ### Plugins
 
