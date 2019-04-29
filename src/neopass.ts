@@ -110,9 +110,11 @@ neopass.validate = validate
  * Run a validation chain against a password.
  */
 function verify(password: string) {
+  const errors = neopass.validate(password)
+  const info = neopass.evaluate(password)
   return {
-    validation: neopass.validate(password),
-    evaluation: neopass.evaluate(password)
+    errors,
+    warnings: info.warnings
   }
 }
 
