@@ -19,4 +19,4 @@ export abstract class ValidatorPlugin<T = IValidatorError[]> implements IPlugin<
   get type(): PluginType { return 'validator' }
 }
 
-export type Validator = new () => ValidatorPlugin
+export type Validator<T = any> = new () => ValidatorPlugin<T>
