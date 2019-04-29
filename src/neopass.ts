@@ -72,6 +72,10 @@ export function neopass(config?: INeoConfig|null) {
 
 /**
  * Generate a password using the given generator reference.
+ *
+ * @param len the length of the password to generate
+ * @param generator the name of the generator plugin to use
+ * @param retries retry generation if password fails configured validation chain
  */
 function generate(len: number, generator: PluginInfo, retries?: number): string {
   return _core.generate(len, generator, retries)
@@ -81,6 +85,9 @@ neopass.generate = generate
 
 /**
  * Run evaluation chain against a password.
+ *
+ * @param password the password to evaluate
+ * @param evaluators override configured evaluators
  */
 function evaluate(password: string, evaluators?: IEvaluator[]): IEvaluatorInfo {
   return _core.evaluate(password, evaluators)
@@ -90,6 +97,9 @@ neopass.evaluate = evaluate
 
 /**
  * Run a validation chain against a password.
+ *
+ * @param password the password to validate
+ * @param validators override configured validators
  */
 function validate(password: string, validators?: null|PluginInfo[]): IValidatorError[] {
   return _core.validate(password, validators)
@@ -98,7 +108,11 @@ function validate(password: string, validators?: null|PluginInfo[]): IValidatorE
 neopass.validate = validate
 
 /**
- * Run a validation chain against a password.
+ * Run validation and evaluation to produce errors and warnings.
+ *
+ * @param password the password to verify
+ * @param validators override configured validators
+ * @param evaluators override configured evaluators
  */
 function verify(
   password: string, validators?: null|PluginInfo[], evaluators?: IEvaluator[]
