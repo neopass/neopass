@@ -11,6 +11,15 @@ A password validation and generation tool kit.
 
 "The only good password is a random password of sufficient entropy." - _unknown_
 
+Contents
+- Basics
+  - [Password Generation](#password-generation)
+  - [The Vaidation Chain](#the-validation-chain)
+  - [The Evaluation Chain](#the-evaluation-chain)
+  - [Passphrase Detection](#passphrase-detection)
+  - [Optional Rules](#optional-rules)
+  - [Plugins](#plugins)
+
 ## Under Development
 
 This package is currently under development and the interface is unstable. While the package remains at version `0.x.y`, the minor version will be updated when known breaking changes occur.
@@ -269,6 +278,7 @@ import {
   EntropyValidator,
   LengthValidator,
   RunValidator,
+  PassphraseDetector,
   SequenceValidator,
   ShannonValidator,
   TopologyValidator,
@@ -281,12 +291,14 @@ const config: INeoConfig = {
   useBuiltinGenerators: false,
   useBuiltinValidators: false,
 
+  // Specify plugins to be registered.
   plugins: [
     LettersNumbersGenerator,
     EntropyValidator,
     ShannonValidator,
     SequenceValidator,
     RunValidator,
+    TopologyValidator,
   ],
 
   validators: [
