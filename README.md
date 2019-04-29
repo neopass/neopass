@@ -407,7 +407,8 @@ export class SimpleLengthValidator extends ValidatorPlugin {
    *
    *   validators: [ 'simple-length:10' ]
    *
-   * will pass the number 10 to the configure method.
+   * will pass `10` to the configure method as the first
+   * argument following `options` (as `min`).
    */
   configure(options: any, min: number): IValidator {
     const name = this.name  // alias for use in exec
