@@ -9,6 +9,8 @@ A password validation and generation tool kit.
 - [Password strength](#the-evaluation-chain)
 - [Passphrase support](#passphrase-detection)
 
+"One of the most exiting packages on npm!" - _nobody_
+
 "The only good password is a random password of sufficient entropy." - _unknown_
 
 ## Under Development
@@ -415,7 +417,7 @@ export class SimpleLengthValidator extends ValidatorPlugin {
     const msg = 'password too short!'
 
     const validator: IValidator = {
-      // Any requested password stats will be passed to exec, in order.
+      // Any requested password info will be passed to exec, in order.
       request: ['length'],
 
       // The validation logic.
@@ -450,7 +452,6 @@ neopass({
 })
 
 neopass.validate('abc')
-
 ```
 
 Output:
@@ -458,3 +459,39 @@ Output:
 ```
 [ { name: 'simple-length', msg: 'password too short!' } ]
 ```
+
+**Password Info**
+
+A validator plugin can request any of the following password info items:
+
+```typescript
+interface IPasswordInfo {
+  readonly password: string   // the password
+  readonly length: number     // the length
+  readonly depth: number      // the class depth
+  readonly topology: string   // the password topology
+  readonly classes: string    // the represented character classes
+  readonly entropy: number    // the simple entropy
+  readonly shannon: number    // the shannon entropy
+}
+```
+
+`password`: the original password as given for validation. ___Scrutinize any plugin that requests this attribute!___
+
+`length`: the number of characters in the password.
+
+`depth`: the per-character search space of the password, based on which character classes are present.
+
+`topology`: the per-character classes of the password, e.g., `topology('Abcd1$') => 'ulllds'`. ___Scrutinize any plugin that requests this attribute!___
+
+`classes`: a reduction of the `topology`; that is, the character classes represented in the password, e.g., `classes('Abcdefg') => 'ul'`.
+
+`entropy`: the base-2 logarithm of the `depth`, as bits per symbol/character.
+
+`shannon`: the [Shannon Entropy](https://en.wiktionary.org/wiki/Shannon_entropy) of the password in bits per symbol.
+
+As a rule, always request the minimum amount of information required to fulfill proper validation. For example:
+- if you want to know what the password length is, request `length` and not `password` or `topology`.
+- if you want to know which classes are represented, request `classes` and not `topology`.
+
+There are legitimate reasons for a validator to request `password`. For instance, both the `RunValidator` and the `SequenceValidator` use `password` to determine if a password has runs of the same character or multiple characters in sequence. Most of the other validators request `length`, `shannon`, `entropy` and/or `depth`. The `TopologyValidator` requests `topology`. However it's dangerous to blindly trust plugins that request `password` or `topology`. _It's safest to only use validators and generators that you author yourself_.
