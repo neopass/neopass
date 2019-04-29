@@ -61,6 +61,7 @@ function _passwordInfo(password: string): IPasswordInfo {
 function _runRequestor<T>(
   item: IRequestor<any>,
   info: IPasswordInfo,
+  resolver: PluginResolver,
 ): IRunResult<T> {
   // Create a set of the requested stats items.
   const request = new Set(item.request || [])
@@ -177,7 +178,7 @@ export class NeoCore {
           // Get the validator plugin.
           const _validator = resolver.resolve<IValidator>('validator', validator)
           // Run the validator.
-          const result = _runRequestor<IValidatorError[]>(_validator, pInfo)
+          const result = _runRequestor<IValidatorError[]>(_validator, pInfo, resolver)
           // Update strength.
           strength = _applyEvalErrors(result.data, strength, weight)
           // Add errors to the list.
@@ -210,7 +211,7 @@ export class NeoCore {
       // Run passphrase detection.
       if (passphrase != null) {
         const detector = resolver.resolve<IDetector>('detector', passphrase)
-        const result = _runRequestor<boolean>(detector, info)
+        const result = _runRequestor<boolean>(detector, info, resolver)
         const isPassphrase = result.data
         // If a passphrase is detected, halt further validation.
         if (isPassphrase) { return [] }
@@ -237,7 +238,7 @@ export class NeoCore {
 
       for (let i = 0; i < _validators.length; i++) {
         const validator = _validators[i]
-        const result = _runRequestor<IValidatorError[]>(validator, info)
+        const result = _runRequestor<IValidatorError[]>(validator, info, resolver)
         errors.push.apply(errors, result.data)
 
         if (result.halt) {
