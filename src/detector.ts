@@ -1,16 +1,12 @@
-import { IPlugin, PluginType } from './plugin'
+import { PluginType } from './plugin'
 import { IRequestor } from './requestor'
-import { PluginInfo } from './plugin-info'
+import { IValidator, ValidatorPlugin } from './validator'
 
-export interface IDetector extends IRequestor<boolean> {
-  exec(...args: any[]): boolean
-}
+export interface IDetector extends IValidator<boolean> { }
 
-export abstract class DetectorPlugin implements IPlugin<IDetector> {
-  public abstract type: PluginType
+export abstract class DetectorPlugin extends ValidatorPlugin<boolean> {
   public abstract name: string
   public abstract configure(...args: any[]): IDetector
-  public validators: null|PluginInfo[] = null
 }
 
 export type Detector = new () => DetectorPlugin
