@@ -38,6 +38,13 @@ describe('neopass', () => {
     assert(shannon(pass) > 3.5)
   })
 
+  it('retries password generation', () => {
+    assert.throws(() => {
+      neopass.generate(9, 'letters-numbers', 10)
+    })
+
+  })
+
   it('lists registered generators', () => {
     const generators = neopass.generators()
     const names = generators.map(g => g.name)
