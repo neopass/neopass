@@ -9,14 +9,14 @@ export interface IValidatorError {
   meta?: any,
 }
 
-export interface IValidator extends IRequestor<IValidatorError[]> {
-  exec(...args: any[]): IValidatorError[]
+export interface IValidator<T = IValidatorError[]> extends IRequestor<T> {
+  exec(...args: any[]): T
 }
 
-export abstract class ValidatorPlugin implements IPlugin<IValidator> {
-  public abstract type: PluginType
+export abstract class ValidatorPlugin<T = IValidatorError[]> implements IPlugin<IValidator<T>> {
   public abstract name: string
-  public abstract configure(...args: any[]): IValidator
+  public abstract configure(...args: any[]): IValidator<T>
+  get type(): PluginType { return 'validator' }
 }
 
 export type Validator = new () => ValidatorPlugin
