@@ -5,4 +5,5 @@ export interface IPluginInfo {
   readonly options?: {readonly [key: string]: any}
 }
 
-export type PluginInfo = string|IPluginInfo
+type CustomPlugin<T> = () => T
+export type PluginInfo<T = any> = string|IPluginInfo|CustomPlugin<T>
