@@ -141,7 +141,18 @@ import neopass, { INeoConfig } from 'neopass'
 const config: INeoConfig = {
   useBuiltinValidators: true, // default
 
-  // These are run when evaluate is called.
+  /**
+   * These are run when `neopass.evaluate` is called.
+   *
+   * Each evaluator object can specify weight and a list of validators.
+   *
+   * weight: multiplies the strength by the weight for every
+   * validation failure in the list of `validators`.
+   *
+   * validators: a list of validators to run. Validators that return
+   * a score have that score applied to the strength in addition to
+   * whatever `weight` is specified.
+   */
   evaluators: [
     {
       weight: 0.9,
@@ -566,12 +577,12 @@ errors: [
 import { IValidator, ValidatorPlugin, IValidatorError } from 'neopass'
 
 /**
- * A simplified version of the LenthValidator plugin
+ * A simplified version of the LengthValidator plugin
  */
 export class SimpleLengthValidator extends ValidatorPlugin {
   // Implement required plugin name as a getter.
   get name() { return 'simple-length' }
-  get msg() { return 'password too short' }
+  get msg() { return 'password too short!' }
 
   /**
    * This gets called to pass arguments to the plugin. For example,
@@ -624,7 +635,52 @@ neopass.validate('abc')
 Output:
 
 ```
-[ { name: 'simple-length', msg: 'password too short!' } ]
+[ { name: 'simple-length',
+    msg: 'password too short!',
+    score: 0.3 } ]
+```
+
+Plugins don't have to be instances of classes. Any object that conforms to `IPlugin` will do:
+
+```typescript
+/**
+ * Create an object that implements IPlugin.
+ */
+const customLength: IPlugin<any> = {
+  type: 'validator',
+  name: 'custom-length',
+  configure(options: any, min: number) {
+    const validator = {
+      request: ['length'],
+      exec(length: number) {
+        if (length < min) {
+          const score = length / min
+          return [{name: 'custom-length', msg: 'password too short!', score}]
+        }
+      }
+    }
+    return validator
+  }
+}
+
+neopass({
+  plugins: [
+    customLength,
+  ],
+  validators: [
+    'custom-length:10',
+  ]
+})
+
+neopass.validate('abcdefg')
+```
+
+Output:
+
+```
+[ { name: 'custom-length',
+    msg: 'password too short!',
+    score: 0.7 } ]
 ```
 
 **Password Info**
