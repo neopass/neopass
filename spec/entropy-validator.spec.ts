@@ -1,37 +1,37 @@
 import assert from 'assert'
-import { NeoPass } from '../neo-pass'
-import { ShannonValidator } from '../plugins'
+import { NeoPass } from '../src/neo-pass'
+import { EntropyValidator } from '../src/plugins'
 
 const neo = new NeoPass({
-  plugins: [ new ShannonValidator() ],
-  validators: [ 'shannon:32' ],
+  plugins: [ new EntropyValidator() ],
+  validators: [ 'entropy:64' ],
   evaluators: [
     {
       weight: 0.5,
       validators: [
-        'shannon:32',
+        'entropy:64',
       ]
     }
   ]
 })
 
-describe('ShannonValidator', () => {
-  it('generates error when shannon threshold not met', () => {
+describe('EntropyValidator', () => {
+  it('generates error when entropy threshold not met', () => {
     const errors = neo.validate('abcdefg')
     const [{name, score=-1}] = errors
 
     assert.strictEqual(errors.length, 1)
     assert.strictEqual(score > 0 && score < 1, true)
-    assert.strictEqual(name, 'shannon')
+    assert.strictEqual(name, 'entropy')
   })
 
   it('errors out if wrong argument type given', () => {
     assert.throws(() => {
-      neo.validate('abcdedg', ['shannon'])
+      neo.validate('abcdedg', ['entropy'])
     })
 
     assert.throws(() => {
-      neo.validate('abcdefg', ['shannon:true'])
+      neo.validate('abcdefg', ['entropy:true'])
     })
   })
 

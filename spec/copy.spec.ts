@@ -1,6 +1,6 @@
 import assert from 'assert'
-import { copyRange, copyClass, copySet } from '../utils/copy'
-import { Range, CharClass, CharSet } from '../types'
+import { copyRange, copyClass, copySet } from '../src/utils/copy'
+import { Range, CharClass, CharSet } from '../src/types'
 
 describe('copy', () => {
   it('copies a range', () => {

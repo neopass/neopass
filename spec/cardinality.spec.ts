@@ -1,6 +1,6 @@
 import assert from 'assert'
-import { cardinality, rangeSize, classSize } from '../utils'
-import { Range, CharClass, CharSet } from '../types'
+import { cardinality, rangeSize, classSize } from '../src/utils'
+import { Range, CharClass, CharSet } from '../src/types'
 
 describe('cardinality', () => {
 

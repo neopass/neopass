@@ -1,5 +1,5 @@
 import assert from 'assert'
-import { NeoPass } from '../neo-pass'
+import { NeoPass } from '../src/neo-pass'
 
 /**
  * Create a configurable custom validator function.

@@ -1,6 +1,6 @@
 import assert from 'assert'
-import { NeoPass } from '../neo-pass'
-import { DepthValidator } from '../plugins'
+import { NeoPass } from '../src/neo-pass'
+import { DepthValidator } from '../src/plugins'
 
 const neo = new NeoPass({
   plugins: [ new DepthValidator() ],

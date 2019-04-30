@@ -1,6 +1,6 @@
 import assert from 'assert'
-import { NeoPass } from '../neo-pass'
-import { SequenceValidator } from '../plugins'
+import { NeoPass } from '../src/neo-pass'
+import { SequenceValidator } from '../src/plugins'
 
 const neo = new NeoPass({
   plugins: [ new SequenceValidator() ],

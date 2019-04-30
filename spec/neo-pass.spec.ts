@@ -1,11 +1,11 @@
 import assert from 'assert'
-import { NeoPass, ValidatorPlugin, shannon } from '..'
+import { NeoPass, ValidatorPlugin, shannon } from '../src'
 
 import {
   RandomGenerator,
   LettersNumbersGenerator,
   ShannonValidator,
-} from '../plugins'
+} from '../src/plugins'
 
 class BadValidator extends ValidatorPlugin {
   get name() { return 'bad' }

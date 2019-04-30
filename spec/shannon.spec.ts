@@ -1,5 +1,5 @@
 import assert from 'assert'
-import { shannon } from '../utils/shannon'
+import { shannon } from '../src/utils'
 
 describe('classify', () => {
   it('calculates shannon entropy for a string', () => {

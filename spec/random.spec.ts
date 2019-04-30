@@ -11,7 +11,7 @@ import {
   pick,
   replace,
   shuffle,
-} from '../utils/random'
+} from '../src/utils'
 
 describe('random', () => {
 

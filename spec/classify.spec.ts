@@ -1,5 +1,5 @@
 import assert from 'assert'
-import { classify } from '../utils/classify'
+import { classify } from '../src/utils/classify'
 
 describe('classify', () => {
   it('generates a character class from a string', () => {

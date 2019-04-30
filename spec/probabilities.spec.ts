@@ -1,8 +1,8 @@
 import assert from 'assert'
-import { probabilities } from '../utils'
-import { charSet } from '../topology'
-import { cardinality, rangeSize, concatAll } from '../utils'
-import { RangeData, Range, CharSet } from '../types'
+import { probabilities } from '../src/utils'
+import { charSet } from '../src/topology'
+import { cardinality, rangeSize, concatAll } from '../src/utils'
+import { RangeData, Range, CharSet } from '../src/types'
 
 describe('probabilities', () => {
 

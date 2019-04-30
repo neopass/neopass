@@ -1,6 +1,6 @@
 import assert from 'assert'
-import neopass from '..'
-import { shannon } from '../utils'
+import neopass from '../src'
+import { shannon } from '../src/utils'
 
 describe('neopass', () => {
   neopass({

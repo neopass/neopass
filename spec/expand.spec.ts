@@ -1,5 +1,5 @@
 import assert from 'assert'
-import { expandRange, expandClass, expand } from '../utils'
+import { expandRange, expandClass, expand } from '../src/utils'
 
 describe('expand', () => {
   it('converts a range into a string', () => {
