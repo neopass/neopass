@@ -6,6 +6,10 @@ export class CustomValidator extends ValidatorPlugin {
   configure(options: any, min: number): IValidator {
     const fn = options.exec
 
+    if (typeof fn !== 'function') {
+      throw new Error(`the custom validator requres that options.exec is a function`)
+    }
+
     const validator: IValidator = {
       request: [ 'password', 'topology', 'classes',
         'depth', 'length', 'entropy', 'shannon'],
@@ -19,7 +23,7 @@ export class CustomValidator extends ValidatorPlugin {
         if (typeof fn === 'function') {
           // Create an info object.
           const info = {
-            password, topology, classes, depth, length, entropy, shannon}
+            password, topology, classes, depth, length, entropy, shannon }
 
           /**
            * Should return at least [{name, msg}] if there is an error
