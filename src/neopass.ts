@@ -10,6 +10,7 @@ import { IVerifyResult } from './verify-result'
 
 import {
   ClassesValidator,
+  CustomValidator,
   DepthValidator,
   EntropyValidator,
   LengthValidator,
@@ -37,6 +38,7 @@ const _builtinGenerators: Generator[] = [
 // Built-in validators.
 const _builtinValidators: Validator[] = [
   ClassesValidator,
+  CustomValidator,
   DepthValidator,
   EntropyValidator,
   LengthValidator,
