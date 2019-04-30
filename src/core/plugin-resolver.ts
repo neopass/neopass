@@ -58,18 +58,18 @@ export class PluginResolver {
 
   constructor(_store: PluginStore) {
     this.resolve = function resolve(type: PluginType, value: PluginInfo) {
-      let plugin: string
-      let args: any
-      let options: any
-
       if (typeof value === 'function') {
         return value()
       }
 
+      let plugin: string
+      let args: any[]
+      let options: any
+
       if (typeof value === 'string') {
         const info = parsePluginRef(value)
         plugin = info.plugin
-        args = info.args
+        args = <any[]>info.args
         options = info.options
       } else {
         plugin = value.plugin
