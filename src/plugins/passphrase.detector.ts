@@ -1,4 +1,3 @@
-import { PluginType } from '../plugin'
 import { IDetector, DetectorPlugin } from '../detector'
 
 export class PassphraseDetector extends DetectorPlugin {
@@ -7,9 +6,7 @@ export class PassphraseDetector extends DetectorPlugin {
     return 'passphrase'
   }
 
-  configure(options: any/* , min: number */): IDetector {
-    const min = options.min
-
+  configure(options: any, min: number): IDetector {
     if (typeof min !== 'number') {
       throw new Error('passphrase detector needs a min argument')
     }

@@ -28,7 +28,7 @@ describe('neopass', () => {
     const noPhrase = neopass.validate('abcdefg')
     assert.strictEqual(noPhrase.length, 1)
 
-    const phrase = neopass.validate('abcdefghijklmnopqrst', ['passphrase:min=20', 'shannon:128'])
+    const phrase = neopass.validate('abcdefghijklmnopqrst', ['passphrase:20', 'shannon:128'])
     assert.strictEqual(phrase.length, 0)
 
     assert.throws(() => {
