@@ -88,11 +88,18 @@ function _runRequestor(item: IRequestor<any>, info: IPasswordInfo): IRunResult {
 /**
  * Update the given strength by applying validation error logic.
  */
-function _applyEvalErrors(errors: IValidatorError[], strength: number, weight?: number): number {
+function _applyEvalErrors(
+  errors: null|undefined|IValidatorError[],
+  strength: number,
+  weight?: number
+): number {
   // Constrain weight to [0, 1] if it exists, 1.0 otherwise.
   const _weight = typeof weight === 'number'
     ? Math.min(Math.max(weight, 0), 1)
     : 1.0
+
+  // Account for null/undefined errors.
+  errors = Array.isArray(errors) ? errors : []
 
   // For every error, reduce strength.
   errors.forEach((error) => {
