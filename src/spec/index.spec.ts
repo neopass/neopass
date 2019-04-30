@@ -30,6 +30,10 @@ describe('neopass', () => {
 
     const phrase = neopass.validate('abcdefghijklmnopqrst', ['passphrase:min=20', 'shannon:128'])
     assert.strictEqual(phrase.length, 0)
+
+    assert.throws(() => {
+      neopass.validate('abc', ['passphrase'])
+    })
   })
 
   it('generates a password', () => {
