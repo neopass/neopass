@@ -65,8 +65,8 @@ export function neopass(config?: INeoConfig|null) {
     // Create the neopass core instance.
     _core = new NeoPass(
       config,
-      config.useBuiltinGenerators ? _builtinGenerators : [],
-      config.useBuiltinValidators ? _builtinValidators : [])
+      config.useBuiltinGenerators ? _builtinGenerators : null,
+      config.useBuiltinValidators ? _builtinValidators : null)
   }
 
   return neopass
