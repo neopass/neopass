@@ -11,9 +11,7 @@ A password validation and generation tool kit.
 
 "One of the most exciting packages on npm!" - _nobody_
 
-"Does anyone really need a password framework?" - _somebody_
-
-"The only good password is a random password of sufficient entropy." - _unknown_
+"The only good password is a random string of sufficient entropy." - _unknown_
 
 ## Under Development
 
@@ -313,7 +311,7 @@ import neopass, { INeoConfig } from 'neopass'
 const config: INeoConfig = {
   validators: [
     // Passwords with 20 or more characters will be treated as passphrases.
-    'passphrase:min=20',
+    'passphrase:20',
     'length:min=10,max=72',
     'classes:and=ul,or=ds',
   ]
@@ -337,49 +335,55 @@ errors: []
 
 ### Custom Validators
 
-Custom validators can be used by either [authoring a validator plugin](#authoring-a-validator-plugin) or using the built-in `CustomValidator` plugin:
+Custom validators can be used by either [authoring a validator plugin](#authoring-a-validator-plugin) or using in-line custom function validators:
 
 ```typescript
 /**
  * Create a custom validator function.
  */
-function customDepth(info: any) {
-  const desired = 62
-  const { depth } = info
-  if (depth < desired) {
-    const score = depth / desired
-    // Failed - return an error.
-    return [{name: 'custom-depth', msg: 'not enough character depth', score}]
-  }
-  // Passed!
-  return []
-}
-
-// Configure neopass.
-neopass({
-  validators: [
-    {
-      plugin: 'custom',
-      options: {
-        exec: customDepth
+function customDepth() {
+  // Create a validator object.
+  const validator = {
+    // Request depth from password info.
+    request: ['depth'],
+    // The core validator function.
+    exec(depth: number) {
+      if (depth < 62) {
+        // Validation failure.
+        const score = depth / 62
+        return [{name: 'custom-depth', msg: 'password too short', score}]
       }
     }
+  }
+
+  // Return the validator object.
+  return validator
+}
+
+// Configure neopass
+neopass({
+  validators: [
+    customDepth
   ]
 })
 
-// Validate a password.
-neopass.validate('abcdefg')
+const errors = neopass.validate('abcdefg')
+console.log('errors:', errors)
 ```
 
 Output:
 
 ```
-[ { name: 'custom-depth',
-    msg: 'not enough character depth',
-    score: 0.41935483870967744 } ]
+errors: [
+  {
+    name: 'custom-depth',
+    msg: 'password too short',
+    score: 0.41935483870967744
+  }
+]
 ```
 
-**Warning**: `CustomValidator` has access to all password stats, including the password itself. For this reason, ___`CustomValidator` should not be extended in third party plugins___. Don't use any plugin that extends `CustomValidator`.
+Custom validators can also be used in the evaluation chain.
 
 ### Optional Rules
 
@@ -566,7 +570,8 @@ import { IValidator, ValidatorPlugin, IValidatorError } from 'neopass'
  */
 export class SimpleLengthValidator extends ValidatorPlugin {
   // Implement required plugin name as a getter.
-  get name(): string { return 'simple-length' }
+  get name() { return 'simple-length' }
+  get msg() { return 'password too short' }
 
   /**
    * This gets called to pass arguments to the plugin. For example,
@@ -577,18 +582,16 @@ export class SimpleLengthValidator extends ValidatorPlugin {
    * argument following `options`.
    */
   configure(options: any, min: number): IValidator {
-    const name = this.name  // alias for use in exec
-    const msg = 'password too short!'
-
     const validator: IValidator = {
       // Any requested password info will be passed to exec, in order.
       request: ['length'],
 
       // The validation logic.
-      exec(length: number): IValidatorError[] {
+      exec: (length: number) => {
         if (length < min) {
+          const score = length / min
           // Return one or more error objects.
-          return [{ name, msg }]
+          return [{ name: this.name, msg: this.msg, score }]
         }
         // No errors!
         return []
