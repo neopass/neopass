@@ -149,11 +149,11 @@ export class NeoCore {
             throw new Error('could not generate a password that passes configured validators')
           }
 
-          const pass = _generate(len)
-          const errors = this.validate(pass)
+          const password = _generate(len)
+          const errors = this.validate(password)
 
           if (errors.length === 0) {
-            return pass
+            return password
           }
         }
 
