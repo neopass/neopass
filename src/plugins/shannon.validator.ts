@@ -21,13 +21,12 @@ export class ShannonValidator extends ValidatorPlugin<IValidatorError[]> {
 
     const validator: IValidator = {
       request: ['length', 'shannon'],
-      exec(length: number, shannon: number): IValidatorError[] {
+      exec(length: number, shannon: number) {
         const bits = length * shannon
         if (bits < min) {
           const score = bits / min
           return [{ name, msg: message(), score }]
         }
-        return []
       }
     }
 

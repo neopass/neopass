@@ -133,7 +133,7 @@ export class TopologyValidator extends ValidatorPlugin {
 
     const validator: IValidator = {
       request: ['topology', 'entropy', 'shannon', 'length'],
-      exec(topology: string, entropy: number, shannon: number, length: number): IValidatorError[] {
+      exec(topology: string, entropy: number, shannon: number, length: number) {
         // Calculate bits for entire string.
         const actual: IBitsInfo = {
           entropy: length * entropy,
@@ -149,8 +149,6 @@ export class TopologyValidator extends ValidatorPlugin {
         if (topologyMatch(topology, patterns)) {
           return [{ name, msg: message() }]
         }
-
-        return []
       }
     }
 

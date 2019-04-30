@@ -53,12 +53,11 @@ export class RunValidator extends ValidatorPlugin {
 
     const validator: IValidator = {
       request: ['password'],
-      exec(password: string): IValidatorError[] {
+      exec(password: string) {
         const offending = runs(max, password)
         if (offending > 0) {
           return [{ name, msg: message(offending) }]
         }
-        return []
       }
     }
 
