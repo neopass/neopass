@@ -4,9 +4,6 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased]
-- Allow neopass to be reconfigured with a subsequent call to `neopass({...})`
-
 ## [0.7.0] - 2019-04-30
 - Remove `CustomValidator` plugin and add support for inlining custom validator functions.
 
