@@ -11,6 +11,8 @@ A password validation and generation tool kit.
 
 "One of the most exiting packages on npm!" - _nobody_
 
+"Does anyone really need a password framework?" - _somebody_
+
 "The only good password is a random password of sufficient entropy." - _unknown_
 
 ## Under Development
@@ -331,6 +333,54 @@ Output:
 ```
 errors: []
 ```
+
+### Custom Validators
+
+Custom validators can be used by either [authoring a validator plugin](#authoring-a-validator-plugin) or using the `CustomValidator` plugin:
+
+```typescript
+import { CustomValidator } from '../plugins'
+
+/**
+ * Create a custom validator function
+ */
+function customDepth(info: any) {
+  const desired = 62
+  const { depth } = info
+  if (depth < desired) {
+    const score = depth / desired
+    // Failed - return an error.
+    return [{name: 'custom-depth', msg: 'not enough character depth', score}]
+  }
+  // Passed!
+  return []
+}
+
+// Configure neopass.
+neopass({
+  validators: [
+    {
+      plugin: 'custom',
+      options: {
+        exec: customDepth
+      }
+    }
+  ]
+})
+
+// Validate a password.
+neopass.validate('abcdefg')
+```
+
+Output:
+
+```
+[ { name: 'custom-depth',
+    msg: 'not enough character depth',
+    score: 0.41935483870967744 } ]
+```
+
+**Warning**: `CustomValidator` has access to all password stats, including the password itself. For this reason, ___`CustomValidator` should not be extended in third party plugins___. Don't use any plugin that extends `CustomValidator`.
 
 ### Optional Rules
 
