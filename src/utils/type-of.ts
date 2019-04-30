@@ -6,6 +6,6 @@
  *
  * @param obj
  */
-export function typeOf<T>(obj: T): string {
+export function typeOf(obj: any): string {
   return Object.prototype.toString.call(obj).slice(8, -1)
 }
