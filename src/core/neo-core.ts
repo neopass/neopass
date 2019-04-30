@@ -129,7 +129,7 @@ export class NeoCore {
     this.generate = function generate(len: number, generator: PluginInfo, retries?: number): string {
       const _generate = resolver.resolve<Generate>('generator', generator)
 
-      if (retries && retries < 1) {
+      if (typeof retries === 'number' && retries < 1) {
         throw new Error('retries must be 1 or more')
       }
 
