@@ -1,25 +1,34 @@
 import assert from 'assert'
 import { NeoPass } from '../neo-pass'
-import { CustomValidator } from '../plugins'
 
-const neo = new NeoPass({
-  plugins: [ new CustomValidator() ],
-  validators: [
-    {
-      plugin: 'custom',
-      options: {
-        exec(info: any) {
-          const desired = 62
-          const { depth } = info
-          const score = depth / desired
-          if (score < 1) {
-            return [{name: 'custom-depth', msg: 'not enough character depth', score}]
-          }
-          return []
+/**
+ * Create a configurable custom validator function.
+ */
+function customDepth(min: number) {
+  const msg = 'not enough character depth'
+  return () => {
+    // Create a validator object.
+    const validator = {
+      // Request depth from password info.
+      request: ['depth'],
+      // The core validator function.
+      exec(depth: number) {
+        if (depth < min) {
+          // Validation failure.
+          const score = depth / min
+          return [{name: 'custom-depth', msg, score}]
         }
       }
     }
-   ],
+    // Return the validator object.
+    return validator
+  }
+}
+
+const neo = new NeoPass({
+  validators: [
+    customDepth(62)
+  ],
 })
 
 describe('CustomValidator', () => {
