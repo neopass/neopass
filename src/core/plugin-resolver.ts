@@ -1,7 +1,7 @@
 import { PluginStore } from './plugin-store'
 import { PluginType } from '../plugin'
 import regexEach from 'regex-each'
-import { IPluginInfo } from '../plugin-info'
+import { IPluginInfo, PluginInfo } from '../plugin-info'
 
 const tChar = String.raw`[^ ,:=]`
 const tPlugin = String.raw`${tChar}+(?= *:|$)`
@@ -54,10 +54,10 @@ function parsePluginRef(str: string): IPluginInfo {
 }
 
 export class PluginResolver {
-  public resolve: <T = any>(type: PluginType, value: string|IPluginInfo) => T
+  public resolve: <T = any>(type: PluginType, value: PluginInfo) => T
 
   constructor(_store: PluginStore) {
-    this.resolve = function resolve(type: PluginType, value: string|IPluginInfo) {
+    this.resolve = function resolve(type: PluginType, value: PluginInfo) {
       let plugin: string
       let args: any
       let options: any
