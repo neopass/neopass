@@ -56,14 +56,18 @@ let _core: NeoPass
  * Neopass instance.
  */
 export function neopass(config?: INeoConfig|null) {
-  // Apply user config to default config.
-  config = {..._defaultConfig, ...config}
+  if (!_core) {
+    // Apply user config to default config.
+    config = {..._defaultConfig, ...config}
 
-  // Create the neopass core instance.
-  _core = new NeoPass(
-    config,
-    config.useBuiltinGenerators ? _builtinGenerators : null,
-    config.useBuiltinValidators ? _builtinValidators : null)
+    // Create the neopass core instance.
+    _core = new NeoPass(
+      config,
+      config.useBuiltinGenerators ? _builtinGenerators : null,
+      config.useBuiltinValidators ? _builtinValidators : null)
+  } else {
+    throw new Error('neopass is already configured')
+  }
 
   return neopass
 }
