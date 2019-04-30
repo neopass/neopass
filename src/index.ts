@@ -13,8 +13,8 @@ export * from './plugins'
 export * from './requestor'
 export * from './topology'
 export * from './types'
-export * from './validator'
 export * from './utils'
+export * from './validator'
 export * from './verify-result'
 
 export default neopass
