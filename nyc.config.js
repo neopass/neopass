@@ -3,9 +3,9 @@ module.exports = {
   include: [
     'src/**/*.ts'
   ],
-  exclude: [
-    'src/spec'
-  ],
+  // exclude: [
+  //   'src/spec'
+  // ],
   extension: [
     '.ts'
   ],
