@@ -9,7 +9,7 @@ A password validation and generation tool kit.
 - [Password strength](#the-evaluation-chain)
 - [Passphrase support](#passphrase-detection)
 
-"One of the most exiting packages on npm!" - _nobody_
+"One of the most exciting packages on npm!" - _nobody_
 
 "Does anyone really need a password framework?" - _somebody_
 
@@ -26,6 +26,7 @@ Contents
   - [The Vaidation Chain](#the-validation-chain)
   - [The Evaluation Chain](#the-evaluation-chain)
   - [Passphrase Detection](#passphrase-detection)
+  - [Custom Validators](#custom-validators)
   - [Optional Rules](#optional-rules)
   - [Plugins](#plugins)
     - [Authoring a Validator Plugin](#authoring-a-validator-plugin)
@@ -336,13 +337,11 @@ errors: []
 
 ### Custom Validators
 
-Custom validators can be used by either [authoring a validator plugin](#authoring-a-validator-plugin) or using the `CustomValidator` plugin:
+Custom validators can be used by either [authoring a validator plugin](#authoring-a-validator-plugin) or using the built-in `CustomValidator` plugin:
 
 ```typescript
-import { CustomValidator } from '../plugins'
-
 /**
- * Create a custom validator function
+ * Create a custom validator function.
  */
 function customDepth(info: any) {
   const desired = 62
@@ -438,7 +437,7 @@ Output:
 
 ### Plugins
 
-`neopass` runs on plugins. Generators and validators are both plugins and can be specified as part of the configuration.
+`neopass` runs on plugins. Generators and validators are all plugins and can be specified as part of the configuration.
 
 Config:
 
@@ -575,7 +574,7 @@ export class SimpleLengthValidator extends ValidatorPlugin {
    *   validators: [ 'simple-length:10' ]
    *
    * will pass `10` to the configure method as the first
-   * argument following `options` (as `min`).
+   * argument following `options`.
    */
   configure(options: any, min: number): IValidator {
     const name = this.name  // alias for use in exec
