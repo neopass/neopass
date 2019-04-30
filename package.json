@@ -26,10 +26,11 @@
   "keywords": [
     "password",
     "passphrase",
+    "validator",
     "validation",
     "strength",
-    "topology",
-    "middleware"
+    "generation",
+    "topology"
   ],
   "author": "James Abney",
   "license": "MIT",
