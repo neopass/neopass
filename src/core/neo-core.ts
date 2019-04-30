@@ -59,6 +59,10 @@ function _passwordInfo(password: string): IPasswordInfo {
  * it generates.
  */
 function _runRequestor(item: IRequestor<any>, info: IPasswordInfo): IRunResult {
+  if (!Array.isArray(item.request) || typeof item.exec !== 'function') {
+    throw new Error('requestor is misconfigured')
+  }
+
   // Create a set of the requested stats items.
   const request = new Set(item.request)
 
