@@ -54,13 +54,17 @@ function parsePluginRef(str: string): IPluginInfo {
 }
 
 export class PluginResolver {
-  public resolve: <T = any>(type: PluginType, value: PluginInfo) => T
+  public resolve: <T = any>(type: PluginType, value: PluginInfo<T>) => T
 
   constructor(_store: PluginStore) {
     this.resolve = function resolve(type: PluginType, value: PluginInfo) {
       let plugin: string
       let args: any
       let options: any
+
+      if (typeof value === 'function') {
+        return value()
+      }
 
       if (typeof value === 'string') {
         const info = parsePluginRef(value)
