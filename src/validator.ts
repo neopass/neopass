@@ -10,7 +10,7 @@ export interface IValidatorError {
 }
 
 export interface IValidator<T = IValidatorError[]> extends IRequestor<T> {
-  exec(...args: any[]): T
+  exec(...args: any[]): T|null|undefined
 }
 
 export abstract class ValidatorPlugin<T = IValidatorError[]> implements IPlugin<IValidator<T>> {
