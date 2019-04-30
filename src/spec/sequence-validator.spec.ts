@@ -17,11 +17,15 @@ const neo = new NeoPass({
 
 describe('SequenceValidator', () => {
   it('generates error when sequence threshold is exceeded', () => {
-    const errors = neo.validate('abcd')
-    const [{name}] = errors
+    let errors = neo.validate('abcd')
+    const [error] = errors
 
     assert.strictEqual(errors.length, 1)
-    assert.strictEqual(name, 'sequence')
+    assert.strictEqual(error.name, 'sequence')
+
+    errors = neo.validate('1234')
+    assert.strictEqual(errors.length, 1)
+    assert.strictEqual(error.name, 'sequence')
   })
 
   it('errors out if wrong argument type given', () => {
