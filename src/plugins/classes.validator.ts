@@ -10,16 +10,15 @@ const topoNames = new Map<TopoChar, string>([
 ])
 
 export class ClassesValidator extends ValidatorPlugin {
-
   get name(): string {
     return 'classes'
   }
 
-  andMessage(cls: string): string {
+  andMsg(cls: string): string {
     return `missing ${cls} character`
   }
 
-  orMessage(classes: string[]): string {
+  orMsg(classes: string[]): string {
     return `missing one of ${classes.join(', ')}`
   }
 
@@ -31,13 +30,9 @@ export class ClassesValidator extends ValidatorPlugin {
       throw new Error('no "and" or "or" classes specified')
     }
 
-    const name = this.name
-    const andMessage = this.andMessage
-    const orMessage = this.orMessage
-
     const validator: IValidator = {
       request: ['classes'],
-      exec(classes: string): IValidatorError[] {
+      exec: (classes: string) => {
         const errors: IValidatorError[] = []
 
         if (typeof and === 'string') {
@@ -49,8 +44,8 @@ export class ClassesValidator extends ValidatorPlugin {
             const re = new RegExp(c)
             // Test if the class is present.
             if (!re.test(classes)) {
-              const msg = andMessage(<string>topoNames.get(c))
-              errors.push({ name, msg, meta: c })
+              const msg = this.andMsg(<string>topoNames.get(c))
+              errors.push({ name: this.name, msg, meta: c })
             }
           })
         }
@@ -67,8 +62,8 @@ export class ClassesValidator extends ValidatorPlugin {
 
           if (!passed) {
             const names = topoChars.map(c => topoNames.get(c))
-            const msg = orMessage(<string[]>names)
-            errors.push({ name, msg, meta: or })
+            const msg = this.orMsg(<string[]>names)
+            errors.push({ name: this.name, msg, meta: or })
           }
         }
 

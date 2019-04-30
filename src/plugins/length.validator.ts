@@ -18,16 +18,14 @@ export class LengthValidator extends ValidatorPlugin {
       throw new Error('length validator needs min and max options')
     }
 
-    const name = this.name
-    const message = this.message
-
     const validator: IValidator = {
       request: ['length'],
-      exec(length: number) {
+      exec: (length: number) => {
         if (length < min || length > max) {
           const score = length / min
           const meta = length < min ? 'min' : length > max ? 'max' : undefined
-          return [{ name, msg: message(min, max), score, meta }]
+          const msg = this.message(min, max)
+          return [{ name: this.name, msg, score, meta }]
         }
       }
     }

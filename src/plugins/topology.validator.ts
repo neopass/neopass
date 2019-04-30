@@ -53,7 +53,7 @@ export class TopologyValidator extends ValidatorPlugin {
     return 'topology'
   }
 
-  message(): string {
+  get msg(): string {
     return 'password matches vulnerable pattern topology'
   }
 
@@ -126,14 +126,9 @@ export class TopologyValidator extends ValidatorPlugin {
   configure(options: any): IValidator {
     const patterns: RegExp[] = this.patterns(options)
 
-    const name = this.name
-    const bypass = this.bypass
-    const topologyMatch = this.topologyMatch
-    const message = this.message
-
     const validator: IValidator = {
       request: ['topology', 'entropy', 'shannon', 'length'],
-      exec(topology: string, entropy: number, shannon: number, length: number) {
+      exec: (topology: string, entropy: number, shannon: number, length: number) => {
         // Calculate bits for entire string.
         const actual: IBitsInfo = {
           entropy: length * entropy,
@@ -141,13 +136,13 @@ export class TopologyValidator extends ValidatorPlugin {
         }
 
         // Check if we should bypass the topology validation.
-        if (bypass(actual, options)) {
+        if (this.bypass(actual, options)) {
           return []
         }
 
         // Check if we have a topology pattern match.
-        if (topologyMatch(topology, patterns)) {
-          return [{ name, msg: message() }]
+        if (this.topologyMatch(topology, patterns)) {
+          return [{ name: this.name, msg: this.msg }]
         }
       }
     }

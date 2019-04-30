@@ -47,16 +47,13 @@ export class RunValidator extends ValidatorPlugin {
       throw new Error('run validator needs a max argument')
     }
 
-    const name = this.name
-    const message = this.message
-    const runs = this.runs
-
     const validator: IValidator = {
       request: ['password'],
-      exec(password: string) {
-        const offending = runs(max, password)
+      exec: (password: string) => {
+        const offending = this.runs(max, password)
         if (offending > 0) {
-          return [{ name, msg: message(offending) }]
+          const msg = this.message(offending)
+          return [{ name: this.name, msg }]
         }
       }
     }

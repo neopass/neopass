@@ -48,16 +48,13 @@ export class SequenceValidator extends ValidatorPlugin {
       throw new Error('sequence validator needs a max argument')
     }
 
-    const name = this.name
-    const message = this.message
-    const sequences = this.sequences
-
     const validator: IValidator = {
       request: ['password'],
-      exec(password: string) {
-        const offending = sequences(max, password)
+      exec: (password: string) => {
+        const offending = this.sequences(max, password)
         if (offending > 0) {
-          return [{ name, msg: message(offending) }]
+          const msg = this.message(offending)
+          return [{ name: this.name, msg }]
         }
       }
     }
