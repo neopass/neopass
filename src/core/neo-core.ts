@@ -60,7 +60,7 @@ function _passwordInfo(password: string): IPasswordInfo {
  */
 function _runRequestor(item: IRequestor<any>, info: IPasswordInfo): IRunResult {
   // Create a set of the requested stats items.
-  const request = new Set(item.request || [])
+  const request = new Set(item.request)
 
   // The arguments to be passed to the validation handler.
   const args: any[] = []
