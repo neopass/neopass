@@ -1,4 +1,4 @@
-import { ValidatorPlugin, IValidator, IValidatorError } from '../validator'
+import { ValidatorPlugin, IValidator } from '../validator'
 
 export class LengthValidator extends ValidatorPlugin {
 
