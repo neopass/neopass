@@ -3,7 +3,7 @@ import { PluginType } from '../plugin'
 import regexEach from 'regex-each'
 import { IPluginInfo, PluginInfo } from '../plugin-info'
 
-const tChar = String.raw`[^ ,:=]`
+const tChar = String.raw`[^,:=]`
 const tPlugin = String.raw`${tChar}+(?= *:|$)`
 const tKeyVal = String.raw`${tChar}+=${tChar}+`
 const tParser = String.raw`^(${tPlugin})| *(?:,|:) *(${tKeyVal})| *(?:,|:) *(${tChar}+)`
