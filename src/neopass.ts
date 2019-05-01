@@ -117,7 +117,9 @@ neopass.validate = validate
  * @param evaluators override configured evaluators
  */
 function verify(
-  password: string, validators?: null|PluginInfo[], evaluators?: IEvaluator[]
+  password: string,
+  validators?: null|PluginInfo[],
+  evaluators?: IEvaluator[]
 ): IVerifyResult {
   return _core.verify(password, validators, evaluators)
 }
