@@ -24,10 +24,10 @@ Contents
   - [The Vaidation Chain](#the-validation-chain)
   - [The Evaluation Chain](#the-evaluation-chain)
   - [Passphrase Detection](#passphrase-detection)
-  - [Custom Validators](#custom-validators)
-  - [Optional Rules](#optional-rules)
-  - [Plugins](#plugins)
-    - [Authoring a Validator Plugin](#authoring-a-validator-plugin)
+- [Custom Validators](#custom-validators)
+- [Optional Rules](#optional-rules)
+- [Plugins](#plugins)
+  - [Authoring a Validator Plugin](#authoring-a-validator-plugin)
 - [Using Multiple Configurations](#using-multiple-configurations)
 
 ## Installation
@@ -371,7 +371,7 @@ Output:
 errors: []
 ```
 
-### Custom Validators
+## Custom Validators
 
 Custom validators can be used by either [authoring a validator plugin](#authoring-a-validator-plugin) or using in-line custom function validators:
 
@@ -423,7 +423,7 @@ errors: [
 
 Custom validators can also be used in the evaluation chain.
 
-### Optional Rules
+## Optional Rules
 
 If you want optional rules - that is, rules where errors are treated as warnings - use `neopass.verify` which joins validation and evaluation. Validation failures are returned as errors and evaluation failures are returned as warnings.
 
@@ -477,7 +477,7 @@ Output:
 }
 ```
 
-### Plugins
+## Plugins
 
 `neopass` runs on plugins. Generators and validators are all plugins and can be specified as part of the configuration.
 
@@ -598,7 +598,7 @@ errors: [
 ]
 ```
 
-#### Authoring a Validator Plugin
+### Authoring a Validator Plugin
 
 ```typescript
 import { IValidator, ValidatorPlugin, IValidatorError } from 'neopass'
@@ -667,7 +667,7 @@ Output:
     score: 0.3 } ]
 ```
 
-Plugins don't have to be instances of classes. Any object that conforms to `IPlugin` will do:
+Plugins don't have to be subclasses of `ValidatorPlugin` or instances of classes at all. Any object that conforms to `IPlugin` will do:
 
 ```typescript
 /**
