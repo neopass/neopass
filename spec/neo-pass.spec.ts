@@ -54,38 +54,53 @@ describe('NeoPass', () => {
 
   it('throws if evaluation attempted without evaluators', () => {
     const neo = new NeoPass(null, null, null)
+
+    let error: any = null
+
     assert.throws(() => {
       try {
         neo.evaluate('abcdefg')
       } catch (e) {
-        assert.strictEqual(e.message, 'no evaluators specified')
+        error = e
         throw e
       }
     })
+
+    assert.strictEqual(error.message, 'no evaluators specified')
   })
 
   it('throws if validation attempted without validators', () => {
     const neo = new NeoPass(null, null, null)
+
+    let error: any = null
+
     assert.throws(() => {
       try {
         neo.validate('abcdefg')
       } catch (e) {
-        assert.strictEqual(e.message, 'no validators specified')
+        error = e
         throw e
       }
     })
+
+    assert.strictEqual(error.message, 'no validators specified')
   })
 
   it('throws on parse error', () => {
     const neo = new NeoPass(null, null, [ShannonValidator])
+
+    let error: any = null
+
     assert.throws(() => {
       try {
         neo.validate('abcdefg', ['shannon::'])
       } catch (e) {
-        assert.strictEqual(e.message, 'could not parse plugin string "shannon::"')
+        error = e
         throw e
       }
     })
+
+    assert.strictEqual(error.message, 'could not parse plugin string "shannon::"')
   })
 
   it('throws on misconfigured plugin info', () => {
