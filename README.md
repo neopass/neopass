@@ -42,7 +42,7 @@ npm install neopass
 ### Password Generation
 
 ```typescript
-import neopass, { INeoConfig } from 'neopass'
+import { neopass, INeoConfig } from 'neopass'
 
 const config: INeoConfig = {
   useBuiltinGenerators: true, // default
@@ -92,7 +92,7 @@ generators: [
 The validation chain reports errors from each configured validator.
 
 ```typescript
-import neopass, { INeoConfig } from 'neopass'
+import { neopass, INeoConfig } from 'neopass'
 
 const config: INeoConfig = {
   useBuiltinValidators: true, // default
@@ -137,7 +137,7 @@ errors: [
 The evaluation chain reports a password's strength based on configured evaluators.
 
 ```typescript
-import neopass, { INeoConfig } from 'neopass'
+import { neopass, INeoConfig } from 'neopass'
 
 const config: INeoConfig = {
   useBuiltinValidators: true, // default
@@ -318,7 +318,7 @@ are considered to be more secure than shorter, mixed-class passwords. If configu
 `neopass` will detect a passphrase and bypass additional validation in the validation chain.
 
 ```typescript
-import neopass, { INeoConfig } from 'neopass'
+import { neopass, INeoConfig } from 'neopass'
 
 const config: INeoConfig = {
   validators: [
@@ -429,7 +429,7 @@ Custom validators can also be used in the evaluation chain.
 If you want optional rules - that is, rules where errors are treated as warnings - use `neopass.verify` which joins validation and evaluation. Validation failures are returned as errors and evaluation failures are returned as warnings.
 
 ```typescript
-import neopass, { INeoConfig } from 'neopass'
+import { neopass, INeoConfig } from 'neopass'
 
 const config: INeoConfig = {
   validators: [
@@ -485,7 +485,7 @@ Output:
 Config:
 
 ```typescript
-import neopass, { INeoConfig } from 'neopass'
+import { neopass, INeoConfig } from 'neopass'
 
 import {
   // Generators
@@ -789,7 +789,7 @@ The above also works with the evaluation chain.
 ### Create Multiple Instances of NeoPass
 
 ```typescript
-import neopass from 'neopass'
+import { neopass } from 'neopass'
 
 import {
   NeoPass,
