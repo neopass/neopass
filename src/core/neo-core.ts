@@ -202,7 +202,7 @@ export class NeoCore {
       evaluators = evaluators || config.evaluators
 
       if (!Array.isArray(evaluators) || evaluators.length === 0) {
-        throw new Error('no evaluators specified.')
+        throw new Error('no evaluators specified')
       }
 
       // Get the password info object.
