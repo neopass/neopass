@@ -1,6 +1,6 @@
 {
   "name": "neopass",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "A password validation and generation tool kit",
   "main": "lib/index.js",
   "scripts": {
