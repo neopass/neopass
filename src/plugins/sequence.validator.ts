@@ -54,7 +54,7 @@ export class SequenceValidator extends ValidatorPlugin {
         const offending = this.sequences(max, password)
         if (offending > 0) {
           const msg = this.message(offending)
-          return [{ name: this.name, msg }]
+          return [{ name: this.name, msg, meta: offending }]
         }
       }
     }
