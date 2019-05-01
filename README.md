@@ -24,6 +24,7 @@ Contents
   - [The Vaidation Chain](#the-validation-chain)
   - [The Evaluation Chain](#the-evaluation-chain)
   - [Passphrase Detection](#passphrase-detection)
+  - [Configuration Notes](#configuration-notes)
 - [Custom Validators](#custom-validators)
 - [Optional Rules](#optional-rules)
 - [Plugins](#plugins)
@@ -37,32 +38,6 @@ npm install neopass
 ```
 
 ## Basics
-
-Neopass is designed to be configured once, making the configured instance available for any subsequent call.
-
-```typescript
-neopass({
-  validators: [
-    'length:min=10,max=72',
-    'classes:and=ul,or=ds',
-  ]
-})
-
-// Validate a password.
-const errors = neopass.validate('LosAngeles2019')
-console.log('errors:', errors)
-
-// Reconfigure neopass (error)
-neopass({})
-```
-
-```
-errors: []
-
-Error: neopass is already configured
-```
-
-If you need multiple instances with separate configs, see [Using Multiple Configurations](#using-multiple-configurations) below.
 
 ### Password Generation
 
@@ -80,6 +55,9 @@ console.log('random:', pass1)
 
 const pass2 = neopass.generate(12, 'letters-numbers')
 console.log('letters-numbers', pass2)
+
+const pass3 = neopass.generate(12, 'hex')
+console.log('hex', pass3)
 ```
 
 Output:
@@ -87,6 +65,7 @@ Output:
 ```
 random: |6Tc/]>4KY:5
 letters-numbers: WIW71lZEuUsN
+hex: 9b9ede126e4f2556fe1717dc
 ```
 
 #### Registered Generators
@@ -102,14 +81,9 @@ Output:
 
 ```
 generators: [
-  {
-    name: 'random',
-    title: 'Random'
-  },
-  {
-    name: 'letters-numbers',
-    title: 'Letters & Numbers'
-  }
+  { name: 'random', title: 'Random', units: 'char' },
+  { name: 'letters-numbers', title: 'Letters & Numbers', units: 'char' },
+  { name: 'hex', title: 'Hexidecimal', units: 'byte' }
 ]
 ```
 
@@ -370,6 +344,33 @@ Output:
 ```
 errors: []
 ```
+### Configuration Notes
+
+Neopass is designed to be configured once, making the configured instance available for any subsequent call.
+
+```typescript
+neopass({
+  validators: [
+    'length:min=10,max=72',
+    'classes:and=ul,or=ds',
+  ]
+})
+
+// Validate a password.
+const errors = neopass.validate('LosAngeles2019')
+console.log('errors:', errors)
+
+// Reconfigure neopass (error)
+neopass({})
+```
+
+```
+errors: []
+
+Error: neopass is already configured
+```
+
+If you need multiple instances with separate configs, see [Using Multiple Configurations](#using-multiple-configurations) below.
 
 ## Custom Validators
 
