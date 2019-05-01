@@ -74,11 +74,15 @@ export class PluginResolver {
       } else {
         plugin = value.plugin
         args = value.args || []
-        options = value.options || {}
-      }
+        options = value.options != null ? value.options : {}
 
-      if (typeof plugin !== 'string') {
-        throw new Error(`cannot resolve plugin "${value}"`)
+        if (typeof plugin !== 'string') {
+          throw new Error(`cannot resolve plugin "${value}"`)
+        }
+
+        if (value.args != null && !Array.isArray(args)) {
+          throw new Error('args must be an array')
+        }
       }
 
       const _plugin = _store.get(type, plugin)
