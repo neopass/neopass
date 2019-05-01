@@ -55,7 +55,8 @@ export function pullFromClass(charClass: CharClass, ...nums: number[]): CharClas
   nums.forEach((num) => {
     _class = _class.reduce((cls, range) => {
       const newClass = pullFromRange(range, num)
-      return cls.push.apply(cls, newClass) && cls || cls
+      cls.push.apply(cls, newClass)
+      return cls
     }, [] as CharClass)
   })
 
