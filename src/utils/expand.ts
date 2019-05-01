@@ -26,7 +26,7 @@ export function expandClass(cls: CharClass): number[] {
   return chars
 }
 
-export function expand(classes: CharSet): number[] {
+export function expandSet(classes: CharSet): number[] {
   const chars = classes.reduce((list, cls) => {
     list.push.apply(list, expandClass(cls))
     return list

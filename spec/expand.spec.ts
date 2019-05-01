@@ -1,5 +1,5 @@
 import assert from 'assert'
-import { expandRange, expandClass, expand, toChars } from '../src/utils'
+import { expandRange, expandClass, expandSet, toChars } from '../src/utils'
 
 describe('expand', () => {
   it('converts a range into a string', () => {
@@ -13,7 +13,7 @@ describe('expand', () => {
   })
 
   it('converts a set into a string', () => {
-    const nums = expand([[[97, 99], [100, 102]], [[49, 49], [50, 51]], [[91, 93]]])
+    const nums = expandSet([[[97, 99], [100, 102]], [[49, 49], [50, 51]], [[91, 93]]])
     assert.strictEqual(toChars(nums).join(''), 'abcdef123[\\]')
   })
 
