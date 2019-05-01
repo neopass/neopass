@@ -53,7 +53,7 @@ describe('NeoPass', () => {
   })
 
   it('throws if evaluation attempted without evaluators', () => {
-    const neo = new NeoPass(null, null, null)
+    const neo = new NeoPass()
 
     let error: any = null
 
@@ -70,7 +70,7 @@ describe('NeoPass', () => {
   })
 
   it('throws if validation attempted without validators', () => {
-    const neo = new NeoPass(null, null, null)
+    const neo = new NeoPass()
 
     let error: any = null
 
@@ -104,7 +104,7 @@ describe('NeoPass', () => {
   })
 
   it('throws on misconfigured plugin info', () => {
-    const neo = new NeoPass(null, null, null)
+    const neo = new NeoPass()
 
     let error: any = null
 
@@ -155,5 +155,73 @@ describe('NeoPass', () => {
 
     assert(error instanceof Error)
     assert.strictEqual(error.message, 'unrecognized plugin type "nonexistent"')
+  })
+
+  it('throws if registering a misconfigured plugin', () => {
+    const config: any = {
+      plugins: [{ type: 'validator', name: 1 }]
+    }
+
+    let error: any = null
+
+    assert.throws(() => {
+      try {
+        new NeoPass(config, null, null)
+      } catch (e) {
+        error = e
+        throw e
+      }
+    })
+
+    assert(error instanceof Error)
+    assert.strictEqual(error.message, 'plugin name must be a string')
+  })
+
+  it('throws if registering a plugin twice', () => {
+    const config: any = {
+      plugins: [new ShannonValidator(), new ShannonValidator()]
+    }
+
+    let error: any = null
+
+    assert.throws(() => {
+      try {
+        new NeoPass(config, null, null)
+      } catch (e) {
+        error = e
+        throw e
+      }
+    })
+
+    assert(error instanceof Error)
+    assert.strictEqual(error.message, 'plugin "shannon" already registered')
+  })
+
+  it('throws if using an unregistered plugin', () => {
+    const config: any = {
+      validators: ['unregistered']
+    }
+
+    const neo = new NeoPass(config, null, [ShannonValidator])
+
+    let error: any = null
+
+    assert.throws(() => {
+      try {
+        neo.validate('abcdefg')
+      } catch (e) {
+        error = e
+        throw e
+      }
+    })
+
+    assert(error instanceof Error)
+    assert.strictEqual(error.message, 'plugin "unregistered" not registered for type "validator"')
+  })
+
+  it('returns empty array when no generators registered', () => {
+    const neo = new NeoPass()
+    const gens = neo.generators()
+    assert.strictEqual(gens.length, 0)
   })
 })
