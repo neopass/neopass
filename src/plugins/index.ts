@@ -1,6 +1,7 @@
 export * from './classes.validator'
 export * from './depth.validator'
 export * from './entropy.validator'
+export * from './hex.generator'
 export * from './length.validator'
 export * from './letters-numbers.generator'
 export * from './passphrase.detector'
