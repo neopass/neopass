@@ -81,11 +81,13 @@ export function neopass(config?: INeoConfig|null) {
  * @param generator the name of the generator plugin to use
  * @param retries retry generation if password fails configured validation chain
  */
-function generate(len: number, generator: PluginInfo, retries?: number): string {
+neopass.generate = function generate(
+  len: number,
+  generator: PluginInfo,
+  retries?: number
+): string {
   return _core.generate(len, generator, retries)
 }
-
-neopass.generate = generate
 
 /**
  * Run evaluation chain against a password.
@@ -93,11 +95,12 @@ neopass.generate = generate
  * @param password the password to evaluate
  * @param evaluators override configured evaluators
  */
-function evaluate(password: string, evaluators?: IEvaluator[]): IEvaluatorInfo {
+neopass.evaluate = function evaluate(
+  password: string,
+  evaluators?: IEvaluator[]
+): IEvaluatorInfo {
   return _core.evaluate(password, evaluators)
 }
-
-neopass.evaluate = evaluate
 
 /**
  * Run a validation chain against a password.
@@ -105,11 +108,12 @@ neopass.evaluate = evaluate
  * @param password the password to validate
  * @param validators override configured validators
  */
-function validate(password: string, validators?: null|PluginInfo[]): IValidatorError[] {
+neopass.validate = function validate(
+  password: string,
+  validators?: null|PluginInfo[]
+): IValidatorError[] {
   return _core.validate(password, validators)
 }
-
-neopass.validate = validate
 
 /**
  * Run validation and evaluation to produce errors and warnings.
@@ -118,7 +122,7 @@ neopass.validate = validate
  * @param validators override configured validators
  * @param evaluators override configured evaluators
  */
-function verify(
+neopass.verify = function verify(
   password: string,
   validators?: null|PluginInfo[],
   evaluators?: IEvaluator[]
@@ -126,16 +130,12 @@ function verify(
   return _core.verify(password, validators, evaluators)
 }
 
-neopass.verify = verify
-
 /**
  * Get a list of registered generators.
  */
-function generators(): IGeneratorInfo[] {
+neopass.generators = function generators(): IGeneratorInfo[] {
   return _core.generators()
 }
-
-neopass.generators = generators
 
 // /**
 //  *
