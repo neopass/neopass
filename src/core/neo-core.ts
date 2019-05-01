@@ -305,7 +305,8 @@ export class NeoCore {
 
       // Create a list of generator info objects.
       const infoList = generators.map((gen) => {
-        return { name: gen.name, title: gen.title }
+        const { name, title, units } = gen
+        return { name, title, units }
       })
 
       return infoList
