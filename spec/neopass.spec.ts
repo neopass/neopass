@@ -37,16 +37,19 @@ describe('neopass', () => {
   })
 
   it('generates a password', () => {
-    const pass = neopass.generate(20, 'random')
+    const pass1 = neopass.generate(20, 'random')
+    const pass2 = neopass.generate(20, 'letters-numbers')
+    const pass3 = neopass.generate(20, 'hex')
 
-    assert(shannon(pass) > 3.5)
+    assert(shannon(pass1) * pass1.length > 64)
+    assert(shannon(pass2) * pass2.length > 64)
+    assert(shannon(pass3) * pass3.length > 64)
   })
 
   it('retries password generation', () => {
     assert.throws(() => {
       neopass.generate(9, 'letters-numbers', 10)
     })
-
   })
 
   it('lists registered generators', () => {
