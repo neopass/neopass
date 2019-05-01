@@ -772,7 +772,16 @@ const customValidators = [
 ]
 
 // Overide default validators.
-neopass.validate('skookum49', customValidators)
+const errors = neopass.validate('skookum49', customValidators)
+console.log('errors:', errors)
+```
+
+Output:
+
+```
+errors: [ { name: 'entropy',
+    msg: 'password is either too short or not complex enough',
+    score: 0.7270207033278251 } ]
 ```
 
 The above also works with the evaluation chain.
