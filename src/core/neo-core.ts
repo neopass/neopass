@@ -120,14 +120,47 @@ function _applyEvalErrors(
  * miscellaneous logic.
  */
 export class NeoCore {
+  /**
+   * Generate a password using the given generator reference.
+   *
+   * @param len the length of the password to generate
+   * @param generator the name of the generator plugin to use
+   * @param retries retry generation if password fails configured validation chain
+   */
   public generate: (len: number, generator: PluginInfo, retries?: number) => string
-  public evaluate: (password: string, evaluators?: IEvaluator[]) => IEvaluatorInfo
-  public validate: (password: string, validators?: null|PluginInfo[]) => IValidatorError[]
-  public generators: () => IGeneratorInfo[]
 
+  /**
+   * Run evaluation chain against a password.
+   *
+   * @param password the password to evaluate
+   * @param evaluators override configured evaluators
+   */
+  public evaluate: (password: string, evaluators?: IEvaluator[]) => IEvaluatorInfo
+
+  /**
+   * Run a validation chain against a password.
+   *
+   * @param password the password to validate
+   * @param validators override configured validators
+   */
+  public validate: (password: string, validators?: null|PluginInfo[]) => IValidatorError[]
+
+  /**
+   * Run validation and evaluation to produce errors and warnings.
+   *
+   * @param password the password to verify
+   * @param validators override configured validators
+   * @param evaluators override configured evaluators
+   */
   public verify: (
-    password: string, validators?: null|PluginInfo[], evaluators?: IEvaluator[]
-  ) => IVerifyResult
+    password: string,
+    validators?: null|PluginInfo[],
+    evaluators?: IEvaluator[]) => IVerifyResult
+
+  /**
+   * Get a list of registered generators.
+   */
+  public generators: () => IGeneratorInfo[]
 
   constructor(config: IBaseConfig, store: PluginStore, resolver: PluginResolver) {
     /**
@@ -250,20 +283,6 @@ export class NeoCore {
     /**
      *
      */
-    this.generators = function generators(): IGeneratorInfo[] {
-      const generators = store.getAll('generator') as IGenerator[]
-
-      // Create a list of generator info objects.
-      const infoList = generators.map((gen) => {
-        return { name: gen.name, title: gen.title }
-      })
-
-      return infoList
-    }
-
-    /**
-     *
-     */
     this.verify = function verify(
       password: string, validators?: null|PluginInfo[], evaluators?: IEvaluator[]
     ): IVerifyResult {
@@ -276,7 +295,20 @@ export class NeoCore {
       }
 
       return result
+    }
 
+    /**
+     *
+     */
+    this.generators = function generators(): IGeneratorInfo[] {
+      const generators = store.getAll('generator') as IGenerator[]
+
+      // Create a list of generator info objects.
+      const infoList = generators.map((gen) => {
+        return { name: gen.name, title: gen.title }
+      })
+
+      return infoList
     }
   }
 }
