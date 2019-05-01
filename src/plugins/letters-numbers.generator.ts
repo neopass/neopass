@@ -1,8 +1,7 @@
 
-import { Generate, GeneratorPlugin } from '../generator'
+import { Generate, GeneratorPlugin, GenUnits } from '../generator'
 import { generate as _generate } from '../utils/generate'
 import { classes } from '../topology'
-import { PluginType } from '../plugin'
 
 const { u, l, d } = classes('uld')
 
@@ -27,5 +26,9 @@ export class LettersNumbersGenerator extends GeneratorPlugin {
 
   get title(): string {
     return 'Letters & Numbers'
+  }
+
+  get units(): GenUnits {
+    return 'char'
   }
 }

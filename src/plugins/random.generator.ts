@@ -1,9 +1,8 @@
 
-import { Generate, GeneratorPlugin } from '../generator'
+import { Generate, GeneratorPlugin, GenUnits } from '../generator'
 import { generate as _generate } from '../utils/generate'
 import { pullFromClass } from '../utils/pull'
 import { classes as _classes } from '../topology'
-import { PluginType } from '../plugin'
 
 const { u, l, d, s } = _classes('ulds')
 
@@ -30,5 +29,9 @@ export class RandomGenerator extends GeneratorPlugin {
 
   get title(): string {
     return 'Random'
+  }
+
+  get units(): GenUnits {
+    return 'char'
   }
 }
