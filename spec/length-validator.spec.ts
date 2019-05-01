@@ -1,6 +1,7 @@
 import assert from 'assert'
 import { NeoPass } from '../src/neo-pass'
 import { LengthValidator } from '../src/plugins'
+import { expandRange } from '../src/utils'
 
 const neo = new NeoPass({
   plugins: [ new LengthValidator() ],
@@ -16,13 +17,28 @@ const neo = new NeoPass({
 })
 
 describe('LengthValidator', () => {
-  it('generates error when length threshold is not met', () => {
+  it('generates error when min length is not met', () => {
     const errors = neo.validate('abcdefg')
-    const [{name, score = -1}] = errors
+    const [{name, score = -1, meta}] = errors
 
     assert.strictEqual(errors.length, 1)
     assert.strictEqual(name, 'length')
+    assert.strictEqual(meta, 'min')
     assert.strictEqual(score > 0 && score < 1, true)
+  })
+
+  it('generates error when max length exceeded', () => {
+    const pass = expandRange([32, 126])
+      .map(n => String.fromCodePoint(n))
+      .join('')
+
+    const errors = neo.validate(pass)
+    const [{name, score = -1, meta}] = errors
+
+    assert.strictEqual(errors.length, 1)
+    assert.strictEqual(name, 'length')
+    assert.strictEqual(meta, 'max')
+    assert.strictEqual(score, 0)
   })
 
   it('errors out if wrong argument type given', () => {
