@@ -28,6 +28,7 @@ Contents
   - [Optional Rules](#optional-rules)
   - [Plugins](#plugins)
     - [Authoring a Validator Plugin](#authoring-a-validator-plugin)
+- [Using Multiple Configurations](#using-multiple-configurations)
 
 ## Installation
 
@@ -36,6 +37,32 @@ npm install neopass
 ```
 
 ## Basics
+
+Neopass is designed to be configured once, making the configured instance available for any subsequent call.
+
+```typescript
+neopass({
+  validators: [
+    'length:min=10,max=72',
+    'classes:and=ul,or=ds',
+  ]
+})
+
+// Validate a password.
+const errors = neopass.validate('LosAngeles2019')
+console.log('errors:', errors)
+
+// Reconfigure neopass (error)
+neopass({})
+```
+
+```
+errors: []
+
+Error: neopass is already configured
+```
+
+If you need multiple instances with separate configs, see [Using Multiple Configurations](#using-multiple-configurations) below.
 
 ### Password Generation
 
@@ -718,3 +745,93 @@ As a rule, always request the minimum amount of information required to fulfill 
 - if you want to know which classes are represented, request `classes` and not `topology`.
 
 There are legitimate reasons for a validator to request `password`. For instance, both the `RunValidator` and the `SequenceValidator` use `password` to determine if a password has runs of the same character or multiple characters in sequence. Most of the other validators request `length`, `shannon`, `entropy` and/or `depth`. The `TopologyValidator` requests `topology`. However it's dangerous to blindly trust plugins that request `password` or `topology`. _It's safest to only use validators and generators that you author yourself_.
+
+## Using Multiple Configurations
+
+If you need multiple configurations or need to run separate validation or evaluation chains, there are two ways to go about it.
+
+### Override Configured Chains
+
+```typescript
+const config = {
+  // Default validators.
+  validators: [
+    'length:min=10,max=72',
+    'classes:and=ul,or=ds',
+  ]
+}
+
+neopass(config)
+
+// Create a custom validation chain.
+const customValidators = [
+  'entropy:64',
+  'run:2',
+  'sequence:3',
+]
+
+// Overide default validators.
+neopass.validate('skookum49', customValidators)
+```
+
+The above also works with the evaluation chain.
+
+### Create Multiple Instances of NeoPass
+
+```typescript
+import neopass from 'neopass'
+
+import {
+  NeoPass,
+  LengthValidator,
+  ClassesValidator,
+  EntropyValidator,
+  RunValidator,
+  SequenceValidator,
+} from 'neopass'
+
+const config1 = {
+  plugins: [
+    new LengthValidator(),
+    new ClassesValidator(),
+  ],
+  validators: [
+    'length:min=10,max=72',
+    'classes:and=ul,or=ds',
+  ]
+}
+
+const config2 = {
+  plugins: [
+    new EntropyValidator(),
+    new RunValidator(),
+    new SequenceValidator(),
+  ],
+  validators: [
+    'entropy:64',
+    'run:2',
+    'sequence:3',
+  ]
+}
+
+const neo1 = new NeoPass(config1)
+const neo2 = new NeoPass(config2)
+
+console.log('neo1:', neo1.validate('Abcd'))
+console.log('neo2:', neo2.validate('Abcd'))
+```
+
+```
+neo1: [ { name: 'length',
+    msg: 'password length should be between 10 and 72 characters, inclusive',
+    score: 0.4,
+    meta: 'min' },
+  { name: 'classes',
+    msg: 'missing one of digit, special',
+    meta: 'ds' } ]
+neo2: [ { name: 'entropy',
+    msg: 'password is either too short or not complex enough',
+    score: 0.35627748238381823 },
+  { name: 'sequence',
+    msg: 'password contains at least 1 character sequence(s)' } ]
+```
