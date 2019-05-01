@@ -17,4 +17,5 @@ export * from './utils'
 export * from './validator'
 export * from './verify-result'
 
+export { neopass }
 export default neopass
