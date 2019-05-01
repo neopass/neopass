@@ -82,4 +82,10 @@ describe('neopass', () => {
     assert.strictEqual(errors.length, 1)
     assert.strictEqual(warnings.length, 1)
   })
+
+  it('throws an error if reconfiguration is attempted', () => {
+    assert.throws(() => {
+      neopass({})
+    })
+  })
 })
