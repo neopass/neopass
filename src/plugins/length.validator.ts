@@ -22,11 +22,14 @@ export class LengthValidator extends ValidatorPlugin {
       request: ['length'],
       exec: (length: number) => {
         if (length < min || length > max) {
-          let score = length / min
-          if (score > 1) { score = 0 }
-          const meta = length < min ? 'min' : 'max'
           const msg = this.message(min, max)
-          return [{ name: this.name, msg, score, meta }]
+
+          if (length < min) {
+            const score = length / min
+            return [{ name: this.name, msg, score, meta: 'min' }]
+          }
+
+          return [{ name: this.name, msg, score: 0, meta: 'max' }]
         }
       }
     }
