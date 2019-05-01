@@ -12,6 +12,7 @@ import {
   ClassesValidator,
   DepthValidator,
   EntropyValidator,
+  HexGenerator,
   LengthValidator,
   LettersNumbersGenerator,
   RandomGenerator,
@@ -30,8 +31,9 @@ const _defaultConfig: INeoConfig = {
 
 // Built-in generators.
 const _builtinGenerators: Generator[] = [
-  RandomGenerator,
+  HexGenerator,
   LettersNumbersGenerator,
+  RandomGenerator,
 ]
 
 // Built-in validators.
