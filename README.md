@@ -21,7 +21,7 @@ Contents
 - [Installation](#installation)
 - [Basics](#basics)
   - [Password Generation](#password-generation)
-  - [The Vaidation Chain](#the-validation-chain)
+  - [The Validation Chain](#the-validation-chain)
   - [The Evaluation Chain](#the-evaluation-chain)
   - [Passphrase Detection](#passphrase-detection)
   - [Configuration Notes](#configuration-notes)
