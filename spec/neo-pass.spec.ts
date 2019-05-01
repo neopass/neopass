@@ -1,5 +1,5 @@
 import assert from 'assert'
-import { NeoPass, ValidatorPlugin, shannon } from '../src'
+import { NeoPass, ValidatorPlugin, shannon, INeoConfig } from '../src'
 
 import {
   RandomGenerator,
@@ -86,5 +86,59 @@ describe('NeoPass', () => {
         throw e
       }
     })
+  })
+
+  it('throws on misconfigured plugin info', () => {
+    const neo = new NeoPass(null, null, null)
+
+    let error: any = null
+
+    assert.throws(() => {
+      try {
+        neo.validate('abcdefg', [
+          { plugin: 0, args: [], options: {} } as any
+        ])
+      } catch (e) {
+        error = e
+        throw e
+      }
+    })
+
+    assert(error instanceof Error)
+    assert.strictEqual(error.message, 'cannot resolve plugin "[object Object]"')
+
+    assert.throws(() => {
+      try {
+        neo.validate('abcdefg', [
+          { plugin: '', args: 1, options: {} } as any
+        ])
+      } catch (e) {
+        error = e
+        throw e
+      }
+    })
+
+    assert(error instanceof Error)
+    assert.strictEqual(error.message, 'args must be an array')
+  })
+
+  it('throws if registering a nonexistent plugin type', () => {
+    const config: any = {
+      plugins: [{ type: 'nonexistent', name: '' }]
+    }
+
+    let error: any = null
+
+    assert.throws(() => {
+      try {
+        new NeoPass(config, null, null)
+      } catch (e) {
+        error = e
+        throw e
+      }
+    })
+
+    assert(error instanceof Error)
+    assert.strictEqual(error.message, 'unrecognized plugin type "nonexistent"')
   })
 })
