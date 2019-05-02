@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.8.6] - 2019-05-01
 - neopass cli uses NeoPass instance.
 - Throw error if neopass functions called before configuration.
+- Preserve comments in build files.
 
 ## [0.8.5] - 2019-05-01
 - Include bin folder in package (fixes install error).
