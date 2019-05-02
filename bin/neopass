@@ -27,4 +27,6 @@ const neopass = new NeoPass(null, generators)
 
 if (result.cmd === 'gen') {
   console.log(neopass.generate(result.value, result.type))
+} else {
+  console.error(`unrecognized command "${result.cmd}"`)
 }
