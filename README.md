@@ -41,6 +41,14 @@ npm install neopass
 
 ### Password Generation
 
+Neopass can generate random strings using configured generators. By default, there are three generators available:
+
+`random`: produces _n_ random characters from a character set of typable characters uppercase, lowercase, digit, and special.
+
+`letters-numbers`: produces _n_ random characters from a character set of uppercase, lowercase, and digit.
+
+`hex`: produces _n_ random bytes in hexidecimal form.
+
 ```typescript
 import { neopass, INeoConfig } from 'neopass'
 
@@ -97,15 +105,30 @@ import { neopass, INeoConfig } from 'neopass'
 const config: INeoConfig = {
   useBuiltinValidators: true, // default
 
-  // These are run when validate is called.
+  /**
+   * These validators are run when `neopass.validate` is called, and
+   * reference built-in validators registered automatically.
+   *
+   * Each validator is called in sequence and any errors produced
+   * are returned by the call.
+   *
+   */
   validators: [
+    /**
+     * Password must be between 10 and 72 characters.
+     */
     'length:min=10,max=72',
+    /**
+     * Password must contain an uppercase character, a lowercase
+     * character, and one of digit or special character.
+     */
     'classes:and=ul,or=ds',
   ]
 }
 
 neopass(config)
 
+// Validate a password.
 const errors = neopass.validate('spokane')
 console.log('errors:', errors)
 ```
@@ -206,9 +229,9 @@ neopass({
   evaluators: [
     {
       /**
-       * These don't necessarily need 'weight' because they
-       * return a score, which is used to calculate strength.
-       * If weight is present, it's multiplied by the score.
+       * This evaluator doesn't necessarily need 'weight' because
+       * these validators return a score, which is used to calculate
+       * strength. If weight is present, it's applied to the score.
        */
       validators: [
         'length:min=20,max=72',
@@ -218,7 +241,7 @@ neopass({
     {
       /**
        * These validators don't return a score, so each
-       * error/warning multiplies the strength by 0.75.
+       * error multiplies the strength by 0.75.
        */
       weight: 0.75,
       validators: [
@@ -344,6 +367,7 @@ Output:
 ```
 errors: []
 ```
+
 ### Configuration Notes
 
 Neopass is designed to be configured once, making the configured instance available for any subsequent call.
@@ -399,7 +423,7 @@ function customDepth() {
   return validator
 }
 
-// Configure neopass
+// Configure neopass.
 neopass({
   validators: [
     customDepth
