@@ -414,7 +414,7 @@ function customDepth() {
       if (depth < 62) {
         // Validation failure.
         const score = depth / 62
-        return [{name: 'custom-depth', msg: 'password too short', score}]
+        return [{name: 'custom-depth', msg: 'password not complex enough', score}]
       }
     }
   }
@@ -440,7 +440,7 @@ Output:
 errors: [
   {
     name: 'custom-depth',
-    msg: 'password too short',
+    msg: 'password not complex enough',
     score: 0.41935483870967744
   }
 ]
@@ -656,8 +656,8 @@ export class SimpleLengthValidator extends ValidatorPlugin {
           // Return one or more error objects.
           return [{ name: this.name, msg: this.msg, score }]
         }
-        // No errors!
-        return []
+        // No errors! Can be null or undefined.
+        return null
       }
     }
 
@@ -813,8 +813,6 @@ The above also works with the evaluation chain.
 ### Create Multiple Instances of NeoPass
 
 ```typescript
-import { neopass } from 'neopass'
-
 import {
   NeoPass,
   LengthValidator,
