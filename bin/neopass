@@ -1,13 +1,29 @@
 #!/usr/bin/env node
 'use strict'
-
-const { neopass } = require('..')
 const parser = require('./parser')
+
+const neo = require('..')
+
+const {
+  NeoPass,
+  HexGenerator,
+  RandomGenerator,
+  LettersNumbersGenerator,
+ } = neo
+
+/**
+ * @type {neo.Generator[]}
+ */
+const generators = [
+  HexGenerator,
+  RandomGenerator,
+  LettersNumbersGenerator,
+]
 
 const result = parser(process.argv.slice(2))
 if (result == null) { process.exit() }
 
-neopass()
+const neopass = new NeoPass(null, generators)
 
 if (result.cmd === 'gen') {
   console.log(neopass.generate(result.value, result.type))
