@@ -55,6 +55,13 @@ const _builtinValidators: Validator[] = [
 let _core: NeoPass
 
 /**
+ *
+ */
+function instanceError(): never {
+  throw new Error('configure neopass before calling neopass functions')
+}
+
+/**
  * Neopass instance.
  */
 export function neopass(config?: INeoConfig|null) {
@@ -86,6 +93,7 @@ neopass.generate = function generate(
   generator: PluginInfo,
   retries?: number
 ): string {
+  if (!_core) { instanceError() }
   return _core.generate(len, generator, retries)
 }
 
@@ -99,6 +107,7 @@ neopass.evaluate = function evaluate(
   password: string,
   evaluators?: IEvaluator[]
 ): IEvaluatorInfo {
+  if (!_core) { instanceError() }
   return _core.evaluate(password, evaluators)
 }
 
@@ -112,6 +121,7 @@ neopass.validate = function validate(
   password: string,
   validators?: null|PluginInfo[]
 ): IValidatorError[] {
+  if (!_core) { instanceError() }
   return _core.validate(password, validators)
 }
 
@@ -127,6 +137,7 @@ neopass.verify = function verify(
   validators?: null|PluginInfo[],
   evaluators?: IEvaluator[]
 ): IVerifyResult {
+  if (!_core) { instanceError() }
   return _core.verify(password, validators, evaluators)
 }
 
@@ -134,6 +145,7 @@ neopass.verify = function verify(
  * Get a list of registered generators.
  */
 neopass.generators = function generators(): IGeneratorInfo[] {
+  if (!_core) { instanceError() }
   return _core.generators()
 }
 
