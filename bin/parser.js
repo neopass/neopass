@@ -52,7 +52,7 @@ function parser(args) {
         break
       }
       case 'random': {
-        result.type = genType('hex', result, args)
+        result.type = genType('random', result, args)
         break
       }
       case 'letters-numbers': {
