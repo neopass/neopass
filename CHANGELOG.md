@@ -9,14 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Throw error if neopass functions called before configuration.
 
 ## [0.8.5] - 2019-05-01
-- Include bin folder in package.
+- Include bin folder in package (fixes install error).
 
 ## [0.8.4] - 2019-05-01
 - Update permissions on bin/neopass.
 
 ## [0.8.3] - 2019-05-01
 - Allow spaces in plugin ref arguments.
-- Add neopass cli (supports password generation).
+- Add neopass cli (causes install error).
 
 ## [0.8.2] - 2019-05-01
 - Fix circular reference issue in `neopass.ts` when *.d.ts file is generated.
