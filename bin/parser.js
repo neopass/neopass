@@ -11,13 +11,6 @@
  */
 
 /**
- * @returns {string}
- */
-function usage() {
-  return 'usage: neopass gen <hex|random|letters-numbers> <length>\n'
-}
-
-/**
  * @param {GenType} type
  * @param {Result} result
  * @param {string[]} args
@@ -67,7 +60,6 @@ function parser(args) {
   }
 
   if (argError || isNaN(result.value) || Object.keys(result).length < 3) {
-    process.stdout.write(usage())
     return null
   }
 

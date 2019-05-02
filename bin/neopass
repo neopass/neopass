@@ -1,8 +1,16 @@
 #!/usr/bin/env node
 'use strict'
+
 const parser = require('./parser')
 
 const neo = require('..')
+
+/**
+ * @returns {string}
+ */
+function usage() {
+  return 'usage: neopass gen <hex|random|letters-numbers> <length>\n'
+}
 
 const {
   NeoPass,
@@ -21,12 +29,11 @@ const generators = [
 ]
 
 const result = parser(process.argv.slice(2))
-if (result == null) { process.exit() }
 
-const neopass = new NeoPass(null, generators)
-
-if (result.cmd === 'gen') {
-  console.log(neopass.generate(result.value, result.type))
+if (result != null) {
+  const neopass = new NeoPass(null, generators)
+  const str = neopass.generate(result.value, result.type)
+  process.stdout.write(`${str}\n`)
 } else {
-  console.error(`unrecognized command "${result.cmd}"`)
+  process.stdout.write(usage())
 }
