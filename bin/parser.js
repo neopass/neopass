@@ -1,16 +1,42 @@
 'use strict'
 
+/**
+ * @typedef {'hex'|'random'|'letters-numbers'} GenType
+ * @typedef {'gen'} CommandType
+ *
+ * @typedef {Object} Result
+ * @property {CommandType} cmd
+ * @property {GenType} type
+ * @property {number} value
+ */
+
+/**
+ * @returns {string}
+ */
 function usage() {
   return 'usage: neopass gen <hex|random|letters-numbers> <length>\n'
 }
 
-function genType(args) {
-  const value = args.pop()
-  return +value
+/**
+ * @param {GenType} type
+ * @param {Result} result
+ * @param {string[]} args
+ * @returns {GenType}
+ */
+function genType(type, result, args) {
+  result.type = type
+  result.value = +args.pop()
+  return type
 }
 
+/**
+ * @param {string[]} args
+ */
 function parser(args) {
   args.reverse()
+  /**
+   * @type {Result}
+   */
   const result = {}
 
   let argError = false
@@ -22,18 +48,15 @@ function parser(args) {
         break
       }
       case 'hex': {
-        result.type = 'hex'
-        result.value = genType(args, result.type)
+        result.type = genType('hex', result, args)
         break
       }
       case 'random': {
-        result.type = 'random'
-        result.value = genType(args, result.type)
+        result.type = genType('hex', result, args)
         break
       }
       case 'letters-numbers': {
-        result.type = 'letters-numbers'
-        result.value = genType(args, result.type)
+        result.type = genType('letters-numbers', result, args)
         break
       }
       default: {
