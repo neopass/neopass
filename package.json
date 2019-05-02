@@ -30,6 +30,7 @@
     "validation",
     "strength",
     "generation",
+    "generator",
     "topology"
   ],
   "author": "James Abney",
