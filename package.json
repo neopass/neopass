@@ -51,7 +51,8 @@
     "typescript": "^3.4.5"
   },
   "files": [
-    "lib"
+    "lib",
+    "bin"
   ],
   "dependencies": {
     "regex-each": "^1.0.3"
