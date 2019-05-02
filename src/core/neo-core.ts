@@ -287,13 +287,8 @@ export class NeoCore {
       password: string, validators?: null|PluginInfo[], evaluators?: IEvaluator[]
     ): IVerifyResult {
       const errors = this.validate(password, validators)
-      const info = this.evaluate(password, evaluators)
-
-      const result = {
-        errors,
-        warnings: info.warnings
-      }
-
+      const { warnings } = this.evaluate(password, evaluators)
+      const result = { errors, warnings }
       return result
     }
 
