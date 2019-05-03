@@ -127,7 +127,7 @@ export class NeoCore {
    * @param generator the name of the generator plugin to use
    * @param retries retry generation if password fails configured validation chain
    */
-  public generate: (len: number, generator: PluginInfo, retries?: number) => string
+  public generate: (len: number, generator: PluginInfo, retries?: number|null) => string
 
   /**
    * Run evaluation chain against a password.
@@ -166,7 +166,7 @@ export class NeoCore {
     /**
      *
      */
-    this.generate = function generate(len: number, generator: PluginInfo, retries?: number): string {
+    this.generate = function generate(len: number, generator: PluginInfo, retries?: number|null): string {
       const _generate = resolver.resolve<Generate>('generator', generator)
 
       if (typeof retries === 'number' && retries < 1) {

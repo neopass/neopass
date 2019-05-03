@@ -91,7 +91,7 @@ export function neopass(config?: INeoConfig|null) {
 neopass.generate = function generate(
   len: number,
   generator: PluginInfo,
-  retries?: number
+  retries: number|null|undefined = 10,
 ): string {
   if (!_core) { instanceError() }
   return _core.generate(len, generator, retries)
