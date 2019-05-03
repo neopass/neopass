@@ -166,18 +166,16 @@ export class NeoCore {
     /**
      *
      */
-    this.generate = function generate(len: number, generator: PluginInfo, retries?: number|null): string {
+    this.generate = function generate(
+      len: number, generator: PluginInfo, retries?: number|null ): string {
+
+      // Get the specified generator.
       const _generate = resolver.resolve<Generate>('generator', generator)
 
       // Retry generation to pass validation.
       if (typeof retries === 'number' && retries > 0) {
-        let count = 0
-
-        while(true) {
-          if (++count > retries) {
-            throw new Error('could not generate a password that passes configured validators')
-          }
-
+        // Run generate/validate loop until validation passes.
+        for (let i = 0; i < retries; i++) {
           const password = _generate(len)
           const errors = this.validate(password)
 
@@ -185,6 +183,8 @@ export class NeoCore {
             return password
           }
         }
+
+        throw new Error('could not generate a password that passes configured validators')
 
       } else {
         return _generate(len)
