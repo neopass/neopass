@@ -3,9 +3,77 @@ import neopass from '../src'
 import { shannon } from '../src/utils'
 
 describe('neopass', () => {
-  neopass({
-    validators: ['length:min=10,max=72'],
-    evaluators: [{ validators: ['shannon:32'] }],
+
+  afterEach(() => {
+    try {
+      neopass({
+        validators: ['length:min=10,max=72'],
+        evaluators: [{ validators: ['shannon:32'] }],
+      })
+    } catch (e) { /**/ }
+  })
+
+  it('throws if functions are called before configuration', () => {
+    let error: any = null
+
+    assert.throws(() => {
+      try {
+        neopass.generate(12, 'hex')
+      } catch (e) {
+        error = e
+        throw e
+      }
+    })
+
+    assert.strictEqual(error.message, 'configure neopass before calling neopass functions')
+    error = null
+
+    assert.throws(() => {
+      try {
+        neopass.validate('abc')
+      } catch (e) {
+        error = e
+        throw e
+      }
+    })
+
+    assert.strictEqual(error.message, 'configure neopass before calling neopass functions')
+    error = null
+
+    assert.throws(() => {
+      try {
+        neopass.evaluate('abc')
+      } catch (e) {
+        error = e
+        throw e
+      }
+    })
+
+    assert.strictEqual(error.message, 'configure neopass before calling neopass functions')
+    error = null
+
+    assert.throws(() => {
+      try {
+        neopass.verify('abc')
+      } catch (e) {
+        error = e
+        throw e
+      }
+    })
+
+    assert.strictEqual(error.message, 'configure neopass before calling neopass functions')
+    error = null
+
+    assert.throws(() => {
+      try {
+        neopass.generators()
+      } catch (e) {
+        error = e
+        throw e
+      }
+    })
+
+    assert.strictEqual(error.message, 'configure neopass before calling neopass functions')
   })
 
   it('validates a password', () => {
