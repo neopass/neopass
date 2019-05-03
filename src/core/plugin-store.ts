@@ -47,12 +47,14 @@ export class PluginStore {
      *
      */
     this.getAll = function getAll(type: PluginType) {
+      // Get all plugins of the specified type.
       const map = _plugins.get(type)
 
       if (map == null) {
         return []
       }
 
+      // Return a list of plugins.
       return [...map.values()]
     }
 
@@ -60,12 +62,14 @@ export class PluginStore {
      *
      */
     this.get = function get(type: PluginType, name: string) {
+      // Get all plugins of the specified type.
       const map = _plugins.get(type)
 
       if (map == null) {
         throw new Error(`no ${type} plugins registered`)
       }
 
+      // Get the specified plugin.
       const plugin = map.get(name)
 
       if (plugin == null) {
