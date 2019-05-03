@@ -36,20 +36,10 @@ describe('NeoPass', () => {
     })
   })
 
-  it('forces generator retries', () => {
-    const config = {
-      validators: ['shannon:32']
-    }
-    const neo = new NeoPass(config, [LettersNumbersGenerator], [ShannonValidator])
-
-    assert.throws(() => {
-      // Should reject a retry count of zero.
-      neo.generate(10, 'letters-numbers', 0)
-    })
-
-    assert.doesNotThrow(() => {
-      neo.generate(16, 'letters-numbers', 1)
-    })
+  it('words with null or zero retries', () => {
+    const neo = new NeoPass(null, [LettersNumbersGenerator])
+    const pass = neo.generate(16, 'letters-numbers', 0)
+    assert.strictEqual(pass.length, 16)
   })
 
   it('throws if evaluation attempted without evaluators', () => {
