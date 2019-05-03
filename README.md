@@ -17,7 +17,7 @@ A password validation and generation tool kit.
 
 This package is currently under development and the interface is unstable. While the package remains at version `0.x.y`, the minor version will be updated when known breaking changes occur.
 
-Contents
+## Contents
 - [Installation](#installation)
 - [Basics](#basics)
   - [Password Generation](#password-generation)
@@ -634,6 +634,8 @@ import { IValidator, ValidatorPlugin, IValidatorError } from 'neopass'
 export class SimpleLengthValidator extends ValidatorPlugin {
   // Implement required plugin name as a getter.
   get name() { return 'simple-length' }
+
+  // Message helper.
   get msg() { return 'password too short!' }
 
   /**
