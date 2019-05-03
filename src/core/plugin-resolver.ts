@@ -28,7 +28,7 @@ function parsePluginRef(str: string): IPluginInfo {
 
   let lastIndex = 0
   regexEach(parser, str, (match, expr) => {
-    const [,plugin, keyval, val] = match
+    const [, plugin, keyval, val] = match
 
     if (plugin != null) {
       info.plugin = plugin
@@ -53,11 +53,22 @@ function parsePluginRef(str: string): IPluginInfo {
   return <IPluginInfo>info
 }
 
+/**
+ * Resolve a plugin definition (string, function, IPluginInfo)
+ * to an actual plugin.
+ *
+ * If the given value is a function, it is expected to conform
+ * to IPlugin<T>. If it is a string or an IPluginInfo, get the plugin
+ * from the plugin store.
+ */
 export class PluginResolver {
   public resolve: <T = any>(type: PluginType, value: PluginInfo<T>) => T
 
   constructor(_store: PluginStore) {
     this.resolve = function resolve(type: PluginType, value: PluginInfo) {
+      /**
+       * If the value is a function, expect it to be an IPlugin<T>.
+       */
       if (typeof value === 'function') {
         return value()
       }
@@ -66,11 +77,18 @@ export class PluginResolver {
       let args: any[]
       let options: any
 
+      /**
+       * If the value is a string, parse it into an IPluginInfo.
+       */
       if (typeof value === 'string') {
         const info = parsePluginRef(value)
         plugin = info.plugin
         args = <any[]>info.args
         options = info.options
+
+      /**
+       * Assume the value is already an IPluginInfo.
+       */
       } else {
         plugin = value.plugin
         args = value.args || []
@@ -85,7 +103,9 @@ export class PluginResolver {
         }
       }
 
+      // Fetch the plugin from the store.
       const _plugin = _store.get(type, plugin)
+      // Call the plugin's configure method, passing in options and args.
       return _plugin.configure(options, ...args)
     }
   }
