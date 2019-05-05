@@ -1,113 +1,45 @@
 import assert from 'assert'
-import neopass from '../src'
+import neopass, { NeoPass } from '../src'
 import { shannon } from '../src/utils'
 
 describe('neopass', () => {
-
-  afterEach(() => {
-    try {
-      neopass({
-        validators: ['length:min=10,max=72'],
-        evaluators: [{ validators: ['shannon:32'] }],
-      })
-    } catch (e) { /**/ }
-  })
-
-  it('throws if functions are called before configuration', () => {
-    let error: any = null
-
-    assert.throws(() => {
-      try {
-        neopass.generate(12, 'hex')
-      } catch (e) {
-        error = e
-        throw e
-      }
-    })
-
-    assert.strictEqual(error.message, 'configure neopass before calling neopass functions')
-    error = null
-
-    assert.throws(() => {
-      try {
-        neopass.validate('abc')
-      } catch (e) {
-        error = e
-        throw e
-      }
-    })
-
-    assert.strictEqual(error.message, 'configure neopass before calling neopass functions')
-    error = null
-
-    assert.throws(() => {
-      try {
-        neopass.evaluate('abc')
-      } catch (e) {
-        error = e
-        throw e
-      }
-    })
-
-    assert.strictEqual(error.message, 'configure neopass before calling neopass functions')
-    error = null
-
-    assert.throws(() => {
-      try {
-        neopass.verify('abc')
-      } catch (e) {
-        error = e
-        throw e
-      }
-    })
-
-    assert.strictEqual(error.message, 'configure neopass before calling neopass functions')
-    error = null
-
-    assert.throws(() => {
-      try {
-        neopass.generators()
-      } catch (e) {
-        error = e
-        throw e
-      }
-    })
-
-    assert.strictEqual(error.message, 'configure neopass before calling neopass functions')
+  let neo = neopass({
+    validators: ['length:min=10,max=72'],
+    evaluators: [{ validators: ['shannon:32'] }],
   })
 
   it('validates a password', () => {
-    const fail = neopass.validate('abcdefg')
+    const fail = neo.validate('abcdefg')
     assert.strictEqual(fail.length, 1)
 
-    const pass = neopass.validate('abcdefghij')
+    const pass = neo.validate('abcdefghij')
     assert.strictEqual(pass.length, 0)
   })
 
   it('evaluates a password', () => {
-    const fail = neopass.evaluate('abcdefg')
+    const fail = neo.evaluate('abcdefg')
     assert(fail.strength < 1)
 
-    const pass = neopass.evaluate('abcdefghij')
+    const pass = neo.evaluate('abcdefghij')
     assert(pass.strength >= 1)
   })
 
   it('detects a passphrase', () => {
-    const noPhrase = neopass.validate('abcdefg')
+    const noPhrase = neo.validate('abcdefg')
     assert.strictEqual(noPhrase.length, 1)
 
-    const phrase = neopass.validate('abcdefghijklmnopqrst', ['passphrase:20', 'shannon:128'])
+    const phrase = neo.validate('abcdefghijklmnopqrst', ['passphrase:20', 'shannon:128'])
     assert.strictEqual(phrase.length, 0)
 
     assert.throws(() => {
-      neopass.validate('abc', ['passphrase'])
+      neo.validate('abc', ['passphrase'])
     })
   })
 
   it('generates a password', () => {
-    const pass1 = neopass.generate(20, 'random')
-    const pass2 = neopass.generate(20, 'letters-numbers')
-    const pass3 = neopass.generate(20, 'hex')
+    const pass1 = neo.generate(20, 'random')
+    const pass2 = neo.generate(20, 'letters-numbers')
+    const pass3 = neo.generate(20, 'hex')
 
     assert(shannon(pass1) * pass1.length > 64)
     assert(shannon(pass2) * pass2.length > 64)
@@ -116,12 +48,12 @@ describe('neopass', () => {
 
   it('retries password generation', () => {
     assert.throws(() => {
-      neopass.generate(9, 'letters-numbers', 10)
+      neo.generate(9, 'letters-numbers', 10)
     })
   })
 
   it('lists registered generators', () => {
-    const generators = neopass.generators()
+    const generators = neo.generators()
     const names = generators.map(g => g.name)
 
     assert(names.includes('random'))
@@ -129,7 +61,7 @@ describe('neopass', () => {
   })
 
   it('bypasses registered validators', () => {
-    const result = neopass.validate('abcdefg', ['classes:and=ul'])
+    const result = neo.validate('abcdefg', ['classes:and=ul'])
     const [error] = result
 
     assert.strictEqual(error.name, 'classes')
@@ -137,7 +69,7 @@ describe('neopass', () => {
   })
 
   it('bypasses registered evaluators', () => {
-    const result = neopass.evaluate('abcdefg', [{ validators: ['entropy:62'] }])
+    const result = neo.evaluate('abcdefg', [{ validators: ['entropy:62'] }])
     const {strength, warnings} = result
     const [warning] = warnings
 
@@ -147,16 +79,10 @@ describe('neopass', () => {
   })
 
   it('verifies a password', () => {
-    const result = neopass.verify('abcdefghi')
+    const result = neo.verify('abcdefghi')
     const {errors, warnings} = result
 
     assert.strictEqual(errors.length, 1)
     assert.strictEqual(warnings.length, 1)
-  })
-
-  it('throws an error if reconfiguration is attempted', () => {
-    assert.throws(() => {
-      neopass({})
-    })
   })
 })
