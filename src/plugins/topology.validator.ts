@@ -137,7 +137,7 @@ export class TopologyValidator extends ValidatorPlugin {
 
         // Check if we should bypass the topology validation.
         if (this.bypass(actual, options)) {
-          return []
+          return null
         }
 
         // Check if we have a topology pattern match.
