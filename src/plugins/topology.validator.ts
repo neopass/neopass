@@ -1,4 +1,4 @@
-import { IValidator, ValidatorPlugin, IValidatorError } from '../validator'
+import { IValidator, ValidatorPlugin } from '../validator'
 import { typeOf } from '../utils/type-of'
 
 const _standardPatterns = [
