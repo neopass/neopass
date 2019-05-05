@@ -1,11 +1,38 @@
 import assert from 'assert'
-import neopass, { NeoPass } from '../src'
 import { shannon } from '../src/utils'
+
+import neopass, {
+  RandomGenerator,
+  ShannonValidator
+} from '../src'
 
 describe('neopass', () => {
   let neo = neopass({
     validators: ['length:min=10,max=72'],
     evaluators: [{ validators: ['shannon:32'] }],
+  })
+
+  it('bypasses builtin validators and generators', () => {
+    const _neo = neopass({
+      useBuiltinGenerators: false,
+      useBuiltinValidators: false,
+
+      plugins: [
+        new RandomGenerator(),
+        new ShannonValidator(),
+      ],
+
+      validators: ['shannon:64']
+    })
+
+    const pass = _neo.generate(12, 'random')
+    assert.strictEqual(pass.length, 12)
+
+    const errors = _neo.validate(pass)
+    const [{name}] = errors
+
+    assert.strictEqual(errors.length, 1)
+    assert.strictEqual(name, 'shannon')
   })
 
   it('validates a password', () => {
