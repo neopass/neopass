@@ -1,12 +1,7 @@
 import { NeoPass } from './neo-pass'
-import { Validator, IValidatorError } from './validator'
+import { Validator } from './validator'
 import { Generator } from './generator'
-import { PluginInfo } from './plugin-info'
 import { INeoConfig } from './neo-config'
-import { IEvaluator } from './evaluator'
-import { IEvaluatorInfo } from './evaluator-info'
-import { IGeneratorInfo } from './generator-info'
-import { IVerifyResult } from './verify-result'
 
 import {
   ClassesValidator,
@@ -50,103 +45,19 @@ const _builtinValidators: Validator[] = [
 ]
 
 /**
- * Core class for neo functionality.
- */
-let _core: NeoPass
-
-/**
- *
- */
-function instanceError(): never {
-  throw new Error('configure neopass before calling neopass functions')
-}
-
-/**
  * Neopass instance.
  */
 export function neopass(config?: INeoConfig|null) {
-  if (!_core) {
     // Apply user config to default config.
     config = {..._defaultConfig, ...config}
 
-    // Create the neopass core instance.
-    _core = new NeoPass(
+    // Create a neopass instance.
+    const neo = new NeoPass(
       config,
       config.useBuiltinGenerators ? _builtinGenerators : null,
       config.useBuiltinValidators ? _builtinValidators : null)
-  } else {
-    throw new Error('neopass is already configured')
-  }
 
-  return neopass
-}
-
-/**
- * Generate a password using the given generator reference.
- *
- * @param len the length of the password to generate
- * @param generator the name of the generator plugin to use
- * @param retries retry generation if password fails configured validation chain
- */
-neopass.generate = function generate(
-  len: number,
-  generator: PluginInfo,
-  retries?: number|null,
-): string {
-  if (!_core) { instanceError() }
-  return _core.generate(len, generator, retries)
-}
-
-/**
- * Run evaluation chain against a password.
- *
- * @param password the password to evaluate
- * @param evaluators override configured evaluators
- */
-neopass.evaluate = function evaluate(
-  password: string,
-  evaluators?: IEvaluator[]
-): IEvaluatorInfo {
-  if (!_core) { instanceError() }
-  return _core.evaluate(password, evaluators)
-}
-
-/**
- * Run a validation chain against a password.
- *
- * @param password the password to validate
- * @param validators override configured validators
- */
-neopass.validate = function validate(
-  password: string,
-  validators?: null|PluginInfo[]
-): IValidatorError[] {
-  if (!_core) { instanceError() }
-  return _core.validate(password, validators)
-}
-
-/**
- * Run validation and evaluation to produce errors and warnings.
- *
- * @param password the password to verify
- * @param validators override configured validators
- * @param evaluators override configured evaluators
- */
-neopass.verify = function verify(
-  password: string,
-  validators?: null|PluginInfo[],
-  evaluators?: IEvaluator[]
-): IVerifyResult {
-  if (!_core) { instanceError() }
-  return _core.verify(password, validators, evaluators)
-}
-
-/**
- * Get a list of registered generators.
- */
-neopass.generators = function generators(): IGeneratorInfo[] {
-  if (!_core) { instanceError() }
-  return _core.generators()
+  return neo
 }
 
 // /**
