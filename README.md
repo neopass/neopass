@@ -24,12 +24,11 @@ This package is currently under development and the interface is unstable. While
   - [The Validation Chain](#the-validation-chain)
   - [The Evaluation Chain](#the-evaluation-chain)
   - [Passphrase Detection](#passphrase-detection)
-  - [Configuration Notes](#configuration-notes)
 - [Custom Validators](#custom-validators)
 - [Optional Rules](#optional-rules)
 - [Plugins](#plugins)
   - [Authoring a Validator Plugin](#authoring-a-validator-plugin)
-- [Using Multiple Configurations](#using-multiple-configurations)
+- [Override Configured Chains](#override-configured-chains)
 
 ## Installation
 
@@ -56,15 +55,15 @@ const config: INeoConfig = {
   useBuiltinGenerators: true, // default
 }
 
-neopass(config)
+const neo = neopass(config)
 
-const pass1 = neopass.generate(12, 'random')
+const pass1 = neo.generate(12, 'random')
 console.log('random:', pass1)
 
-const pass2 = neopass.generate(12, 'letters-numbers')
+const pass2 = neo.generate(12, 'letters-numbers')
 console.log('letters-numbers', pass2)
 
-const pass3 = neopass.generate(12, 'hex')
+const pass3 = neo.generate(12, 'hex')
 console.log('hex', pass3)
 ```
 
@@ -81,7 +80,7 @@ hex: 9b9ede126e4f2556fe1717dc
 A list of registered generators can be obtained with the following call:
 
 ```typescript
-  const generators = neopass.generators()
+  const generators = neo.generators()
   console.log('generators:', generators)
 ```
 
@@ -106,7 +105,7 @@ const config: INeoConfig = {
   useBuiltinValidators: true, // default
 
   /**
-   * These validators are run when `neopass.validate` is called, and
+   * These validators are run when `validate` is called, and
    * reference built-in validators registered automatically.
    *
    * Each validator is called in sequence and any errors produced
@@ -126,10 +125,10 @@ const config: INeoConfig = {
   ]
 }
 
-neopass(config)
+const neo = neopass(config)
 
 // Validate a password.
-const errors = neopass.validate('spokane')
+const errors = neo.validate('spokane')
 console.log('errors:', errors)
 ```
 
@@ -166,7 +165,7 @@ const config: INeoConfig = {
   useBuiltinValidators: true, // default
 
   /**
-   * These are run when `neopass.evaluate` is called.
+   * These are run when `evaluate` is called.
    *
    * Each evaluator object can specify weight and a list of validators.
    *
@@ -193,9 +192,9 @@ const config: INeoConfig = {
   ]
 }
 
-neopass(config)
+const neo = neopass(config)
 
-const result = neopass.evaluate('Spokane')
+const result = neo.evaluate('Spokane')
 console.log('result:', result)
 ```
 
@@ -224,7 +223,7 @@ Assessing password _strength_ is subjective and can be rather arbitrary. A good 
 Here's an example that makes some attempt at a reasonable strength evaluation:
 
 ```typescript
-neopass({
+const neo = neopass({
   // ...
   evaluators: [
     {
@@ -258,7 +257,7 @@ neopass({
 Bad:
 
 ```typescript
-neopass.evaluate('Denver2016')
+neo.evaluate('Denver2016')
 ```
 
 ```
@@ -278,7 +277,7 @@ neopass.evaluate('Denver2016')
 Still bad:
 
 ```typescript
-neopass.evaluate('Denver2016!')
+neo.evaluate('Denver2016!')
 ```
 
 ```
@@ -295,7 +294,7 @@ neopass.evaluate('Denver2016!')
 Not great:
 
 ```typescript
-neopass.evaluate('D3nv3r2016!')
+neo.evaluate('D3nv3r2016!')
 ```
 
 ```
@@ -310,7 +309,7 @@ neopass.evaluate('D3nv3r2016!')
 Good:
 
 ```typescript
-neopass.evaluate('D3nv3r2016!and17$')
+neo.evaluate('D3nv3r2016!and17$')
 ```
 
 ```
@@ -325,7 +324,7 @@ neopass.evaluate('D3nv3r2016!and17$')
 Great?:
 
 ```typescript
-neopass.evaluate('correct Horse battery staple')
+neo.evaluate('correct Horse battery staple')
 ```
 
 ```
@@ -352,13 +351,13 @@ const config: INeoConfig = {
   ]
 }
 
-neopass(config)
+const neo = neopass(config)
 
 /**
  * The below password would normally fail the 'classes' validator
  * as configured because there is no digit/special character.
  */
-const errors = neopass.validate('Lemme get this smooth')
+const errors = neo.validate('Lemme get this smooth')
 console.log('errors:', errors)
 ```
 
@@ -367,34 +366,6 @@ Output:
 ```
 errors: []
 ```
-
-### Configuration Notes
-
-Neopass is designed to be configured once, making the configured instance available for any subsequent call.
-
-```typescript
-neopass({
-  validators: [
-    'length:min=10,max=72',
-    'classes:and=ul,or=ds',
-  ]
-})
-
-// Validate a password.
-const errors = neopass.validate('LosAngeles2019')
-console.log('errors:', errors)
-
-// Reconfigure neopass (error)
-neopass({})
-```
-
-```
-errors: []
-
-Error: neopass is already configured
-```
-
-If you need multiple instances with separate configs, see [Using Multiple Configurations](#using-multiple-configurations) below.
 
 ## Custom Validators
 
@@ -424,13 +395,13 @@ function customDepth() {
 }
 
 // Configure neopass.
-neopass({
+const neo = neopass({
   validators: [
     customDepth
   ]
 })
 
-const errors = neopass.validate('abcdefg')
+const errors = neo.validate('abcdefg')
 console.log('errors:', errors)
 ```
 
@@ -450,7 +421,7 @@ Custom validators can also be used in the evaluation chain.
 
 ## Optional Rules
 
-If you want optional rules - that is, rules where errors are treated as warnings - use `neopass.verify` which joins validation and evaluation. Validation failures are returned as errors and evaluation failures are returned as warnings.
+If you want optional rules - that is, rules where errors are treated as warnings - use the `verify` method which joins validation and evaluation. Validation failures are returned as errors and evaluation failures are returned as warnings.
 
 ```typescript
 import { neopass, INeoConfig } from 'neopass'
@@ -472,9 +443,9 @@ const config: INeoConfig = {
   ],
 }
 
-neopass(config)
+const neo = neopass(config)
 
-const result = neopass.verify('Denver2016')
+const result = neo.verify('Denver2016')
 console.log(result)
 ```
 
@@ -554,13 +525,13 @@ const config: INeoConfig = {
   ]
 }
 
-neopass(config)
+const neo = neopass(config)
 ```
 
 **Generate**
 
 ```typescript
-const pass = neopass.generate(12, 'letters-numbers')
+const pass = neo.generate(12, 'letters-numbers')
 console.log('password:', pass)
 ```
 
@@ -575,7 +546,7 @@ password: v2mQsx6SKZ3s
 Validate the generated password:
 
 ```typescript
-const errors = neopass.validate('v2mQsx6SKZ3s')
+const errors = neo.validate('v2mQsx6SKZ3s')
 console.log('errors:', errors)
 ```
 
@@ -588,7 +559,7 @@ errors: []
 Validate some other password:
 
 ```typescript
-const errors = neopass.validate('abcdefg777')
+const errors = neo.validate('abcdefg777')
 console.log('errors:', errors)
 ```
 
@@ -673,7 +644,7 @@ Configuration:
 ```typescript
 import { SimpleLengthValidator } from './somewhere'
 
-neopass({
+const neo = neopass({
   plugins: [
     new SimpleLengthValidator()
   ],
@@ -683,7 +654,7 @@ neopass({
   ]
 })
 
-neopass.validate('abc')
+neo.validate('abc')
 ```
 
 Output:
@@ -717,7 +688,7 @@ const customLength: IPlugin<any> = {
   }
 }
 
-neopass({
+const neo = neopass({
   plugins: [
     customLength,
   ],
@@ -726,7 +697,7 @@ neopass({
   ]
 })
 
-neopass.validate('abcdefg')
+neo.validate('abcdefg')
 ```
 
 Output:
@@ -773,11 +744,9 @@ As a rule, always request the minimum amount of information required to fulfill 
 
 There are legitimate reasons for a validator to request `password`. For instance, both the `RunValidator` and the `SequenceValidator` use `password` to determine if a password has runs of the same character or multiple characters in sequence. Most of the other validators request `length`, `shannon`, `entropy` and/or `depth`. The `TopologyValidator` requests `topology`. However it's dangerous to blindly trust plugins that request `password` or `topology`. _It's safest to only use validators and generators that you author yourself_.
 
-## Using Multiple Configurations
+## Override Configured Chains
 
-If you need multiple configurations or need to run separate validation or evaluation chains, there are two ways to go about it.
-
-### Override Configured Chains
+The validation and/or evaluation chain defined in the configuration can be overridden by passing a chain definition to validate or evaluate:
 
 ```typescript
 const config = {
@@ -788,7 +757,7 @@ const config = {
   ]
 }
 
-neopass(config)
+const neo = neopass(config)
 
 // Create a custom validation chain.
 const customValidators = [
@@ -798,7 +767,7 @@ const customValidators = [
 ]
 
 // Overide default validators.
-const errors = neopass.validate('skookum49', customValidators)
+const errors = neo.validate('skookum49', customValidators)
 console.log('errors:', errors)
 ```
 
@@ -811,61 +780,3 @@ errors: [ { name: 'entropy',
 ```
 
 The above also works with the evaluation chain.
-
-### Create Multiple Instances of NeoPass
-
-```typescript
-import {
-  NeoPass,
-  LengthValidator,
-  ClassesValidator,
-  EntropyValidator,
-  RunValidator,
-  SequenceValidator,
-} from 'neopass'
-
-const config1 = {
-  plugins: [
-    new LengthValidator(),
-    new ClassesValidator(),
-  ],
-  validators: [
-    'length:min=10,max=72',
-    'classes:and=ul,or=ds',
-  ]
-}
-
-const config2 = {
-  plugins: [
-    new EntropyValidator(),
-    new RunValidator(),
-    new SequenceValidator(),
-  ],
-  validators: [
-    'entropy:64',
-    'run:2',
-    'sequence:3',
-  ]
-}
-
-const neo1 = new NeoPass(config1)
-const neo2 = new NeoPass(config2)
-
-console.log('neo1:', neo1.validate('Abcd'))
-console.log('neo2:', neo2.validate('Abcd'))
-```
-
-```
-neo1: [ { name: 'length',
-    msg: 'password length should be between 10 and 72 characters, inclusive',
-    score: 0.4,
-    meta: 'min' },
-  { name: 'classes',
-    msg: 'missing one of digit, special',
-    meta: 'ds' } ]
-neo2: [ { name: 'entropy',
-    msg: 'password is either too short or not complex enough',
-    score: 0.35627748238381823 },
-  { name: 'sequence',
-    msg: 'password contains at least 1 character sequence(s)' } ]
-```
