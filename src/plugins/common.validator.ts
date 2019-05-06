@@ -16,6 +16,10 @@ export class CommonValidator extends ValidatorPlugin {
   configure(options: any): IValidator {
     const set: Set<string> = new Set(options.list || [])
 
+    if (set.size === 0) {
+      throw new Error('common passwords list is empty')
+    }
+
     const validator: IValidator = {
       request: ['password'],
       exec: (password: string) => {
