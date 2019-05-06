@@ -150,8 +150,8 @@ export class NeoCore {
   constructor(
     config: IBaseConfig,
     resolver: PluginResolver,
-    validators: IValidator[],
-    evaluators: IEvalCache[],
+    preVal: IValidator[],
+    preEval: IEvalCache[],
   ) {
     /**
      *
@@ -185,9 +185,23 @@ export class NeoCore {
      *
      */
     this.evaluate = function evaluate(password: string, evaluators?: IEvaluator[]): IEvaluatorInfo {
-      evaluators = evaluators || config.evaluators
+      // Store configured evaluators.
+      let _evaluators: IEvalCache[]
 
-      if (!Array.isArray(evaluators) || evaluators.length === 0) {
+      // Get evaluators the arguments or use preconfigured ones.
+      if (Array.isArray(evaluators) && evaluators.length > 0) {
+        _evaluators = evaluators.map((e) => {
+          // Preconfigure validators.
+          const validators = e.validators.map((v) => {
+            return resolver.resolve<IValidator>('validator', v)
+          })
+          return { weight: e.weight, validators }
+        })
+      } else {
+        _evaluators = preEval
+      }
+
+      if (!Array.isArray(_evaluators) || _evaluators.length === 0) {
         throw new Error('no evaluators specified')
       }
 
@@ -198,15 +212,13 @@ export class NeoCore {
       let strength = 1
 
       // Get a list of warnings and do other work.
-      const warnings = evaluators.reduce((warningList, evaluator) => {
+      const warnings = _evaluators.reduce((warningList, evaluator) => {
         const { weight, validators } = evaluator
 
         // Process each validator and apply errors to the strength.
         validators.forEach((validator) => {
-          // Get the validator plugin.
-          const _validator = resolver.resolve<IValidator>('validator', validator)
           // Run the validator.
-          const result = _runRequestor(_validator, pInfo)
+          const result = _runRequestor(validator, pInfo)
           // Update strength.
           strength = _applyEvalErrors(result.errors, strength, weight)
           // Add errors to the list.
@@ -216,6 +228,7 @@ export class NeoCore {
         return warningList
       }, [] as IValidatorError[])
 
+      // Create and return an evaluator info object.
       const eInfo = {
         strength,
         warnings,
@@ -228,23 +241,29 @@ export class NeoCore {
      *
      */
     this.validate = function validate(
-      password: string, validators?: null|PluginInfo[]): IValidatorError[] {
+      password: string,
+      validators?: null|PluginInfo[]
+    ): IValidatorError[] {
 
       // Get the password info object.
       const info = _passwordInfo(password)
 
-      // Get validators from config if not given in arg list.
-      const hasValidators = Array.isArray(validators) && validators.length > 0
-      validators = hasValidators ? validators : config.validators
+      // Store configured validators.
+      let _validators: IValidator[]
 
-      // Check that we have a non-zero-length array.
-      if (!Array.isArray(validators) || validators.length === 0) {
-        throw new Error('no validators specified')
+      // Get validators the arguments or use preconfigured ones.
+      if (Array.isArray(validators) && validators.length > 0) {
+        _validators = validators.map((v) => {
+          return resolver.resolve('validator', v)
+        })
+      } else {
+        _validators = preVal
       }
 
-      // Map supplied validator references to plugins.
-      const _validators = validators.map(item =>
-        resolver.resolve<IValidator>('validator', item))
+      // Check that we have a non-zero-length array.
+      if (!Array.isArray(_validators) || _validators.length === 0) {
+        throw new Error('no validators specified')
+      }
 
       /**
        * Get a list of validation errors by executing all
