@@ -7,7 +7,6 @@ import { classDepth, topology as _topology } from '../topology'
 import { IEvaluator } from '../evaluator'
 import { IEvaluatorInfo } from '../evaluator-info'
 import { IRequestor } from '../requestor'
-import { IVerifyResult } from '../verify-result'
 
 import {
   reduceClasses,
@@ -148,18 +147,6 @@ export class NeoCore {
    */
   public validate: (password: string, validators?: null|PluginInfo[]) => IValidatorError[]
 
-  /**
-   * Run validation and evaluation to produce errors and warnings.
-   *
-   * @param password the password to verify
-   * @param validators override configured validators
-   * @param evaluators override configured evaluators
-   */
-  public verify: (
-    password: string,
-    validators?: null|PluginInfo[],
-    evaluators?: IEvaluator[]) => IVerifyResult
-
   constructor(
     config: IBaseConfig,
     resolver: PluginResolver,
@@ -277,18 +264,6 @@ export class NeoCore {
 
       // Return generated errors.
       return errors
-    }
-
-    /**
-     *
-     */
-    this.verify = function verify(
-      password: string, validators?: null|PluginInfo[], evaluators?: IEvaluator[]
-    ): IVerifyResult {
-      const errors = this.validate(password, validators)
-      const { warnings } = this.evaluate(password, evaluators)
-      const result = { errors, warnings }
-      return result
     }
   }
 }

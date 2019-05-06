@@ -6,6 +6,9 @@ import { IPlugin } from './plugin'
 import { Generator, IGenerator } from './generator'
 import { Validator, IValidator } from './validator'
 import { IGeneratorInfo } from './generator-info'
+import { IVerifyResult } from './verify-result'
+import { PluginInfo } from './plugin-info'
+import { IEvaluator } from './evaluator'
 
 /**
  * Add a list of plugins to the store.
@@ -18,6 +21,17 @@ function _registerPlugins(store: PluginStore, plugins: IPlugin[]) {
  * Implements the neopass interface.
  */
 export class NeoPass extends NeoCore {
+  /**
+   * Run validation and evaluation to produce errors and warnings.
+   *
+   * @param password the password to verify
+   * @param validators override configured validators
+   * @param evaluators override configured evaluators
+   */
+  public verify: (
+    password: string,
+    validators?: null|PluginInfo[],
+    evaluators?: IEvaluator[]) => IVerifyResult
   /**
    * Get a list of registered generators.
    */
@@ -62,6 +76,18 @@ export class NeoPass extends NeoCore {
     })
 
     super(config, resolver, _validators, _evaluators)
+
+    /**
+     *
+     */
+    this.verify = function verify(
+      password: string, validators?: null|PluginInfo[], evaluators?: IEvaluator[]
+    ): IVerifyResult {
+      const errors = this.validate(password, validators)
+      const { warnings } = this.evaluate(password, evaluators)
+      const result = { errors, warnings }
+      return result
+    }
 
     /**
      *
