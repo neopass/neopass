@@ -2,12 +2,11 @@ import { IBaseConfig } from './base-config'
 import { PluginStore } from './plugin-store'
 import { PluginResolver } from './plugin-resolver'
 import { PluginInfo } from '../plugin-info'
-import { IGenerator, Generate } from '../generator'
+import { Generate } from '../generator'
 import { IValidatorError, IValidator } from '../validator'
 import { classDepth, topology as _topology } from '../topology'
 import { IEvaluator } from '../evaluator'
 import { IEvaluatorInfo } from '../evaluator-info'
-import { IGeneratorInfo } from '../generator-info'
 import { IRequestor } from '../requestor'
 import { IVerifyResult } from '../verify-result'
 
@@ -157,12 +156,7 @@ export class NeoCore {
     validators?: null|PluginInfo[],
     evaluators?: IEvaluator[]) => IVerifyResult
 
-  /**
-   * Get a list of registered generators.
-   */
-  public generators: () => IGeneratorInfo[]
-
-  constructor(config: IBaseConfig, store: PluginStore, resolver: PluginResolver) {
+  constructor(config: IBaseConfig, resolver: PluginResolver) {
     /**
      *
      */
@@ -286,21 +280,6 @@ export class NeoCore {
       const { warnings } = this.evaluate(password, evaluators)
       const result = { errors, warnings }
       return result
-    }
-
-    /**
-     *
-     */
-    this.generators = function generators(): IGeneratorInfo[] {
-      const generators = store.getAll('generator') as IGenerator[]
-
-      // Create a list of generator info objects.
-      const infoList = generators.map((gen) => {
-        const { name, title, units } = gen
-        return { name, title, units }
-      })
-
-      return infoList
     }
   }
 }

@@ -3,8 +3,9 @@ import { IBaseConfig } from './core/base-config'
 import { PluginStore } from './core/plugin-store'
 import { PluginResolver } from './core/plugin-resolver'
 import { IPlugin } from './plugin'
-import { Generator } from './generator'
+import { Generator, IGenerator } from './generator'
 import { Validator } from './validator'
+import { IGeneratorInfo } from './generator-info'
 
 /**
  * Add a list of plugins to the store.
@@ -18,6 +19,11 @@ function _registerPlugins(store: PluginStore, plugins: IPlugin[]) {
  */
 export class NeoPass extends NeoCore {
   /**
+   * Get a list of registered generators.
+   */
+  public generators: () => IGeneratorInfo[]
+
+  /**
    * @param config the configuration object
    * @param generators a list of GeneratorPlugin subclass constructors
    * @param validators a list of ValidatorPlugin subclass constructors
@@ -30,7 +36,7 @@ export class NeoPass extends NeoCore {
 
     config = config || {}
 
-    super(config, store, resolver)
+    super(config, resolver)
 
     if (Array.isArray(generators)) {
       _registerPlugins(store, generators.map(G => new G()))
@@ -42,5 +48,20 @@ export class NeoPass extends NeoCore {
 
     const plugins: IPlugin[] = config.plugins || []
     _registerPlugins(store, plugins)
+
+    /**
+     *
+     */
+    this.generators = function generators(): IGeneratorInfo[] {
+      const generators = store.getAll('generator') as IGenerator[]
+
+      // Create a list of generator info objects.
+      const infoList = generators.map((gen) => {
+        const { name, title, units } = gen
+        return { name, title, units }
+      })
+
+      return infoList
+    }
   }
 }
