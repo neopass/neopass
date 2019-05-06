@@ -1,4 +1,5 @@
 export * from './classes.validator'
+export * from './common.validator'
 export * from './depth.validator'
 export * from './entropy.validator'
 export * from './hex.generator'
