@@ -51,20 +51,19 @@ export class NeoPass extends NeoCore {
     _registerPlugins(store, plugins)
 
     // Preconfigure validators.
-    const _validators = (config.validators || []).map((v) => {
-      const iVal = resolver.resolve<IValidator>('validator', v)
-      return iVal
+    const preVal = (config.validators || []).map((v) => {
+      return resolver.resolve<IValidator>('validator', v)
     })
 
     // Preconfigure evaluator validators.
-    const _evaluators: IEvalCache[] = (config.evaluators || []).map((e) => {
+    const preEval: IEvalCache[] = (config.evaluators || []).map((e) => {
       const validators = e.validators.map((v) => {
         return resolver.resolve<IValidator>('validator', v)
       })
       return { weight: e.weight, validators }
     })
 
-    super(config, resolver, _validators, _evaluators)
+    super(config, resolver, preVal, preEval)
 
     /**
      *
