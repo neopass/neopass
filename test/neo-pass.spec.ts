@@ -188,17 +188,13 @@ describe('NeoPass', () => {
   })
 
   it('throws if using an unregistered plugin', () => {
-    const config: any = {
-      validators: ['unregistered']
-    }
-
-    const neo = new NeoPass(config, null, [ShannonValidator])
+    const neo = new NeoPass(null, null, [ShannonValidator])
 
     let error: any = null
 
     assert.throws(() => {
       try {
-        neo.validate('abcdefg')
+        neo.validate('abcdefg', ['unregistered'])
       } catch (e) {
         error = e
         throw e
