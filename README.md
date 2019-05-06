@@ -801,7 +801,7 @@ Custom validators can also be used in the [evaluation chain](#the-evaluation-cha
 
 ## Optional Rules
 
-If you want optional rules - that is, rules where errors are treated as warnings - use the `verify` method which joins validation and evaluation. Validation failures are returned as errors and evaluation failures are returned as warnings.
+If you want optional rules - that is, rules where some errors are treated as warnings - use the `verify` method which joins validation and evaluation. Validation failures are returned as errors and evaluation failures are returned as warnings.
 
 ```typescript
 import { neopass, INeoConfig } from 'neopass'
@@ -897,6 +897,7 @@ const config: INeoConfig = {
     new TopologyValidator(),
   ],
 
+  // Configure the validation chain.
   validators: [
     'entropy:64',
     'shannon:32',
