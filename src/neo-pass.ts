@@ -22,17 +22,6 @@ function _registerPlugins(store: PluginStore, plugins: IPlugin[]) {
  */
 export class NeoPass extends NeoCore {
   /**
-   * Run validation and evaluation to produce errors and warnings.
-   *
-   * @param password the password to verify
-   * @param validators override configured validators
-   * @param evaluators override configured evaluators
-   */
-  public verify: (
-    password: string,
-    validators?: null|PluginInfo[],
-    evaluators?: IEvaluator[]) => IVerifyResult
-  /**
    * Get a list of registered generators.
    */
   public generators: () => IGeneratorInfo[]
@@ -80,18 +69,6 @@ export class NeoPass extends NeoCore {
     /**
      *
      */
-    this.verify = function verify(
-      password: string, validators?: null|PluginInfo[], evaluators?: IEvaluator[]
-    ): IVerifyResult {
-      const errors = this.validate(password, validators)
-      const { warnings } = this.evaluate(password, evaluators)
-      const result = { errors, warnings }
-      return result
-    }
-
-    /**
-     *
-     */
     this.generators = function generators(): IGeneratorInfo[] {
       const generators = store.getAll('generator') as IGenerator[]
 
@@ -103,5 +80,23 @@ export class NeoPass extends NeoCore {
 
       return infoList
     }
+  }
+
+  /**
+   * Run validation and evaluation to produce errors and warnings.
+   *
+   * @param password the password to verify
+   * @param validators override configured validators
+   * @param evaluators override configured evaluators
+   */
+  public verify(
+    password: string,
+    validators?: null|PluginInfo[],
+    evaluators?: IEvaluator[],
+  ): IVerifyResult {
+    const errors = this.validate(password, validators)
+    const { warnings } = this.evaluate(password, evaluators)
+    const result = { errors, warnings }
+    return result
   }
 }
