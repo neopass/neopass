@@ -27,6 +27,11 @@ interface IPasswordInfo {
 
 export type RequestType = keyof IPasswordInfo
 
+export interface IEvalCache {
+  weight?: number
+  validators: IValidator[]
+}
+
 interface IRunResult {
   halt: boolean
   errors: IValidatorError[]
@@ -155,7 +160,12 @@ export class NeoCore {
     validators?: null|PluginInfo[],
     evaluators?: IEvaluator[]) => IVerifyResult
 
-  constructor(config: IBaseConfig, resolver: PluginResolver) {
+  constructor(
+    config: IBaseConfig,
+    resolver: PluginResolver,
+    validators: IValidator[],
+    evaluators: IEvalCache[],
+  ) {
     /**
      *
      */

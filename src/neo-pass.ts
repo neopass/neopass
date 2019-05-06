@@ -1,10 +1,10 @@
-import { NeoCore } from './core/neo-core'
+import { NeoCore, IEvalCache } from './core/neo-core'
 import { IBaseConfig } from './core/base-config'
 import { PluginStore } from './core/plugin-store'
 import { PluginResolver } from './core/plugin-resolver'
 import { IPlugin } from './plugin'
 import { Generator, IGenerator } from './generator'
-import { Validator } from './validator'
+import { Validator, IValidator } from './validator'
 import { IGeneratorInfo } from './generator-info'
 
 /**
@@ -36,8 +36,6 @@ export class NeoPass extends NeoCore {
 
     config = config || {}
 
-    super(config, resolver)
-
     if (Array.isArray(generators)) {
       _registerPlugins(store, generators.map(G => new G()))
     }
@@ -48,6 +46,22 @@ export class NeoPass extends NeoCore {
 
     const plugins: IPlugin[] = config.plugins || []
     _registerPlugins(store, plugins)
+
+    // Preconfigure validators.
+    const _validators = (config.validators || []).map((v) => {
+      const iVal = resolver.resolve<IValidator>('validator', v)
+      return iVal
+    })
+
+    // Preconfigure evaluator validators.
+    const _evaluators: IEvalCache[] = (config.evaluators || []).map((e) => {
+      const validators = e.validators.map((v) => {
+        return resolver.resolve<IValidator>('validator', v)
+      })
+      return { weight: e.weight, validators }
+    })
+
+    super(config, resolver, _validators, _evaluators)
 
     /**
      *
