@@ -35,6 +35,8 @@ This package is currently under development and the interface is unstable. While
   - [ShannonValidator](#shannonvalidator)
   - [TopologyValidator](#topologyvalidator)
 - [Configuring Validators](#configuring-validators)
+  - [Short Form](#short-form)
+  - [Long Form](#long-form)
 - [Custom Validators](#custom-validators)
 - [Optional Rules](#optional-rules)
 - [Plugins](#plugins)
@@ -417,7 +419,7 @@ Output:
 
 Validates a password based on whether it's included in a common passwords list.
 
-Note that `CommonValidator` requires a password list to be given in its options, so it is not [short-form](#configuring-validators) configurable.
+Note that `CommonValidator` requires a password list to be given in its options, so it is not [short-form](#short-form) configurable.
 
 ```typescript
 const { neopass } = require('neopass')
@@ -684,7 +686,7 @@ Output:
 
 ## Configuring Validators
 
-**Short form**
+### Short Form
 
 The short-form configuration uses a string to reference the plugin and its options/arguments. In this case, options and arguments can be primitive types such as `number`, `string`, `boolean`, etc.
 
@@ -706,7 +708,7 @@ const config = {
 }
 ```
 
-**Long form**
+### Long Form
 
 The long-form configuration uses an object to reference the plugin and its options/arguments. Options and arguments can be objects and arrays, in addition to other types, such as `RegExp`.
 
