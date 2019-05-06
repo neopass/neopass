@@ -1,5 +1,4 @@
 import { IBaseConfig } from './base-config'
-import { PluginStore } from './plugin-store'
 import { PluginResolver } from './plugin-resolver'
 import { PluginInfo } from '../plugin-info'
 import { Generate } from '../generator'
