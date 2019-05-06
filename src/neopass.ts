@@ -5,6 +5,7 @@ import { INeoConfig } from './neo-config'
 
 import {
   ClassesValidator,
+  CommonValidator,
   DepthValidator,
   EntropyValidator,
   HexGenerator,
@@ -34,6 +35,7 @@ const _builtinGenerators: Generator[] = [
 // Built-in validators.
 const _builtinValidators: Validator[] = [
   ClassesValidator,
+  CommonValidator,
   DepthValidator,
   EntropyValidator,
   LengthValidator,
