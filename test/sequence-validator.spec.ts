@@ -4,19 +4,19 @@ import { SequenceValidator } from '../src/plugins'
 
 const neo = new NeoPass({
   plugins: [ new SequenceValidator() ],
-  validators: [ 'sequence:3' ],
+  validators: [ 'sequence:4' ],
   evaluators: [
     {
       weight: 0.5,
       validators: [
-        'sequence:3'
+        'sequence:4'
       ]
     }
   ]
 })
 
 describe('SequenceValidator', () => {
-  it('generates error when sequence threshold is exceeded', () => {
+  it('generates error when sequence threshold is met', () => {
     let errors = neo.validate('abcd')
     const [error] = errors
 

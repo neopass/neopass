@@ -11,9 +11,8 @@ export class RunValidator extends ValidatorPlugin {
     return `password contains at least ${num} character run(s)`
   }
 
-  runs(max: number, pass: string): number {
-    const num = max + 1
-    const expr = String.raw`([a-z]{${num},})|([0-9]{${num},})`
+  runs(min: number, pass: string): number {
+    const expr = String.raw`([a-z]{${min},})|([0-9]{${min},})`
     const parser = new RegExp(expr, 'gi')
 
     let offending = 0
@@ -32,7 +31,7 @@ export class RunValidator extends ValidatorPlugin {
           run = 0
         }
 
-        if (run + 1 > max) {
+        if (run + 1 >= min) {
           offending += 1
           run = 0
         }
@@ -42,15 +41,15 @@ export class RunValidator extends ValidatorPlugin {
     return offending
   }
 
-  configure(options: any, max: number): IValidator {
-    if (typeof max !== 'number') {
-      throw new Error('run validator needs a max argument')
+  configure(options: any, min: number): IValidator {
+    if (typeof min !== 'number') {
+      throw new Error('run validator needs a min argument')
     }
 
     const validator: IValidator = {
       request: ['password'],
       exec: (password: string) => {
-        const offending = this.runs(max, password)
+        const offending = this.runs(min, password)
         if (offending > 0) {
           const msg = this.message(offending)
           return [{ name: this.name, msg, meta: offending }]

@@ -4,23 +4,23 @@ import { RunValidator } from '../src/plugins'
 
 const neo = new NeoPass({
   plugins: [ new RunValidator() ],
-  validators: [ 'run:2' ],
+  validators: [ 'run:3' ],
   evaluators: [
     {
       weight: 0.5,
       validators: [
-        'run:2'
+        'run:3'
       ]
     }
   ]
 })
 
 describe('RunValidator', () => {
-  it('generates error when run threshold is exceeded', () => {
+  it('generates error when run threshold is met', () => {
     const errors = neo.validate('abcccdefffg')
-    const [{name}] = errors
-
     assert.strictEqual(errors.length, 1)
+
+    const [{name}] = errors
     assert.strictEqual(name, 'run')
   })
 
