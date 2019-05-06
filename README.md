@@ -24,6 +24,8 @@ This package is currently under development and the interface is unstable. While
   - [The Validation Chain](#the-validation-chain)
   - [The Evaluation Chain](#the-evaluation-chain)
   - [Passphrase Detection](#passphrase-detection)
+- [Built-in Validators](#built-in-validators)
+- [Configuring Validators](#configuring-validators)
 - [Custom Validators](#custom-validators)
 - [Optional Rules](#optional-rules)
 - [Plugins](#plugins)
@@ -367,6 +369,375 @@ Output:
 errors: []
 ```
 
+## Built-in Validators
+
+### ClassesValidator
+
+Validates a password based on its _character classes_, mainly `u` (uppercase), `l` (lowercase), `d` (digit), and `s` (special character).
+
+```typescript
+const { neopass } = require('neopass')
+
+const config = {
+  /**
+   * Configure the classes validator to require an uppercase
+   * and a lowercase character, plus one of either a digit
+   * or a special character (!@#$%^&, etc).
+   */
+  validators: ['classes:and=ul,or=ds']
+}
+
+const neo = neopass(config)
+
+const errors = neo.validate('abcdefg')
+console.log(errors)
+```
+
+Output:
+
+```
+[ { name: 'classes',
+    msg: 'missing uppercase character',
+    meta: 'u' },
+  { name: 'classes',
+    msg: 'missing one of digit, special',
+    meta: 'ds' } ]
+```
+
+### CommonValidator
+
+Validates a password based on whether it's included in a common passwords list.
+
+Note that `CommonValidator` requires a password list to be given in its options, so it is not [short-form](#configuring-validators) configurable.
+
+```typescript
+const { neopass } = require('neopass')
+
+const config = {
+  /**
+   * Configure the common validator with a list of common passwords.
+   */
+  validators: [
+    {
+      plugin: 'common',
+      options: {
+        list: [
+          '0123456789',
+          'password',
+          'superman',
+        ]
+      }
+    }
+  ]
+}
+
+const neo = neopass(config)
+
+const errors = neo.validate('superman')
+console.log(errors)
+```
+
+Output:
+
+```
+[ { name: 'common',
+    msg: 'password found in a common vulnerable password list' } ]
+```
+
+### DepthValidator
+
+Validates a password based on its _character depth_, derived from its _classes_. For example, a password `Simple32` has the classes `u`, `l`, and `d`, which means its _depth_ is `u=26 + l=26 + d=10 = 62`.
+
+```typescript
+const { neopass } = require('neopass')
+
+const config = {
+  /**
+   * Configure the depth validator to require a class depth of 62.
+   * This equates to a minimum of upper, lower, and digit characters.
+   */
+  validators: ['depth:62']
+}
+
+const neo = neopass(config)
+
+const errors = neo.validate('shadow')
+console.log(errors)
+```
+
+Output:
+
+```
+[ { name: 'depth',
+    msg: 'password needs more class complexity (uppercase, lowercase, digit, special)',
+    score: 0.41935483870967744 } ]
+```
+
+### EntropyValidator
+
+Validates a password based on its _class entropy_, derived from its _character depth_. The entropy is calculated as `Math.log2(depth) * length`, resulting in a number of _bits_ for the entire password string. The _class_ entropy differs from _shannon_ entropy in that the _bits per symbol_ is assumed based on which _character classes_ are represented in the password. This validator is similar to the [DepthValidator](#depthvalidator) in that its value is based on which _classes_ are present in the password, but adds the effect of having awareness of password _length_. In other words, a password may have several character classes represented, yet still be too short to pass validation.
+
+```typescript
+const { neopass } = require('neopass')
+
+const config = {
+  /**
+   * Require 64 bits of character entropy for the password.
+   */
+  validators: ['entropy:64']
+}
+
+const neo = neopass(config)
+
+const errors = neo.validate('Shadow@26') // ulds
+console.log(errors)
+```
+
+Output:
+
+```
+[ { name: 'entropy',
+    msg: 'password is either too short or not complex enough',
+    score: 0.9238859449215395 } ]
+```
+
+### LengthValidator
+
+Validates a password based on its _length_.
+
+Configuration:
+
+```typescript
+const { neopass } = require('neopass')
+
+const config = {
+  /**
+   * Password length must fall within [min, max].
+   */
+  validators: ['length:min=10,max=72']
+}
+
+const neo = neopass(config)
+const errors = neo.validate('shorty')
+console.log(errors)
+```
+
+Output:
+
+```
+[ { name: 'length',
+    msg: 'password length should be between 10 and 72 characters, inclusive',
+    score: 0.6,
+    meta: 'min' } ]
+```
+
+### RunValidator
+
+Validates whether a password has `runs` of a single character, such as in `pAAAsword`.
+
+```typescript
+const { neopass } = require('neopass')
+
+const config = {
+  /**
+   * Fail if password contains three or more of the same character together.
+   */
+  validators: ['run:3']
+}
+
+const neo = neopass(config)
+
+const errors = neo.validate('pAAAsword')
+console.log(errors)
+```
+
+Output:
+
+```
+[ { name: 'run',
+    msg: 'password contains at least 1 character run(s)',
+    meta: 1 } ]
+```
+
+### SequenceValidator
+
+Validates whether a password has _sequences_ of characters, such as in `ABCDlmnop`.
+
+```typescript
+const { neopass } = require('neopass')
+
+const config = {
+  /**
+   * Fail if password contains four or more characters in sequence.
+   */
+  validators: ['sequence:4']
+}
+
+const neo = neopass(config)
+
+const errors = neo.validate('ABCDlmnop')
+console.log(errors)
+```
+
+Output:
+
+```
+[ { name: 'sequence',
+    msg: 'password contains at least 2 character sequence(s)',
+    meta: 2 } ]
+```
+
+### ShannonValidator
+
+Validates a password based on its _Shannon entropy_. [Shannon entropy](https://en.wiktionary.org/wiki/Shannon_entropy) is given in raw _bits per symbol_. The validator multiplies this by the password _length_ resulting in a number representing the entropy for the entire string: `shannon(password) * length`. Shannon entropy differs from _class_ entropy in that no assumption is made about which _character classes_ are represented by the password; only the symbols in the password itself count toward the _bits per symbol_ calculation.
+
+`shannon('aaaa') // 0 bits per symbol`
+
+`shannon('ab')   // 1 bit per symbol`
+
+`shannon('abcd') // 2 bits per symbol`
+
+`shannon('01234567') // 3 bits per symbol`
+
+`shannon('0123456789abcdef') // 4 bits per symbol`
+
+```typescript
+const { neopass } = require('neopass')
+
+const config = {
+  /**
+   * The password must contain 32 or more bits of Shannon entropy.
+   */
+  validators: [ 'shannon:32' ]
+}
+
+const neo = neopass(config)
+const errors1 = neo.validate('1111111111')
+const errors2 = neo.validate('shannon')
+const errors3 = neo.validate('E for Effort')
+
+console.log('errors1:', errors1)
+console.log('errors2:', errors2)
+console.log('errors3:', errors3)
+```
+
+Output:
+
+```
+errors1: [ { name: 'shannon', msg: 'password is too simple', score: 0 } ]
+errors2: [ { name: 'shannon', msg: 'password is too simple', score: 0.4655 } ]
+errors3: [ { name: 'shannon', msg: 'password is too simple', score: 0.9457 } ]
+```
+
+### TopologyValidator
+
+Validates a password according to whether it conforms to certain common topology patterns.
+
+```typescript
+const { neopass } = require('neopass')
+
+const config = {
+  /**
+   * Configure the topology validator to use its standard patterns.
+   */
+  // validators: ['topology:standard=true']
+
+  /**
+   * Add some patterns to the standard ones.
+   */
+  validators: [
+    {
+      plugin: 'topology',
+      options: {
+        standard: true,
+        patterns: [
+          /^u+l+u+l+s+$/,   // ululs
+          /^u+l+u+l+d+$/,   // ululd
+          /^u+l+u+l+d+s+$/, // ululds
+        ]
+      }
+    }
+  ]
+}
+
+const neo = neopass(config)
+
+const errors = neo.validate('Denver2016') // uld
+console.log(errors)
+```
+
+Output:
+
+```
+[ { name: 'topology',
+    msg: 'password matches vulnerable pattern topology' } ]
+```
+
+## Configuring Validators
+
+**Short form**
+
+The short-form configuration uses a string to reference the plugin and its options/arguments. In this case, options and arguments can be primitive types such as `number`, `string`, `boolean`, etc.
+
+```typescript
+const config = {
+  validators: ['length:min=10,max=72']
+}
+```
+
+```typescript
+const config = {
+  validators: ['entropy:64']
+}
+```
+
+```typescript
+const config = {
+  validators: ['topology:standard=true']
+}
+```
+
+**Long form**
+
+The long-form configuration uses an object to reference the plugin and its options/arguments. Options and arguments can be objects and arrays, in addition to other types, such as `RegExp`.
+
+```typescript
+const config = {
+  validators: [{
+    plugin: 'length',
+    options: {
+      min: 10,
+      max: 72,
+    },
+  }]
+}
+```
+
+```typescript
+const config = {
+  validators: [{
+    plugin: 'entropy',
+    args: [ 64 ],
+  }]
+}
+```
+
+```typescript
+const config = {
+  validators: [{
+    plugin: 'topology',
+    options: {
+      patterns: [
+        /^u+l+d+$/,
+        /^u+l+s+$/,
+        /^l+d+s+$/,
+        ...
+      ],
+    },
+  }]
+}
+```
+
 ## Custom Validators
 
 Custom validators can be used by either [authoring a validator plugin](#authoring-a-validator-plugin) or using in-line custom function validators:
@@ -375,7 +746,7 @@ Custom validators can be used by either [authoring a validator plugin](#authorin
 /**
  * Create a custom validator function.
  */
-function customDepth() {
+function customDepth(): IValidator {
   // Create a validator object.
   const validator = {
     // Request depth from password info.
@@ -417,7 +788,7 @@ errors: [
 ]
 ```
 
-Custom validators can also be used in the evaluation chain.
+Custom validators can also be used in the [evaluation chain](#the-evaluation-chain).
 
 ## Optional Rules
 
@@ -488,6 +859,7 @@ import {
   RandomGenerator,
   // Validators
   ClassesValidator,
+  CommonValidator,
   DepthValidator,
   EntropyValidator,
   LengthValidator,
@@ -567,7 +939,6 @@ Output:
 
 ```
 errors: [
-[
   {
     name: 'entropy',
     msg: 'password is either too short or not complex enough',
@@ -669,9 +1040,10 @@ Plugins don't have to be subclasses of `ValidatorPlugin` or instances of classes
 
 ```typescript
 /**
- * Create an object that implements IPlugin.
+ * Create an object that implements IPlugin to act as
+ * a validator plugin.
  */
-const customLength: IPlugin<any> = {
+const customLength: IPlugin<IValidator> = {
   type: 'validator',
   name: 'custom-length',
   configure(options: any, min: number) {
