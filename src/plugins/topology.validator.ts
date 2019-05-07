@@ -80,7 +80,7 @@ export class TopologyValidator extends ValidatorPlugin {
    * Get a list of topology expression patterns.
    */
   patterns(options: any): RegExp[] {
-    let patterns = options.patterns || []
+    let { patterns = [] } = options
 
     // Patterns must be an array.
     if (!Array.isArray(patterns)) {

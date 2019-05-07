@@ -23,8 +23,7 @@ export class ClassesValidator extends ValidatorPlugin {
   }
 
   configure(options: any): IValidator {
-    const and = options.and
-    const or = options.or
+    const { and, or } = options
 
     if (typeof and !== 'string' && typeof or !== 'string') {
       throw new Error('no "and" or "or" classes specified')

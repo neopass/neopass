@@ -11,8 +11,7 @@ export class LengthValidator extends ValidatorPlugin {
   }
 
   configure(options: any): IValidator {
-    const min = options.min
-    const max = options.max
+    const { min, max } = options
 
     if (typeof min !== 'number' || typeof max !== 'number') {
       throw new Error('length validator needs min and max options')
