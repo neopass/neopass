@@ -96,7 +96,6 @@ export class NeoPass extends NeoCore {
   ): IVerifyResult {
     const errors = this.validate(password, validators)
     const { warnings } = this.evaluate(password, evaluators)
-    const result = { errors, warnings }
-    return result
+    return { errors, warnings }
   }
 }
