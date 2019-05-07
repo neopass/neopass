@@ -58,7 +58,7 @@ export class NeoPass extends NeoCore {
     // Preconfigure evaluator validators.
     const preEval: IEvalCache[] = (config.evaluators || []).map((e) => {
       const { weight } = e
-      const validators = e.validators.map((v) => {
+      const validators = (e.validators || []).map((v) => {
         return resolver.resolve<IValidator>('validator', v)
       })
       return { weight, validators }
