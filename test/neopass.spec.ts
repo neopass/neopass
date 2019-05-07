@@ -74,6 +74,9 @@ describe('neopass', () => {
   })
 
   it('retries password generation', () => {
+    const pass = neo.generate(16, 'random', 10)
+    assert.strictEqual(pass.length, 16)
+
     assert.throws(() => {
       neo.generate(9, 'letters-numbers', 10)
     })
