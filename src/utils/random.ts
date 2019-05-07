@@ -51,7 +51,7 @@ export function randomUInt(): number {
  * Return a random float in the range [0, 1).
  */
 export function randomFloat(): number {
-  return randomUInt() / 2**32
+  return randomUInt() / Math.pow(2, 32)
 }
 
 /**
