@@ -30,8 +30,9 @@ const _charClasses: CharClasses = { c, u, l, d, s, h, e, n, z }
 const _topoChars = new Set(Object.keys(_charClasses) as TopoChar[])
 
 // Calculate the cardinality of each characrer class.
-const _classDepth = Object.entries(_charClasses).reduce((map, pair) => {
-  const [key, value] = <[TopoChar, CharClass]>pair
+const _classDepth = Object.keys(_charClasses).reduce((map, k) => {
+  const key = k as TopoChar
+  const value = _charClasses[key]
   map[key] = classSize(value)
   return map
 }, <{[T in TopoChar]: number}>{})
