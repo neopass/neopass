@@ -119,7 +119,7 @@ function _applyEvalErrors(
 
 /**
  * The core instance for encapsulating validation, evaluation and
- * miscellaneous logic.
+ * generation logic.
  */
 export class NeoCore {
   /**
