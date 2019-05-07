@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.10.1] - 2019-05-07
+- Refactor for compatibility with node v6.17.1.
+
 ## [0.10.0] - 2019-05-06
 - `RunValidator` and `SequenceValidator` use min error threshold instead of max allowed threshold.
 - Validators and evaluators specified in the config are preconfigured, that is, converted into IValidator objects ahead of time.
