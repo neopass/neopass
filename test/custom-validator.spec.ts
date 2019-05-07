@@ -6,21 +6,17 @@ import { NeoPass } from '../src/neo-pass'
  */
 function customDepth(min: number) {
   const msg = 'not enough character depth'
+
   return () => {
-    // Create a validator object.
     const validator = {
-      // Request depth from password info.
       request: ['depth'],
-      // The core validator function.
       exec(depth: number) {
         if (depth < min) {
-          // Validation failure.
           const score = depth / min
           return [{name: 'custom-depth', msg, score}]
         }
       }
     }
-    // Return the validator object.
     return validator
   }
 }
@@ -41,9 +37,17 @@ describe('CustomValidator', () => {
     assert.strictEqual(msg, 'not enough character depth')
   })
 
+  it('works with validate override', () => {
+    const errors = neo.validate('abcdefg', [customDepth(62)])
+    const [{name, msg}] = errors
+
+    assert.strictEqual(errors.length, 1)
+    assert.strictEqual(name, 'custom-depth')
+    assert.strictEqual(msg, 'not enough character depth')
+  })
+
   it('passes on sufficient depth', () => {
     const errors = neo.validate('Abc10')
-
     assert.strictEqual(errors.length, 0)
   })
 
