@@ -106,4 +106,34 @@ describe('random', () => {
 
     assert(set.size === 10, `diverse: ${set.size}`)
   })
+
+  it('throws on bad range given to randomIn', () => {
+    let error: any = null
+
+    assert.throws(() => {
+      try {
+        randomIn(10, 1)
+      } catch (e) {
+        error = e
+        throw e
+      }
+    })
+
+    assert.strictEqual(error.message, 'max should be >= min')
+  })
+
+  it('throws if pick given out-of-range value', () => {
+    let error: any = null
+
+    assert.throws(() => {
+      try {
+        pick(['a', 'b', 'c'], 4)
+      } catch (e) {
+        error = e
+        throw e
+      }
+    })
+
+    assert.strictEqual(error.message, 'num should be in the range [0, 3]')
+  })
 })
