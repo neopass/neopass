@@ -257,8 +257,8 @@ const neo = neopass({
        */
       weight: 0.75,
       validators: [
-        'run:2',
-        'sequence:3',
+        'run:3',
+        'sequence:4',
         'classes:and=ul,or=ds',
         'topology:standard=true',
       ],
@@ -866,6 +866,7 @@ import { neopass, INeoConfig } from 'neopass'
 
 import {
   // Generators
+  HexGenerator,
   LettersNumbersGenerator,
   RandomGenerator,
   // Validators
@@ -903,8 +904,8 @@ const config: INeoConfig = {
   validators: [
     'entropy:64',
     'shannon:32',
-    'sequence:3',
-    'run:2',
+    'sequence:4',
+    'run:3',
     'topology:standard=true',
   ]
 }
@@ -1004,7 +1005,6 @@ export class SimpleLengthValidator extends ValidatorPlugin {
     const validator: IValidator = {
       // Any requested password info will be passed to exec, in order.
       request: ['length'],
-
       // The validation logic.
       exec: (length: number) => {
         if (length < min) {
@@ -1146,8 +1146,8 @@ const neo = neopass(config)
 // Create a custom validation chain.
 const customValidators = [
   'entropy:64',
-  'run:2',
-  'sequence:3',
+  'run:3',
+  'sequence:4',
 ]
 
 // Overide default validators.
