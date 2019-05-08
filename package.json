@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "tsc",
-    "build-dist": "webpack --config ./neodist/webpack.config.js",
+    "build-dist": "webpack --config ./dist/webpack.config.js",
     "clean": "rm -rf lib",
     "cover": "nyc mocha",
     "codecov": "source .env && npm run cover && codecov -t $CODECOV_TOKEN",
