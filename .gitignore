@@ -68,6 +68,7 @@ typings/
 
 # Build
 /lib
+/dist/neopass.js
 
 # Temp
 **/temp/
