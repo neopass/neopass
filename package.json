@@ -4,15 +4,15 @@
   "description": "A password validation and generation tool kit",
   "main": "lib/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "npm run compile && npm run build-dist",
     "build-dist": "webpack --config ./dist/webpack.config.js",
     "clean": "rm -rf lib",
+    "compile": "tsc",
     "cover": "nyc mocha",
     "codecov": "source .env && npm run cover && codecov -t $CODECOV_TOKEN",
-    "load": "source .env && node ./util/file-loader ./src/views ./lib",
     "test": "mocha",
     "test-watch": "nodemon -e ts --ignore '*.d.ts' --exec 'mocha'",
-    "prepublishOnly": "npm run clean && npm run build && npm run build-dist && npm run test",
+    "prepublishOnly": "npm run clean && npm run build && npm run test",
     "word-gen": "./word-gen"
   },
   "homepage": "https://github.com/neopass/neopass#readme",
