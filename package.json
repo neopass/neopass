@@ -54,7 +54,8 @@
   },
   "files": [
     "lib",
-    "bin"
+    "bin",
+    "dist/neopass.js"
   ],
   "dependencies": {
     "regex-each": "^1.0.3"
