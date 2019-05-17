@@ -50,14 +50,14 @@ const _builtinValidators: Validator[] = [
  * Neopass instance.
  */
 export function neopass(config?: INeoConfig|null) {
-    // Apply user config to default config.
-    config = {..._defaultConfig, ...config}
+  // Apply user config to default config.
+  config = {..._defaultConfig, ...config}
 
-    // Create a neopass instance.
-    const neo = new NeoPass(
-      config,
-      config.useBuiltinGenerators ? _builtinGenerators : null,
-      config.useBuiltinValidators ? _builtinValidators : null)
+  // Create a neopass instance.
+  const neo = new NeoPass(
+    config,
+    config.useBuiltinGenerators ? _builtinGenerators : null,
+    config.useBuiltinValidators ? _builtinValidators : null)
 
   return neo
 }
