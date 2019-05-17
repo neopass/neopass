@@ -1120,7 +1120,7 @@ interface IPasswordInfo {
 
 `entropy`: the base-2 logarithm of the `depth`, as bits per symbol/character.
 
-`shannon`: the [Shannon Entropy](https://en.wiktionary.org/wiki/Shannon_entropy) of the password in bits per symbol.
+`shannon`: the [Shannon Entropy](https://en.wiktionary.org/wiki/Shannon_entropy) of the password in bits per symbol. Shannon entropy can be thought of as the overall complexity of the password, based on the diversity of symbols it contains.
 
 As a rule, always request the minimum amount of information required to fulfill proper validation. For example:
 - if you want to know what the password length is, request `length` and not `password` or `topology`.
