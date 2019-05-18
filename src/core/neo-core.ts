@@ -14,6 +14,13 @@ import {
   shannon,
 } from '../utils'
 
+export type RequestType = keyof IPasswordInfo
+
+export interface IEvalCache {
+  weight?: number
+  validators: IValidator[]
+}
+
 interface IPasswordInfo {
   readonly password: string
   readonly length: number
@@ -22,13 +29,6 @@ interface IPasswordInfo {
   readonly classes: string
   readonly entropy: number
   readonly shannon: number
-}
-
-export type RequestType = keyof IPasswordInfo
-
-export interface IEvalCache {
-  weight?: number
-  validators: IValidator[]
 }
 
 interface IRunResult {
