@@ -2,7 +2,9 @@ import { IPlugin } from '../plugin'
 import { PluginInfo } from '../plugin-info'
 import { IEvaluator } from '../evaluator'
 
-// Neopass configuration interface.
+/**
+ * Neopass base configuration interface.
+ */
 export interface IBaseConfig {
   /**
    * A list of plugins to use, which conform to IPlugin.

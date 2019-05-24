@@ -1,6 +1,8 @@
 import { IBaseConfig } from './core/base-config'
 
-// Neopass configuration interface.
+/**
+ * Neopass configuration interface.
+ */
 export interface INeoConfig extends IBaseConfig {
   /**
    * Use built-in password generator plugins. Default: true.
