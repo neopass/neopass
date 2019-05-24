@@ -123,7 +123,6 @@ const config: INeoConfig = {
    *
    * Each validator is called in sequence and any errors produced
    * are returned by the call.
-   *
    */
   validators: [
     /**
@@ -166,6 +165,26 @@ errors: [
   }
 ]
 ```
+
+#### Generator Retries
+
+When generating passwords, it might be important for you to make sure that the generated password will pass your defined validation chain. Depending on how the chain is configured, random strings produced by password generation might occasionally result in a password that fails a validation step. You can specify generator `retries` to retry generation a number of times to mitigate cases where this may occur.
+
+```typescript
+const neo = neopass({
+  validators: ['run:3']
+})
+
+const pass = neo.generate(10, 'letters-numbers')
+console.log(pass) // j47VXGqqq3
+// Oops! There are three 'q' together which violates the run validator.
+
+// Specify up to five retries to regenerate passwords that fail validation.
+const safePass = neo.generate(10, 'letters-numbers', 5)
+console.log(safePass) // iUG6r76ecR
+```
+
+If the number of retries is exceeded, `generate` will throw an error, which would suggest that your validation rules might be too strict, or perhaps the selected generator is not appropriate for your use case.
 
 ### The Evaluation Chain
 
