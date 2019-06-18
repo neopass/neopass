@@ -2,16 +2,15 @@
 [![codecov](https://codecov.io/gh/neopass/neopass/branch/master/graph/badge.svg)](https://codecov.io/gh/neopass/neopass)
 
 # neopass
-A password validation and generation tool kit.
+
+Encourage better passwords.
+
+Neopass is a password validation and generation tool kit built on plugins.
 
 - [Password generation](#password-generation)
 - [Password validation](#the-validation-chain)
 - [Password strength](#the-evaluation-chain)
 - [Passphrase support](#passphrase-detection)
-
-"One of the most exciting packages on npm!" - _nobody_
-
-"The only good password is a random string of sufficient entropy." - _unknown_
 
 ## Under Development
 
@@ -24,6 +23,8 @@ This package is currently under development and the interface is unstable. While
   - [The Validation Chain](#the-validation-chain)
   - [The Evaluation Chain](#the-evaluation-chain)
   - [Passphrase Detection](#passphrase-detection)
+- [External Generators](#external-generators)
+  - [Memorable Generator](#memorable-generator)
 - [Built-in Validators](#built-in-validators)
   - [ClassesValidator](#classesvalidator)
   - [CommonValidator](#commonvalidator)
@@ -398,6 +399,50 @@ Output:
 ```
 errors: []
 ```
+
+## External Generators
+
+### Memorable Generator
+
+The [Memorable Generator](https://www.npmjs.com/package/@neopass/memorable-generator) generates an easy-to-remember password:
+
+```
+npm install @neopass/memorable-generator @neopass/words-by-length-view
+```
+
+Optional:
+
+```
+npm install @neopass/wordlist
+```
+
+```javascript
+const { neopass } = require('neopass')
+const { WordsByLengthView } = require('@neopass/words-by-length-view')
+const { MemorableGenerator } = require('@neopass/memorable-generator')
+const { wordListSync } = require('@neopass/wordlist')
+
+/**
+ * We're using @neopass/wordlist to feed the view, but any
+ * word list of sufficient size will do.
+ */
+const view = new WordsByLengthView(wordListSync())
+
+const neo = neopass({
+  plugins: [new MemorableGenerator(view)]
+})
+
+const pass = neo.generate(16, 'memorable')
+console.log('password:', pass)
+```
+
+Output:
+
+```
+password: smugly$Luminous7
+```
+
+See [Memorable Generator](https://www.npmjs.com/package/@neopass/memorable-generator) on npm.
 
 ## Built-in Validators
 
