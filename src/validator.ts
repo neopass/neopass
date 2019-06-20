@@ -1,5 +1,6 @@
 import { IPlugin, PluginType } from './plugin'
 import { IRequestor } from './requestor'
+import { KeyVals } from './types'
 
 export interface IValidatorError {
   name: string,
@@ -15,7 +16,7 @@ export interface IValidator<T = IValidatorError[]> extends IRequestor<T> {
 
 export abstract class ValidatorPlugin<T = IValidatorError[]> implements IPlugin<IValidator<T>> {
   public abstract name: string
-  public abstract configure(...args: any[]): IValidator<T>
+  public abstract configure(options?: KeyVals, ...args: any[]): IValidator<T>
   get type(): PluginType { return 'validator' }
 }
 
