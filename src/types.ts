@@ -27,3 +27,8 @@ export type CharClasses = { [T in TopoChar]: CharClass }
  * Probability data for a character range.
  */
 export type RangeData = [number, Range]
+
+/**
+ * Key/value map type.
+ */
+export type KeyVals = {[key: string]: any}
