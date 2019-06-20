@@ -1,7 +1,7 @@
 import { IPlugin, PluginType } from './plugin'
 
 export type Generate = (len: number) => string
-export type GenUnits = 'char'|'byte'
+export type GenUnits = 'char'|'byte'|'word'
 
 export interface IGenerator extends IPlugin<Generate> {
   readonly title: string
