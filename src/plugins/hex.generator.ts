@@ -1,6 +1,7 @@
 
 import { Generate, GeneratorPlugin, GenUnits,  } from '../generator'
 import { randomIn } from '../utils'
+import { KeyVals } from '../types'
 
 export class HexGenerator extends GeneratorPlugin {
   constructor() {
@@ -19,7 +20,7 @@ export class HexGenerator extends GeneratorPlugin {
     return 'byte'
   }
 
-  configure(options: any): Generate {
+  configure(): Generate {
     return function generate(bytes: number) {
       const hex: string[] = []
       for (let i = 0; i < bytes; i++) {

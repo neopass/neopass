@@ -1,6 +1,6 @@
 import { IValidator, IValidatorError, ValidatorPlugin } from '../validator'
 import { toTopoChars } from '../topology'
-import { TopoChar } from '../types'
+import { TopoChar, KeyVals } from '../types'
 
 const topoNames = new Map<TopoChar, string>([
   ['u', 'uppercase'],
@@ -22,7 +22,7 @@ export class ClassesValidator extends ValidatorPlugin {
     return `missing one of ${classes.join(', ')}`
   }
 
-  configure(options: any): IValidator {
+  configure(options: KeyVals = {}): IValidator {
     const { and, or } = options
 
     if (typeof and !== 'string' && typeof or !== 'string') {

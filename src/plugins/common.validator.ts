@@ -1,4 +1,5 @@
 import { IValidator, ValidatorPlugin } from '../validator'
+import { KeyVals } from '../types'
 
 export class CommonValidator extends ValidatorPlugin {
 
@@ -13,7 +14,7 @@ export class CommonValidator extends ValidatorPlugin {
   /**
    * Validator pattern.
    */
-  configure(options: any): IValidator {
+  configure(options: KeyVals = {}): IValidator {
     const set: Set<string> = new Set(options.list || [])
 
     if (set.size === 0) {

@@ -1,4 +1,5 @@
 import { IValidator, ValidatorPlugin, IValidatorError } from '../validator'
+import { KeyVals } from '../types'
 
 export class ShannonValidator extends ValidatorPlugin<IValidatorError[]> {
 
@@ -10,7 +11,7 @@ export class ShannonValidator extends ValidatorPlugin<IValidatorError[]> {
     return `password is too simple`
   }
 
-  configure(options: any, min: number): IValidator {
+  configure(options: KeyVals, min: number): IValidator {
     if (typeof min !== 'number') {
       throw new Error('shannon validator requires a single argument')
     }

@@ -1,4 +1,5 @@
 import { ValidatorPlugin, IValidator } from '../validator'
+import { KeyVals } from '../types';
 
 export class LengthValidator extends ValidatorPlugin {
 
@@ -10,7 +11,7 @@ export class LengthValidator extends ValidatorPlugin {
     return `password length should be between ${min} and ${max} characters, inclusive`
   }
 
-  configure(options: any): IValidator {
+  configure(options: KeyVals = {}): IValidator {
     const { min, max } = options
 
     if (typeof min !== 'number' || typeof max !== 'number') {

@@ -1,5 +1,6 @@
 import { IValidator, ValidatorPlugin } from '../validator'
 import { typeOf } from '../utils/type-of'
+import { KeyVals } from '../types'
 
 const _standardPatterns = [
   /^l+$/,         // l
@@ -123,7 +124,7 @@ export class TopologyValidator extends ValidatorPlugin {
   /**
    * Validator pattern.
    */
-  configure(options: any): IValidator {
+  configure(options: KeyVals = {}): IValidator {
     const patterns: RegExp[] = this.patterns(options)
 
     const validator: IValidator = {
@@ -136,7 +137,7 @@ export class TopologyValidator extends ValidatorPlugin {
         }
 
         // Check if we should bypass the topology validation.
-        if (this.bypass(actual, options)) {
+        if (this.bypass(actual, <IBitsInfo>options)) {
           return null
         }
 

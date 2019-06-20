@@ -1,5 +1,6 @@
-import { IValidator, ValidatorPlugin, IValidatorError } from '../validator'
+import { IValidator, ValidatorPlugin } from '../validator'
 import regexEach from 'regex-each'
+import { KeyVals } from '../types'
 
 export class SequenceValidator extends ValidatorPlugin {
 
@@ -41,7 +42,7 @@ export class SequenceValidator extends ValidatorPlugin {
     return offending
   }
 
-  configure(options: any, min: number): IValidator {
+  configure(options: KeyVals, min: number): IValidator {
     if (typeof min !== 'number') {
       throw new Error('sequence validator needs a min argument')
     }

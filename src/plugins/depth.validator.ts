@@ -1,4 +1,5 @@
-import { IValidator, ValidatorPlugin, IValidatorError } from '../validator'
+import { IValidator, ValidatorPlugin } from '../validator'
+import { KeyVals } from '../types'
 
 export class DepthValidator extends ValidatorPlugin {
 
@@ -10,7 +11,7 @@ export class DepthValidator extends ValidatorPlugin {
     return `password needs more class complexity (uppercase, lowercase, digit, special)`
   }
 
-  configure(options: any, min: number): IValidator {
+  configure(options: KeyVals, min: number): IValidator {
     if (typeof min !== 'number') {
       throw new Error('depth validator requires a single numeric argument')
     }

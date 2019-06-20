@@ -1,5 +1,6 @@
 import { IValidator, ValidatorPlugin, IValidatorError } from '../validator'
 import regexEach from 'regex-each'
+import { KeyVals } from '../types'
 
 export class RunValidator extends ValidatorPlugin {
 
@@ -41,7 +42,7 @@ export class RunValidator extends ValidatorPlugin {
     return offending
   }
 
-  configure(options: any, min: number): IValidator {
+  configure(options: KeyVals, min: number): IValidator {
     if (typeof min !== 'number') {
       throw new Error('run validator needs a min argument')
     }

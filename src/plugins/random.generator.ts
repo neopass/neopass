@@ -16,7 +16,7 @@ export class RandomGenerator extends GeneratorPlugin {
 
     super()
 
-    this.configure = function configure(options: any): Generate {
+    this.configure = function configure(): Generate {
       return function generate(len: number) {
         return _generate(len, classes)
       }

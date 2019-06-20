@@ -1,4 +1,5 @@
 import { IValidator, ValidatorPlugin } from '../validator'
+import { KeyVals } from '../types'
 
 export class EntropyValidator extends ValidatorPlugin {
 
@@ -10,7 +11,7 @@ export class EntropyValidator extends ValidatorPlugin {
     return `password is either too short or not complex enough`
   }
 
-  configure(options: any, min: number): IValidator {
+  configure(options: KeyVals, min: number): IValidator {
     if (typeof min !== 'number') {
       throw new Error('entropy validator requires a single argument')
     }
